@@ -1,0 +1,12 @@
+     A* OVSETUP - OfficeVibes/400 data file
+     A          R SETREC
+     A            STUSER        10A
+     A            STANIM         1A
+     A            STSAVE         3S 0
+     A            STCHAT         1A
+     A            STZONE         6A
+     A            STWEEK         1A
+     A            STDBEG         4S 0
+     A            STDEND         4S 0
+     A            STUNIT         1A
+     A          K STUSER

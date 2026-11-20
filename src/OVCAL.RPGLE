@@ -6,6 +6,7 @@
      FOVCAUTP   IF   E           K DISK
      FOVROOMP   IF   E           K DISK
      FOVHOLP    IF   E           K DISK
+     FOVSETUP   IF   E           K DISK
      FOVCAL     CF   E             WORKSTN INFDS(DSPINF) MAXDEV(*FILE)
      DPSDS            SDS
      D PGMUSR                254    263
@@ -71,8 +72,35 @@
      DNERR             S              1A
      DCH               S              1A
      DPOS              S              5  0
+     DDOTF             S              1A
+     DUSET             S             40A
+     DUNITS            S              1A
+     DUWEEK            S              1A
+     DUDBEG            S              4  0
+     DUDEND            S              4  0
+     DUZONE            S              6A
+     DUOFFS            S              5A
+     DUOFFZ            S              6A
      DLCASE            C                   'abcdefghijklmnopqrstuvwxyz'
      DUCASE            C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+     D                 DS
+     DSVA                           468A
+     D SV                            78A   DIM(6) OVERLAY(SVA)
+     D SV1                           78A   OVERLAY(SVA:1)
+     D SV2                           78A   OVERLAY(SVA:79)
+     D SV3                           78A   OVERLAY(SVA:157)
+     D SV4                           78A   OVERLAY(SVA:235)
+     D SV5                           78A   OVERLAY(SVA:313)
+     D SV6                           78A   OVERLAY(SVA:391)
+     DANIMON           S              1A
+     DSAVMIN           S              3  0
+     DCHATAU           S              1A
+     DIDLE             S              7  0
+     DSAVSEC           S              7  0
+     DGOTKEY           S              1A
+     DSVX              S              5  0
+     DSVD              S              5  0
+     DFULLS            S              1A
      D                 DS
      DCSA                            72A
      D CS                            12A   DIM(6) OVERLAY(CSA)
@@ -233,6 +261,12 @@
      DDNAMES           C                   'Sunday   Monday   Tuesday  Wed-
      D                                     nesdayThursday Friday   Saturd-
      D                                     ay '
+     DSUNH             C                   '   Sunday     Monday    Tuesda-
+     D                                     y   Wednesday   Thursday    Fr-
+     D                                     iday    Saturday'
+     DMONH             C                   '   Monday    Tuesday   Wednesd-
+     D                                     ay   Thursday    Friday    Sat-
+     D                                     urday    Sunday'
      DBORDER           C                   '+----------+----------+--------
      D                                     ---+----------+----------+-----
      D                                     ------+----------+'
@@ -244,6 +278,21 @@
      DHH               S              5  0
      DMI               S              5  0
      DCLT              S              5  0
+     DZTX              S              6A
+     DZT               S              6A
+     DZOUT             S              6A
+     DZSG              S              3  0
+     DZL               S              5  0
+     DZH               S              2  0
+     DZM               S              2  0
+     DZHV              S              9  0
+     DZMV              S              9  0
+     DZMIN             S              5  0
+     DOFFMIN           S              5  0
+     DTOT              S              7  0
+     DDSH              S              5  0
+     DWOFFZ            S              6A
+     DZNOTE            S             40A
      DART              S             72A
      DMIDX             S              5  0
      DANIM             S              1A
@@ -357,9 +406,21 @@
      C                   ENDIF
      C                   ENDDO
      C                   ENDIF
-     C                   EVAL      ANIM = '1'
-     C                   IF        MIDX = 6
+     C                   EVAL      ANIMON = 'Y'
+     C                   EVAL      SAVMIN = 2
+     C                   EVAL      CHATAU = 'A'
+     C     PGMUSR        CHAIN(N)  SETREC
+     C                   IF        %FOUND(OVSETUP)
+     C                   EVAL      ANIMON = STANIM
+     C                   EVAL      SAVMIN = STSAVE
+     C                   EVAL      CHATAU = STCHAT
+     C                   ENDIF
+      * the menu itself never redraws on a timer, because that moved the
+      * cursor.  ANIM now means the screen saver may start when idle.
+     C                   EVAL      SAVSEC = SAVMIN * 60
      C                   EVAL      ANIM = '0'
+     C                   IF        ANIMON = 'Y' AND SAVSEC > 0
+     C                   EVAL      ANIM = '1'
      C                   ENDIF
      C                   EVAL      FRAME = 0
      C                   EVAL      FULL = '1'
@@ -373,25 +434,32 @@
      C                   EXSR      CLOCK
      C                   IF        ANIM = '1'
      C                   EVAL      *IN45 = *ON
-     C                   IF        FULL = '1'
      C                   EVAL      *IN46 = *OFF
      C                   WRITE     BLANK
-     C                   ELSE
-     C                   EVAL      *IN46 = *ON
-     C                   ENDIF
      C                   WRITE     PMENU
+     C                   EVAL      IDLE = 0
+     C                   EVAL      GOTKEY = '0'
+     C                   DOW       GOTKEY = '0'
      C                   READ      OVCAL                                5152
      C                   IF        *IN51 = *ON
      C                   EVAL      *IN51 = *OFF
-     C                   IF        DSPSTS = 1331
-     C                   EVAL      FRAME = 1 - FRAME
-     C                   EVAL      FULL = '0'
-     C                   ELSE
+     C                   IF        DSPSTS <> 1331
      C                   EVAL      ANIM = '0'
-     C                   EVAL      FULL = '1'
-     C                   EVAL      MSG = 'The character cannot move on t' +
-     C                             'his display.'
+     C                   EVAL      MSG = 'The screen saver cannot run on' +
+     C                             ' this display.'
+     C                   LEAVE
      C                   ENDIF
+     C                   EVAL      IDLE = IDLE + 1
+     C                   IF        IDLE >= SAVSEC
+     C                   EXSR      SAVER
+     C                   LEAVE
+     C                   ENDIF
+     C                   ELSE
+     C                   EVAL      GOTKEY = '1'
+     C                   ENDIF
+     C                   ENDDO
+     C                   IF        GOTKEY = '0'
+     C                   EVAL      FULL = '1'
      C                   ITER
      C                   ENDIF
      C                   ELSE
@@ -614,6 +682,10 @@
      C                   MOVE      CURN          W8
      C                   EVAL      DTXT = %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2)
      C                             + '/' + %SUBST(W8:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      DTXT = %SUBST(W8:7:2) + '.' + %SUBST(W8:5:2)
+     C                             + '.' + %SUBST(W8:1:4)
+     C                   ENDIF
      C                   EVAL      PDATE = DTXT
      C                   EVAL      PDSHOW = DTXT
      C                   EXSR      GETWKD
@@ -656,8 +728,44 @@
      C                   ENDIF
      C                   EVAL      PTIM = 'Time:  ' + %CHAR(H12) + ':' +
      C                             %SUBST(WSTMP:15:2) + ' ' + AMPM
+     C                   IF        UNITS = 'M'
+     C                   EVAL      PTIM = 'Time:  ' + %SUBST(WSTMP:12:2) + ':' +
+     C                             %SUBST(WSTMP:15:2)
+     C                   ENDIF
      C                   ENDSR
       * ---- day of the week of CURD (0 is Sunday), day of the year
+      * ---- the time now, office and yours: DNOW ----
+     C     NOWLN         BEGSR
+     C                   EXSR      CLOCK
+     C                   EVAL      DNOW = 'Office time now ' +
+     C                             %TRIM(%SUBST(PTIM:7)) + ', UTC' + UOFFZ
+     C                   IF        UZONE <> *BLANKS AND UZONE <> UOFFZ
+     C                   EVAL      ZTX = UOFFZ
+     C                   EXSR      PARSZN
+     C                   EVAL      OFFMIN = ZMIN
+     C                   EVAL      ZTX = UZONE
+     C                   EXSR      PARSZN
+     C                   IF        NERR = '0'
+     C                   EVAL      NSTR = %SUBST(WSTMP:12:2)
+     C                   EXSR      TONUM
+     C                   EVAL      TOT = NVAL * 60
+     C                   EVAL      NSTR = %SUBST(WSTMP:15:2)
+     C                   EXSR      TONUM
+     C                   EVAL      TOT = TOT + NVAL + ZMIN - OFFMIN
+     C                   DOW       TOT < 0
+     C                   EVAL      TOT = TOT + 1440
+     C                   ENDDO
+     C                   DOW       TOT >= 1440
+     C                   EVAL      TOT = TOT - 1440
+     C                   ENDDO
+     C                   EVAL      ZH = %DIV(TOT:60)
+     C                   EVAL      ZM = %REM(TOT:60)
+     C                   EVAL      DNOW = %TRIMR(DNOW) + '.   Your zone UTC' +
+     C                             UZONE + ': ' + %EDITC(ZH:'X') + ':' +
+     C                             %EDITC(ZM:'X')
+     C                   ENDIF
+     C                   ENDIF
+     C                   ENDSR
      C     GETWKD        BEGSR
      C     CURD          SUBDUR    BASEDT        NDAYS:*D
      C                   EVAL      WKD = %REM(%REM(NDAYS:7) + 7:7)
@@ -677,6 +785,13 @@
      C     NXT           SUBDUR    F1            MDAYS:*D
      C     F1            SUBDUR    BASEDT        NDAYS:*D
      C                   EVAL      FDOW = %REM(%REM(NDAYS:7) + 7:7)
+     C                   EVAL      PWK = ' Su Mo Tu We Th Fr Sa'
+     C                   EVAL      MWKH = SUNH
+     C                   IF        UWEEK = 'M'
+     C                   EVAL      FDOW = %REM(FDOW + 6:7)
+     C                   EVAL      PWK = ' Mo Tu We Th Fr Sa Su'
+     C                   EVAL      MWKH = MONH
+     C                   ENDIF
      C                   EVAL      HAS = *BLANK
      C                   EVAL      HOL = *BLANK
      C                   EVAL      KDATE = FIRSTN
@@ -743,14 +858,66 @@
      C                   EVAL      CS(I) = %SUBST(ART:I*12-11:12)
      C                   ENDDO
      C                   ENDSR
+      * ---- the screen saver: the character drifts across, with the time ----
+     C     SAVER         BEGSR
+     C                   EVAL      SVX = 2
+     C                   EVAL      SVD = 2
+     C                   EVAL      FULLS = '1'
+     C                   DOW       1 = 1
+     C                   EVAL      FRAME = 1 - FRAME
+     C                   EXSR      SETART
+     C                   EVAL      SVA = *BLANKS
+     C                   IF        MIDX < 6
+     C     1             DO        6             I
+     C                   EVAL      %SUBST(SV(I):SVX:12) = %SUBST(ART:I*12-11:12)
+     C                   ENDDO
+     C                   ENDIF
+     C                   EXSR      CLOCK
+     C                   EVAL      SVCLK = PTIM
+      * always today, whichever day the calendar was showing
+     C     TODD          SUBDUR    BASEDT        NDAYS:*D
+     C                   EVAL      WKD = %REM(%REM(NDAYS:7) + 7:7)
+     C                   MOVE      TODN          W8
+     C                   EVAL      SVDAT = %TRIMR(%SUBST(DNAMES:WKD*9+1:9)) +
+     C                             ', '
+     C                   +         %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2) + '/' +
+     C                             %SUBST(W8:1:4)
+     C                   EVAL      *IN45 = *ON
+     C                   IF        FULLS = '1'
+     C                   EVAL      *IN46 = *OFF
+     C                   WRITE     BLANK
+     C                   ELSE
+     C                   EVAL      *IN46 = *ON
+     C                   ENDIF
+     C                   WRITE     SAVR
+     C                   EVAL      FULLS = '0'
+     C                   READ      OVCAL                                5152
+     C                   IF        *IN51 = *ON
+     C                   EVAL      *IN51 = *OFF
+     C                   IF        DSPSTS <> 1331
+     C                   LEAVE
+     C                   ENDIF
+     C                   EVAL      SVX = SVX + SVD
+     C                   IF        SVX >= 66
+     C                   EVAL      SVD = -2
+     C                   ENDIF
+     C                   IF        SVX <= 2
+     C                   EVAL      SVD = 2
+     C                   ENDIF
+     C                   ITER
+     C                   ENDIF
+     C                   LEAVE
+     C                   ENDDO
+     C                   EVAL      FRAME = 0
+     C                   EVAL      *IN45 = *OFF
+     C                   EVAL      *IN46 = *OFF
+     C                   EVAL      *IN03 = *OFF
+     C                   EVAL      *IN12 = *OFF
+     C                   ENDSR
      C     NEXTCH        BEGSR
      C                   EVAL      MIDX = MIDX + 1
      C                   IF        MIDX > 6
      C                   EVAL      MIDX = 1
-     C                   ENDIF
-     C                   EVAL      ANIM = '1'
-     C                   IF        MIDX = 6
-     C                   EVAL      ANIM = '0'
      C                   ENDIF
      C     PGMUSR        CHAIN     PREFREC
      C                   EVAL      PRUSER = PGMUSR
@@ -775,11 +942,16 @@
      C                   MOVE      CURN          W8
      C                   EVAL      DTXT = %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2)
      C                             + '/' + %SUBST(W8:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      DTXT = %SUBST(W8:7:2) + '.' + %SUBST(W8:5:2)
+     C                             + '.' + %SUBST(W8:1:4)
+     C                   ENDIF
      C                   EXSR      GETWKD
      C                   EXSR      GETDOY
      C                   EVAL      DDTE = %TRIMR(%SUBST(DNAMES:WKD*9+1:9)) +
      C                             ', ' + DTXT + '   day ' + %CHAR(DOYN)
      C                   EVAL      DHOL = *BLANKS
+     C                   EXSR      NOWLN
      C     CURN          CHAIN(N)  HOLREC
      C                   IF        %FOUND(OVHOLP)
      C                   EVAL      DHOL = 'Holiday: ' + HLNAME
@@ -1008,12 +1180,15 @@
      C                   IF        %SUBST(DOTS(DY):1:1) = ' '
      C                   EVAL      %SUBST(DOTS(DY):1:1) = '*'
      C                   ENDIF
-     C                   WHEN      CLTIME < 800
+     C                   WHEN      CLTIME < UDBEG
      C                   EVAL      %SUBST(DOTS(DY):1:1) = '<'
-     C                   WHEN      CLTIME >= 1600
+     C                   WHEN      CLTIME >= UDEND
      C                   EVAL      %SUBST(DOTS(DY):10:1) = '>'
      C                   OTHER
-     C                   EVAL      SLOT = %DIV(CLTIME:100) - 6
+     C                   EVAL      SLOT = %DIV(CLTIME:100) - %DIV(UDBEG:100) + 2
+     C                   IF        SLOT > 9
+     C                   EVAL      SLOT = 9
+     C                   ENDIF
      C                   EVAL      %SUBST(DOTS(DY):SLOT:1) = %SUBST(CLTEXT:1:1)
      C                   ENDSL
      C     KUSER         READE(N)  CALREC
@@ -1093,7 +1268,7 @@
      C                   WHEN      WROW = 13
      C                   EVAL      WL(WROW) = 'Later'
      C                   OTHER
-     C                   EVAL      HOUR = WROW + 5
+     C                   EVAL      HOUR = WROW - 3 + %DIV(UDBEG:100)
      C                   EVAL      DAY2 = HOUR
      C                   EVAL      WL(WROW) = %EDITC(DAY2:'Z') + ':00'
      C                   ENDSL
@@ -1122,12 +1297,12 @@
      C                   SELECT
      C                   WHEN      CLTIME < 0
      C                   EVAL      WROW = 1
-     C                   WHEN      CLTIME < 800
+     C                   WHEN      CLTIME < %DIV(UDBEG:100) * 100
      C                   EVAL      WROW = 2
-     C                   WHEN      CLTIME >= 1800
+     C                   WHEN      CLTIME >= (%DIV(UDBEG:100) + 10) * 100
      C                   EVAL      WROW = 13
      C                   OTHER
-     C                   EVAL      WROW = %DIV(CLTIME:100) - 5
+     C                   EVAL      WROW = %DIV(CLTIME:100) - %DIV(UDBEG:100) + 3
      C                   ENDSL
      C                   EVAL      WPOS = (WDAY-1)*14+9
      C                   IF        %SUBST(WL(WROW):WPOS:13) = *BLANKS
@@ -1191,6 +1366,10 @@
      C                             %SUBST(MTT:5:18)
      C                   EVAL      %SUBST(SX(BAND*8+2):MCOL:21) =
      C                             ' Su Mo Tu We Th Fr Sa'
+     C                   IF        UWEEK = 'M'
+     C                   EVAL      %SUBST(SX(BAND*8+2):MCOL:21) =
+     C                             ' Mo Tu We Th Fr Sa Su'
+     C                   ENDIF
      C     1             DO        6             I
      C                   EVAL      %SUBST(SX(BAND*8+2+I):MCOL:21) = ML(I)
      C                   ENDDO
@@ -1227,9 +1406,22 @@
      C                   MOVE      CURN          W8
      C                   EVAL      DTXT = %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2)
      C                             + '/' + %SUBST(W8:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      DTXT = %SUBST(W8:7:2) + '.' + %SUBST(W8:5:2)
+     C                             + '.' + %SUBST(W8:1:4)
+     C                   ENDIF
      C                   EVAL      ADATE = DTXT
      C                   EVAL      AEND = *BLANKS
-     C                   EVAL      ATIME = *BLANKS
+     C                   EVAL      ATIME = %SUBST(%EDITC(UDBEG:'X'):1:2) + ':' +
+     C                             %SUBST(%EDITC(UDBEG:'X'):3:2)
+     C                   EVAL      ZTX = UOFFZ
+     C                   EXSR      PARSZN
+     C                   EVAL      OFFMIN = ZMIN
+     C                   EVAL      AZONE = UZONE
+     C                   IF        AZONE = *BLANKS
+     C                   EVAL      AZONE = UOFFZ
+     C                   ENDIF
+     C                   EVAL      AZH = 'Office time is UTC' + UOFFZ
      C                   EVAL      ATEXT = *BLANKS
      C                   EVAL      AMSG = *BLANKS
      C                   EVAL      *IN42 = *OFF
@@ -1240,9 +1432,11 @@
      C                   EVAL      *IN42 = *ON
      C                   EVAL      HDRID = 'CALCHANGE'
      C                   EXSR      FMTTM
+     C                   EVAL      ATIME = *BLANKS
      C                   IF        CLTIME >= 0
      C                   EVAL      ATIME = TTXT
      C                   ENDIF
+     C                   EVAL      AZONE = UOFFZ
      C                   EVAL      ATEXT = CLTEXT
      C                   ELSE
      C                   EVAL      EDMODE = 'A'
@@ -1302,6 +1496,40 @@
      C                             'H:MM, such as 14:30.'
      C                   ITER
      C                   ENDIF
+      * a time typed in another zone is kept in office time
+     C                   EVAL      ZNOTE = *BLANKS
+     C                   IF        CLT >= 0 AND AZONE <> *BLANKS
+     C                   EVAL      ZTX = AZONE
+     C                   EXSR      PARSZN
+     C                   IF        NERR = '1'
+     C                   EVAL      AMSG = 'Time zone is hours from UTC, s' +
+     C                             'uch as -05:00 or +01:00.'
+     C                   ITER
+     C                   ENDIF
+     C                   IF        ZMIN <> OFFMIN
+     C                   EVAL      TOT = %DIV(CLT:100) * 60 + %REM(CLT:100) +
+     C                             OFFMIN - ZMIN
+     C                   EVAL      DSH = 0
+     C                   DOW       TOT < 0
+     C                   EVAL      TOT = TOT + 1440
+     C                   EVAL      DSH = DSH - 1
+     C                   ENDDO
+     C                   DOW       TOT >= 1440
+     C                   EVAL      TOT = TOT - 1440
+     C                   EVAL      DSH = DSH + 1
+     C                   ENDDO
+     C                   EVAL      CLT = %DIV(TOT:60) * 100 + %REM(TOT:60)
+     C                   IF        DSH <> 0
+     C     *ISO          MOVE      STARTV        D1
+     C                   ADDDUR    DSH:*D        D1
+     C     *ISO          MOVE      D1            STARTV
+     C                   ENDIF
+     C                   EVAL      ZH = %DIV(TOT:60)
+     C                   EVAL      ZM = %REM(TOT:60)
+     C                   EVAL      ZNOTE = '  Office time ' + %EDITC(ZH:'X') +
+     C                             ':' + %EDITC(ZM:'X') + '.'
+     C                   ENDIF
+     C                   ENDIF
      C                   IF        EDMODE = 'C'
      C     KEYF          CHAIN     CALREC
      C                   IF        %FOUND(OVCALP)
@@ -1336,6 +1564,7 @@
      C                             ' days.'
      C                   ENDIF
      C                   ENDIF
+     C                   EVAL      MSG = %TRIMR(MSG) + ZNOTE
      C                   EVAL      CURN = STARTV
      C     *ISO          MOVE      CURN          CURD
      C                   EVAL      PGNO = 0
@@ -1384,6 +1613,66 @@
      C                   ENDIF
      C                   ENDIF
      C                   ENDSR
+      * ---- ZTX such as -05:00 into ZMIN minutes from UTC and ZOUT, or NERR
+     C     PARSZN        BEGSR
+     C                   EVAL      NERR = '0'
+     C                   EVAL      ZMIN = 0
+     C                   EVAL      ZH = 0
+     C                   EVAL      ZM = 0
+     C                   EVAL      ZSG = 1
+     C                   EVAL      ZT = %TRIM(ZTX)
+     C                   EVAL      CH = %SUBST(ZT:1:1)
+     C                   IF        CH = '+' OR CH = '-'
+     C                   IF        CH = '-'
+     C                   EVAL      ZSG = -1
+     C                   ENDIF
+     C                   EVAL      ZT = %TRIM(%SUBST(ZT:2))
+     C                   ENDIF
+     C                   EVAL      ZL = %LEN(%TRIMR(ZT))
+     C                   EVAL      P1 = %SCAN(':':ZT)
+     C                   SELECT
+     C                   WHEN      ZL = 0 OR P1 = 1
+     C                   EVAL      NERR = '1'
+     C                   WHEN      P1 > 1
+     C                   EVAL      NSTR = %SUBST(ZT:1:P1-1)
+     C                   EXSR      TONUM
+     C                   EVAL      ZHV = NVAL
+     C                   EVAL      ZMV = 0
+     C                   IF        P1 < ZL
+     C                   EVAL      NSTR = %SUBST(ZT:P1+1:ZL-P1)
+     C                   EXSR      TONUM
+     C                   EVAL      ZMV = NVAL
+     C                   ENDIF
+     C                   WHEN      ZL <= 2
+     C                   EVAL      NSTR = %SUBST(ZT:1:ZL)
+     C                   EXSR      TONUM
+     C                   EVAL      ZHV = NVAL
+     C                   EVAL      ZMV = 0
+     C                   WHEN      ZL = 4
+     C                   EVAL      NSTR = %SUBST(ZT:1:2)
+     C                   EXSR      TONUM
+     C                   EVAL      ZHV = NVAL
+     C                   EVAL      NSTR = %SUBST(ZT:3:2)
+     C                   EXSR      TONUM
+     C                   EVAL      ZMV = NVAL
+     C                   OTHER
+     C                   EVAL      NERR = '1'
+     C                   ENDSL
+     C                   IF        NERR = '0' AND (ZHV > 14 OR ZMV > 59)
+     C                   EVAL      NERR = '1'
+     C                   ENDIF
+     C                   IF        NERR = '0'
+     C                   EVAL      ZH = ZHV
+     C                   EVAL      ZM = ZMV
+     C                   EVAL      ZMIN = ZSG * (ZHV * 60 + ZMV)
+     C                   EVAL      ZOUT = '+' + %EDITC(ZH:'X') + ':' +
+     C                             %EDITC(ZM:'X')
+     C                   IF        ZMIN < 0
+     C                   EVAL      ZOUT = '-' + %EDITC(ZH:'X') + ':' +
+     C                             %EDITC(ZM:'X')
+     C                   ENDIF
+     C                   ENDIF
+     C                   ENDSR
       * ---- shared routines ----
      C     *INZSR        BEGSR
      C                   CALL      'OVSYSN'                             50
@@ -1393,6 +1682,38 @@
      C                   ENDIF
      C                   EVAL      *IN50 = *OFF
      C                   EVAL      KUSER = PGMUSR
+     C                   EXSR      LOADSET
+     C                   ENDSR
+      * ---- this person's settings: units, week start, working day, time zone
+     C     LOADSET       BEGSR
+     C                   EVAL      USET = 'IS08001700      +0000'
+     C                   CALL      'OVGSET'                             50
+     C                   PARM                    USET
+     C                   EVAL      *IN50 = *OFF
+     C                   EVAL      UNITS = %SUBST(USET:1:1)
+     C                   EVAL      UWEEK = %SUBST(USET:2:1)
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:3:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDBEG = 800
+     C                   IF        NERR = '0' AND NVAL <= 2359
+     C                   EVAL      UDBEG = NVAL
+     C                   ENDIF
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:7:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDEND = 1700
+     C                   IF        NERR = '0' AND NVAL <= 2359 AND NVAL > UDBEG
+     C                   EVAL      UDEND = NVAL
+     C                   ENDIF
+     C                   EVAL      UZONE = %SUBST(USET:11:6)
+     C                   EVAL      UOFFS = %SUBST(USET:17:5)
+     C                   IF        %SUBST(UOFFS:1:1) <> '+' AND
+     C                             %SUBST(UOFFS:1:1) <> '-'
+     C                   EVAL      UOFFS = '+0000'
+     C                   ENDIF
+     C                   EVAL      UOFFZ = %SUBST(UOFFS:1:3) + ':' +
+     C                             %SUBST(UOFFS:4:2)
      C                   ENDSR
      C     HDR           BEGSR
      C                   TIME                    HTS
@@ -1403,6 +1724,10 @@
      C                   EVAL      HDT = %CHAR(%DIV(%REM(HN8:10000):100)) + '/'
      C                             + %CHAR(%REM(HN8:100)) + '/' +
      C                             %SUBST(HSTMP:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      HDT = %SUBST(HSTMP:9:2) + '.' +
+     C                             %SUBST(HSTMP:6:2) + '.' + %SUBST(HSTMP:1:4)
+     C                   ENDIF
      C                   EVAL      HDRLN = *BLANKS
      C                   EVAL      %SUBST(HDRLN:2:10) = HDRID
      C                   EVAL      %SUBST(HDRLN:33:15) = 'OfficeVibes/400'
@@ -1414,6 +1739,12 @@
      C                             %SUBST(WSTMP:9:2) + '/' + %SUBST(WSTMP:1:4) +
      C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
      C                             %SUBST(WSTMP:15:2)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      WDT = %SUBST(WSTMP:9:2) + '.' +
+     C                             %SUBST(WSTMP:6:2) + '.' + %SUBST(WSTMP:1:4) +
+     C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
+     C                             %SUBST(WSTMP:15:2)
+     C                   ENDIF
      C                   ENDSR
      C     CSR           BEGSR
      C                   EVAL      CSRROW = %DIV(CSRLOC:256)
@@ -1484,6 +1815,12 @@
      C                   EVAL      NERR = '0'
      C                   EVAL      DUEVAL = 0
      C                   EVAL      DUE = %TRIML(DUE)
+      * day.month.year with dots is read the European way round
+     C                   EVAL      DOTF = '0'
+     C                   IF        %SCAN('.':DUE) > 0
+     C                   EVAL      DOTF = '1'
+     C     '.':'/'       XLATE     DUE           DUE
+     C                   ENDIF
      C                   EVAL      DLEN = %LEN(%TRIMR(DUE))
      C                   IF        DLEN > 0
      C                   EVAL      P1 = %SCAN('/':DUE)
@@ -1519,6 +1856,11 @@
      C                   EXSR      TONUM
      C                   EVAL      YY = NVAL
      C                   ENDIF
+     C                   ENDIF
+     C                   IF        NERR = '0' AND DOTF = '1'
+     C                   EVAL      P1 = MM
+     C                   EVAL      MM = DD
+     C                   EVAL      DD = P1
      C                   ENDIF
      C                   IF        NERR = '0'
      C                   IF        YY < 100

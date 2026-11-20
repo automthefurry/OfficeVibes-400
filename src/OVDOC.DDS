@@ -16,73 +16,57 @@
      A          H                           HLPARA(*RCD)
      A                                      HLPRCD(HDLIST)
      A            DHDR          78A  O  1  2DSPATR(HI)
-     A                                  2 32'D O C U M E N T S'
-     A                                      DSPATR(HI)
      A            DTTL          50A  O  3  3DSPATR(HI)
-     A            DCOL          74A  O  4  3COLOR(BLU)
+     A            DCOL          77A  O  5  2COLOR(BLU)
      A            DOP01          2A  I  6  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC01          3A  O  6  6COLOR(YLW)
-     A            DLN01         30A  O  6 10DSPATR(HI)
-     A            DLB01         30A  O  7 10
-     A            DLC01         30A  O  8 10COLOR(BLU)
-     A            DOP02          2A  I  6 42CHECK(LC)
+     A            DLN01         72A  O  6  7COLOR(GRN)
+     A            DOP02          2A  I  7  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC02          3A  O  6 45COLOR(YLW)
-     A            DLN02         30A  O  6 49DSPATR(HI)
-     A            DLB02         30A  O  7 49
-     A            DLC02         30A  O  8 49COLOR(BLU)
-     A            DOP03          2A  I  9  3CHECK(LC)
+     A            DLN02         72A  O  7  7COLOR(TRQ)
+     A            DOP03          2A  I  8  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC03          3A  O  9  6COLOR(YLW)
-     A            DLN03         30A  O  9 10DSPATR(HI)
-     A            DLB03         30A  O 10 10
-     A            DLC03         30A  O 11 10COLOR(BLU)
-     A            DOP04          2A  I  9 42CHECK(LC)
+     A            DLN03         72A  O  8  7COLOR(GRN)
+     A            DOP04          2A  I  9  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC04          3A  O  9 45COLOR(YLW)
-     A            DLN04         30A  O  9 49DSPATR(HI)
-     A            DLB04         30A  O 10 49
-     A            DLC04         30A  O 11 49COLOR(BLU)
-     A            DOP05          2A  I 12  3CHECK(LC)
+     A            DLN04         72A  O  9  7COLOR(TRQ)
+     A            DOP05          2A  I 10  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC05          3A  O 12  6COLOR(YLW)
-     A            DLN05         30A  O 12 10DSPATR(HI)
-     A            DLB05         30A  O 13 10
-     A            DLC05         30A  O 14 10COLOR(BLU)
-     A            DOP06          2A  I 12 42CHECK(LC)
+     A            DLN05         72A  O 10  7COLOR(GRN)
+     A            DOP06          2A  I 11  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC06          3A  O 12 45COLOR(YLW)
-     A            DLN06         30A  O 12 49DSPATR(HI)
-     A            DLB06         30A  O 13 49
-     A            DLC06         30A  O 14 49COLOR(BLU)
-     A            DOP07          2A  I 15  3CHECK(LC)
+     A            DLN06         72A  O 11  7COLOR(TRQ)
+     A            DOP07          2A  I 12  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC07          3A  O 15  6COLOR(YLW)
-     A            DLN07         30A  O 15 10DSPATR(HI)
-     A            DLB07         30A  O 16 10
-     A            DLC07         30A  O 17 10COLOR(BLU)
-     A            DOP08          2A  I 15 42CHECK(LC)
+     A            DLN07         72A  O 12  7COLOR(GRN)
+     A            DOP08          2A  I 13  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC08          3A  O 15 45COLOR(YLW)
-     A            DLN08         30A  O 15 49DSPATR(HI)
-     A            DLB08         30A  O 16 49
-     A            DLC08         30A  O 17 49COLOR(BLU)
-     A            DOP09          2A  I 18  3CHECK(LC)
+     A            DLN08         72A  O 13  7COLOR(TRQ)
+     A            DOP09          2A  I 14  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC09          3A  O 18  6COLOR(YLW)
-     A            DLN09         30A  O 18 10DSPATR(HI)
-     A            DLB09         30A  O 19 10
-     A            DLC09         30A  O 20 10COLOR(BLU)
-     A            DOP10          2A  I 18 42CHECK(LC)
+     A            DLN09         72A  O 14  7COLOR(GRN)
+     A            DOP10          2A  I 15  3CHECK(LC)
      A                                      DSPATR(UL)
-     A            DIC10          3A  O 18 45COLOR(YLW)
-     A            DLN10         30A  O 18 49DSPATR(HI)
-     A            DLB10         30A  O 19 49
-     A            DLC10         30A  O 20 49COLOR(BLU)
+     A            DLN10         72A  O 15  7COLOR(TRQ)
+     A            DOP11          2A  I 16  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            DLN11         72A  O 16  7COLOR(GRN)
+     A            DOP12          2A  I 17  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            DLN12         72A  O 17  7COLOR(TRQ)
+     A            DOP13          2A  I 18  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            DLN13         72A  O 18  7COLOR(GRN)
+     A            DOP14          2A  I 19  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            DLN14         72A  O 19  7COLOR(TRQ)
      A            DMSG          74A  O 21  3DSPATR(HI)
      A            DFK1          78A  O 22  2COLOR(BLU)
      A            DFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 32'D O C U M E N T S'
+     A                                      DSPATR(HI)
+     A                                  3 55'[=] = one document'
+     A                                      COLOR(YLW)
      A          R DNEW
      A          H                           HLPARA(*RCD)
      A                                      HLPRCD(HDNEW)
@@ -126,15 +110,14 @@
      A          R HDLIST
      A                                  1  2'Help - Documents'
      A                                      DSPATR(HI)
-     A                                  3  3'Each card is one of your documents-
-     A                                      , ten to a page.  A document holds'
-     A                                  4  3'up to 500 lines of text.'
-     A                                  6  3'Type an option in the small field -
-     A                                      at the top left of a card:'
+     A                                  3  3'Each line is one of your documents-
+     A                                      , fourteen to a page.  A document'
+     A                                  4  3'holds up to 500 lines of text.'
+     A                                  6  3'Type an option beside a document:'
      A                                  7  3'2 opens the editor, 6 prints the d-
      A                                      ocument, 4 deletes it.'
-     A                                  8  3'Or put the cursor anywhere on a ca-
-     A                                      rd and press Enter to open it.'
+     A                                  8  3'Or put the cursor on its line and -
+     A                                      press Enter to open it.'
      A                                 10  3'F6 creates a new document.'
      A                                 11  3'F7 and F8 page backward and forwar-
      A                                      d through a long list.'

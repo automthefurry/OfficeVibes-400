@@ -55,8 +55,7 @@
      A            PNDP           2A  B 14 17DSPATR(UL)
      A                                 14 20'days of the calendar'
      A            PMCT          22A  O  6 55COLOR(TRQ)
-     A                                  7 55' Su Mo Tu We Th Fr Sa'
-     A                                      COLOR(TRQ)
+     A            PWK           21A  O  7 55COLOR(TRQ)
      A            PMC1          21A  O  8 55COLOR(TRQ)
      A            PMC2          21A  O  9 55COLOR(TRQ)
      A            PMC3          21A  O 10 55COLOR(TRQ)
@@ -79,6 +78,30 @@
      A            PMSG          74A  O 21  3DSPATR(HI)
      A            PFK1          78A  O 22  2COLOR(BLU)
      A            PFK2          78A  O 23  2COLOR(BLU)
+     A          R SAVR                      OVERLAY
+     A  45                                  INVITE
+     A  46                                  PUTOVR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSAVR)
+     A            SV1           78A  O  8  2OVRDTA
+     A                                      COLOR(YLW)
+     A            SV2           78A  O  9  2OVRDTA
+     A                                      COLOR(YLW)
+     A            SV3           78A  O 10  2OVRDTA
+     A                                      COLOR(YLW)
+     A            SV4           78A  O 11  2OVRDTA
+     A                                      COLOR(YLW)
+     A            SV5           78A  O 12  2OVRDTA
+     A                                      COLOR(YLW)
+     A            SV6           78A  O 13  2OVRDTA
+     A                                      COLOR(YLW)
+     A            SVCLK         24A  O 16 29OVRDTA
+     A                                      DSPATR(HI)
+     A            SVDAT         30A  O 17 26OVRDTA
+     A                                      COLOR(TRQ)
+     A                                 21 22'Press Enter to go back to the cale-
+     A                                      ndar.'
+     A                                      COLOR(BLU)
      A          R DAYV
      A          H                           HLPARA(*RCD)
      A                                      HLPRCD(HDAYV)
@@ -88,6 +111,7 @@
      A            DTTL          60A  O  3  3COLOR(PNK)
      A            DDTE          40A  O  4  3COLOR(WHT)
      A            DHOL          32A  O  4 46COLOR(RED)
+     A            DNOW          76A  O  5  3COLOR(YLW)
      A                                  6  3'Opt  Time     What'
      A                                      COLOR(BLU)
      A            DOP01          2A  I  7  3DSPATR(UL)
@@ -125,7 +149,7 @@
      A            AFK           78A  O 23  2COLOR(BLU)
      A                                  4  3'Date'
      A            ADATE         10A  B  4 24DSPATR(UL)
-     A                                  4 37'M/D or M/D/YYYY'
+     A                                  4 37'M/D/YYYY, or D.M.YYYY with dots'
      A                                      COLOR(BLU)
      A            ALB1          19A  O  5  3
      A            AEND          10A  B  5 24DSPATR(UL)
@@ -134,10 +158,11 @@
      A            ALB2          36A  O  5 37COLOR(BLU)
      A                                  6  3'Time'
      A            ATIME          5A  B  6 24DSPATR(UL)
-     A                                  6 37'HH:MM, 24-hour.  Blank = all day'
+     A                                  6 37'HH:MM 24-hour.  Blank = all day'
      A                                      COLOR(BLU)
-     A                                  7 37'00:00 is midnight'
-     A                                      COLOR(BLU)
+     A                                  7  3'Time zone'
+     A            AZONE          6A  B  7 24DSPATR(UL)
+     A            AZH           42A  O  7 37COLOR(BLU)
      A                                  8  3'What'
      A            ATEXT         60A  B  9  3CHECK(LC)
      A                                      DSPATR(UL)
@@ -201,10 +226,7 @@
      A                                      HLPRCD(HMONV)
      A            MHDR          78A  O  1  2DSPATR(HI)
      A            MTTL          76A  O  2  3COLOR(PNK)
-     A                                  3  2'   Sunday     Monday    Tuesday   -
-     A                                      Wednesday   Thursday    Friday    S-
-     A                                      aturday'
-     A                                      COLOR(WHT)
+     A            MWKH          77A  O  3  2COLOR(WHT)
      A                                  4  2'+----------+----------+----------+-
      A                                      ----------+----------+----------+---
      A                                      --------+'
@@ -335,44 +357,65 @@
      A                                      .'
      A                                 23  2'Press Enter to return.'
      A                                      COLOR(BLU)
+     A          R HSAVR
+     A                                  1  2'Help - Screen saver'
+     A                                      DSPATR(HI)
+     A                                  3  3'The calendar shows this after it h-
+     A                                      as been left alone for a while.'
+     A                                  4  3'Press Enter, or any function key, -
+     A                                      to go back.'
+     A                                  6  3'Settings, on the main menu, change-
+     A                                      s how long it waits, or turns it of-
+     A                                      f.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
      A          R HDAYV
      A                                  1  2'Help - Schedule for the day'
      A                                      DSPATR(HI)
      A                                  3  3'Every appointment on the chosen da-
-     A                                      y, earliest first.'
-     A                                  5  3'Type 2 beside an appointment to ch-
+     A                                      y, earliest first, in office time.'
+     A                                  4  3'The yellow line shows the time now-
+     A                                       in the office, and in your own tim-
+     A                                      e zone'
+     A                                  5  3'if Settings gives a different one.'
+     A                                  7  3'Type 2 beside an appointment to ch-
      A                                      ange it, or 4 to delete it.'
-     A                                  6  3'F6 adds an appointment.  F7 and F8-
+     A                                  8  3'F6 adds an appointment.  F7 and F8-
      A                                       go to the day before and the day a-
      A                                      fter.'
-     A                                  7  3'F9 prints the day.  F11 shows more-
+     A                                  9  3'F9 prints the day.  F11 shows more-
      A                                       when there are over twelve.'
-     A                                  9  3'You can only look at another calen-
+     A                                 11  3'You can only look at another calen-
      A                                      dar, unless its owner has allowed'
-     A                                 10  3'you to change it.'
+     A                                 12  3'you to change it.'
      A                                 23  2'Press Enter to return.'
      A                                      COLOR(BLU)
      A          R HCADD
      A                                  1  2'Help - Add or change an appointmen-
      A                                      t'
      A                                      DSPATR(HI)
-     A                                  3  3'Date: month/day, such as 3/15, or -
-     A                                      month/day/year.'
-     A                                  5  3'Last day: for something that lasts-
+     A                                  3  3'Date: 3/15 or 3/15/2027, or with d-
+     A                                      ots day first: 15.3.2027.'
+     A                                  4  3'Last day: for something that lasts-
      A                                       several days, such as a trip, type-
      A                                       the'
-     A                                  6  3'last day too.  The appointment is -
+     A                                  5  3'last day too.  The appointment is -
      A                                      added to every day in between, each'
-     A                                  7  3'marked with its day number, such a-
+     A                                  6  3'marked with its day number, such a-
      A                                      s (2/5).  Up to 31 days.  Each day -
      A                                      can'
-     A                                  8  3'then be changed or deleted on its -
+     A                                  7  3'then be changed or deleted on its -
      A                                      own.'
-     A                                 10  3'Time: hours and minutes on the 24--
+     A                                  9  3'Time: hours and minutes on the 24--
      A                                      hour clock, such as 9:00 or 14:30.'
-     A                                 11  3'Leave the time blank for something-
+     A                                 10  3'Leave the time blank for something-
      A                                       that lasts all day.  00:00 means'
-     A                                 12  3'midnight, not all day.'
+     A                                 11  3'midnight, not all day.'
+     A                                 12  3'Time zone: the zone the time is in-
+     A                                      .  It is changed to office time, wh-
+     A                                      ich'
+     A                                 13  3'is what everyone sees, and the mes-
+     A                                      sage says the office time.'
      A                                 14  3'Type what it is and press Enter to-
      A                                       save.  F12 leaves without saving.'
      A                                 23  2'Press Enter to return.'

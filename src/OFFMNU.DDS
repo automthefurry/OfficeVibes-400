@@ -28,14 +28,14 @@
      A                                 11  8' 6. Office directory'
      A                                 12  8' 7. Games and the office cat'
      A                                 13  8' 8. Printed output'
-     A                                 14  8' 9. My profile'
+     A                                 14  8' 9. Settings'
      A                                 15  8'10. Administration'
      A            MI01          12A  O  6 41DSPATR(HI)
      A            MI02          12A  O  7 41DSPATR(HI)
      A            MI03          12A  O  8 41DSPATR(HI)
      A                                 17  8'90. Sign off'
      A            MCT           20A  O  5 56DSPATR(HI)
-     A                                  6 56'Su Mo Tu We Th Fr Sa'
+     A            MWK           20A  O  6 56
      A            MC1           21A  O  7 55
      A            MC2           21A  O  8 55
      A            MC3           21A  O  9 55
@@ -59,21 +59,64 @@
      A            PHDR          78A  O  1  2DSPATR(HI)
      A            PMSG          74A  O 21  3DSPATR(HI)
      A            PFK           78A  O 23  2COLOR(BLU)
-     A                                  3  3'This is how other people see you i-
-     A                                      n the office directory.'
+     A                                  2 33'S E T T I N G S'
+     A                                      DSPATR(HI)
+     A                                  3  3'About you'
+     A                                      COLOR(WHT)
+     A                                  4  3'Your name'
+     A            PNAME         30A  B  4 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  5  3'Department'
+     A            PDEPT         20A  B  5 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  6  3'Phone'
+     A            PPHON         20A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  7  3'Pop-up messages'
+     A            PPOP           1A  B  7 24DSPATR(UL)
+     A                                  7 37'Y = show at once, N = wait quietly'
      A                                      COLOR(BLU)
-     A                                  5  3'Your name'
-     A            PNAME         30A  B  5 24CHECK(LC)
-     A                                      DSPATR(UL)
-     A                                  7  3'Department'
-     A            PDEPT         20A  B  7 24CHECK(LC)
-     A                                      DSPATR(UL)
-     A                                  9  3'Phone'
-     A            PPHON         20A  B  9 24CHECK(LC)
-     A                                      DSPATR(UL)
-     A                                 11  3'Pop-up messages'
-     A            PPOP           1A  B 11 24DSPATR(UL)
-     A                                 11 37'Y = show at once, N = wait quietly'
+     A                                  9  3'Calendar and clock'
+     A                                      COLOR(WHT)
+     A                                 10  3'Time zone'
+     A            PZONE          6A  B 10 24DSPATR(UL)
+     A            PZH           42A  O 10 37COLOR(BLU)
+     A                                 11  3'Week starts on'
+     A            PWEEK          1A  B 11 24DSPATR(UL)
+     A                                 11 37'S = Sunday, M = Monday'
+     A                                      COLOR(BLU)
+     A                                 12  3'Working day'
+     A            PDBEG          5A  B 12 24DSPATR(UL)
+     A                                 12 30'to'
+     A            PDEND          5A  B 12 33DSPATR(UL)
+     A                                 12 40'HH:MM, such as 08:00 to 17:00'
+     A                                      COLOR(BLU)
+     A                                 13  3'Units'
+     A            PUNIT          1A  B 13 24DSPATR(UL)
+     A                                 13 37'I = 12-hour clock, M/D/YYYY'
+     A                                      COLOR(BLU)
+     A                                 14 37'M = metric: 24-hour clock, D.M.YYY-
+     A                                      Y'
+     A                                      COLOR(BLU)
+     A                                 15  3'Animations'
+     A                                      COLOR(WHT)
+     A                                 16  3'Animations'
+     A            PANIM          1A  B 16 24DSPATR(UL)
+     A                                 16 37'Y or N.  N stops everything that m-
+     A                                      oves'
+     A                                      COLOR(BLU)
+     A                                 17  3'Character'
+     A            PCHAR          7A  B 17 24DSPATR(UL)
+     A                                 17 37'COFFEE CAT DOG ROBOT FISH NONE'
+     A                                      COLOR(BLU)
+     A                                 18  3'Screen saver after'
+     A            PSAVE          3A  B 18 24DSPATR(UL)
+     A                                 18 37'Minutes on the calendar.  0 = neve-
+     A                                      r'
+     A                                      COLOR(BLU)
+     A                                 19  3'Chat refresh'
+     A            PCHAT          1A  B 19 24DSPATR(UL)
+     A                                 19 37'A = new lines appear, M = press F5'
      A                                      COLOR(BLU)
      A          R SUBM
      A          H                           HLPARA(*RCD)
@@ -121,8 +164,8 @@
      A                                 12  3' 7  Games and the office cat.'
      A                                 13  3' 8  Printed output: everything you-
      A                                       printed with a Print key.'
-     A                                 14  3' 9  My profile: your name, phone a-
-     A                                      nd pop-up messages.'
+     A                                 14  3' 9  Settings: your name and phone,-
+     A                                       pop-ups, animations and more.'
      A                                 15  3'10  Administration: for office adm-
      A                                      inistrators only.'
      A                                 17  3'The counts beside the options show-
@@ -132,23 +175,35 @@
      A                                 23  2'Press Enter to return.'
      A                                      COLOR(BLU)
      A          R HPROF
-     A                                  1  2'Help - My profile'
+     A                                  1  2'Help - Settings'
      A                                      DSPATR(HI)
-     A                                  3  3'Your name, department and phone ar-
-     A                                      e shown to other users in the offic-
-     A                                      e'
-     A                                  4  3'directory and in the list that F4 -
-     A                                      opens when they address a message.'
-     A                                  6  3'Pop-up messages: Y makes reminders-
-     A                                      , new mail and chat requests appear-
-     A                                       on'
-     A                                  7  3'your screen as soon as they arrive-
-     A                                      .  N lets them wait quietly in your'
-     A                                  8  3'message queue, with the message li-
-     A                                      ght on.  Leave it blank to keep the'
-     A                                  9  3'present setting.'
-     A                                 11  3'Change any field and press Enter t-
-     A                                      o save.  F12 leaves without saving.'
+     A                                  3  3'Name, department and phone: how ot-
+     A                                      hers see you in the office director-
+     A                                      y.'
+     A                                  4  3'Pop-up messages: Y shows reminders-
+     A                                      , mail and chat requests at once.'
+     A                                  5  3'Time zone: your offset from UTC, s-
+     A                                      uch as -05:00.  New appointments us-
+     A                                      e it'
+     A                                  6  3'and are stored in office time.  Bl-
+     A                                      ank means you are in office time.'
+     A                                  7  3'Week starts on: S or M, for every -
+     A                                      month on the screen.'
+     A                                  8  3'Working day: new appointments star-
+     A                                      t at the start, and the week and mo-
+     A                                      nth'
+     A                                  9  3'views are drawn around these hours-
+     A                                      .'
+     A                                 10  3'Units: I for 12-hour clock and M/D-
+     A                                      /YYYY, M for 24-hour and D.M.YYYY.'
+     A                                 11  3'Animations: N stops everything tha-
+     A                                      t moves by itself.  Character is sh-
+     A                                      own'
+     A                                 12  3'on the calendar.  Screen saver: id-
+     A                                      le minutes, 0 never.  Chat refresh:-
+     A                                       A'
+     A                                 13  3'shows new lines as they arrive, M -
+     A                                      only when you press F5.'
      A                                 23  2'Press Enter to return.'
      A                                      COLOR(BLU)
      A          R HSUBM

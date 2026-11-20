@@ -20,10 +20,10 @@ Start OfficeVibes/400 with `GO OFFICE/OFFICE`, or sign on if it has been made yo
 | 3 | Notes, tasks and phone book (a menu) |
 | 4 | Documents, spreadsheets and printed output (a menu) |
 | 5 | Search everything |
-| 6 | Office directory |
+| 6 | Office directory: everyone, with department and phone |
 | 7 | Games and the office cat (a menu) |
 | 8 | Printed output |
-| 9 | My profile |
+| 9 | Settings |
 | 10 | Administration (administrators only) |
 | 90 | Sign off the menu |
 
@@ -70,7 +70,14 @@ Memos with a subject and up to eight lines. **F6** writes one, and option `5` op
 
 ## Live chat
 
-Type a user ID, or `EVERYONE` for the office room. The latest 14 lines are shown and refresh every two seconds. Type a line and press Enter to send it. The first time you write to someone, they get a message telling them you are waiting.
+Chat opens on a list of **group rooms**, newest topic first, so you can see where people are talking. Every room is open to everyone in the office, and `EVERYONE` is always there.
+
+- `1`, or the cursor on a room, joins it. **F6** makes a new room: a one-word name and a topic.
+- Inside a group room, **F9** changes the topic. Everyone in the room sees a line saying so, and the room moves to the top of the list.
+- `4` deletes a room you made. Administrators can delete any room except EVERYONE.
+- For a private chat, type a user ID in **Private chat with**, or press F4 to pick someone. The first time you write, they get a message saying you are waiting.
+
+The latest 14 lines are shown, and new lines appear by themselves. Type a line and press Enter to send it. **F6** goes back to the room list.
 
 ## Notes, tasks and phone book
 
@@ -80,7 +87,7 @@ Type a user ID, or `EVERYONE` for the office room. The latest 14 lines are shown
 
 ## Documents
 
-Each document is shown as a card, ten to a page. `2` or the cursor opens the editor, `6` prints the document and `4` deletes it.
+Documents are listed one to a line, fourteen to a page, with title, size and date changed. `2` or the cursor opens the editor, `6` prints the document and `4` deletes it.
 
 In the editor you type on fifteen lines at a time. **F7 and F8** move through the document, **F6** inserts a line at the cursor, **F9** deletes the line at the cursor, **F10** saves and **F11** prints. F3 warns you once if there are unsaved changes.
 
@@ -105,6 +112,20 @@ Type a word and press Enter. Search looks through your messages, mail, calendar,
 - **Tetris**: F4 left, F5 right, Enter or F6 turn, F7 down one, F8 drop and F9 new game. Your best score is kept.
 - **The office cat**: F5 pets it, F6 feeds it and F7 plays with it. It gets hungry while you are away.
 
-## My profile
+## Settings
 
 Your name, department and phone number, as others see them. **Pop-up messages**: Y makes reminders, mail notices and chat requests appear the moment they arrive; N lets them wait in your message queue.
+
+- **Animations**: N turns off everything that moves by itself (the calendar screen saver, and chat refreshing on its own). Tetris still falls.
+- **Character**: COFFEE, CAT, DOG, ROBOT, FISH or NONE, shown on the calendar menu.
+- **Screen saver after**: how many minutes the calendar waits, with no keys pressed, before its screen saver starts. 0 means never. Any key brings the calendar back.
+- **Chat refresh**: A shows new lines as they arrive; M only when you press F5.
+
+**Calendar and clock**
+
+- **Time zone**: your offset from UTC, such as `-05:00` or `+01:00`. Blank means you work in office time. New appointments use your zone and are stored in office time, so everyone sees the same thing. The day screen shows the time now in the office and in your zone.
+- **Week starts on**: `S` (Sunday) or `M` (Monday), for every month on the screen.
+- **Working day**: such as 08:00 to 17:00. New appointments start at the start of your day, and the business week and month views are drawn around these hours.
+- **Units**: `I` for a 12-hour clock and month/day/year; `M` for metric: a 24-hour clock and day.month.year. Dates typed with dots, such as `15.3.2027`, are always read day first.
+
+Nothing redraws on a timer while you are typing in a field any more, so the cursor stays where you put it.

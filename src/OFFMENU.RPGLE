@@ -5,7 +5,8 @@
      FOVMAILP   IF   E           K DISK
      FOVTASKP   IF   E           K DISK
      FOVCALP    IF   E           K DISK
-     FOVPREFP   IF   E           K DISK
+     FOVPREFP   UF A E           K DISK
+     FOVSETUP   UF A E           K DISK
      FOFFMNU    CF   E             WORKSTN INFDS(DSPINF)
      DPSDS            SDS
      D PGMUSR                254    263
@@ -71,8 +72,37 @@
      DNERR             S              1A
      DCH               S              1A
      DPOS              S              5  0
+     DDOTF             S              1A
+     DUSET             S             40A
+     DUNITS            S              1A
+     DUWEEK            S              1A
+     DUDBEG            S              4  0
+     DUDEND            S              4  0
+     DUZONE            S              6A
+     DUOFFS            S              5A
+     DUOFFZ            S              6A
      DLCASE            C                   'abcdefghijklmnopqrstuvwxyz'
      DUCASE            C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+     DANIMON           S              1A
+     DSAVMIN           S              3  0
+     DCHATAU           S              1A
+     DZTX              S              6A
+     DZT               S              6A
+     DZOUT             S              6A
+     DZSG              S              3  0
+     DZL               S              5  0
+     DZH               S              2  0
+     DZM               S              2  0
+     DZHV              S              9  0
+     DZMV              S              9  0
+     DZMIN             S              5  0
+     DTM               S              5A
+     DHH               S              5  0
+     DMI               S              5  0
+     DCLT              S              5  0
+     DWCHR             S              7A
+     DWBEG             S              5  0
+     DWSAV             S              5  0
      D                 DS
      DMCA                           126A
      D MC                            21A   DIM(6) OVERLAY(MCA)
@@ -262,6 +292,19 @@
      C                   EVAL      PGMNAM = 'OVFIND'
      C                   WHEN      SELN = 6
      C                   EXSR      LOOKUP
+     C                   IF        SELUSR <> *BLANKS
+     C     SELUSR        CHAIN(N)  USERREC
+     C                   IF        %FOUND(OVUSERP)
+     C                   EVAL      MSG = %TRIMR(USUSER) + ': ' + %TRIMR(USNAME)
+     C                   IF        USDEPT <> *BLANKS
+     C                   EVAL      MSG = %TRIMR(MSG) + ', ' + %TRIMR(USDEPT)
+     C                   ENDIF
+     C                   IF        USPHON <> *BLANKS
+     C                   EVAL      MSG = %TRIMR(MSG) + ', phone ' +
+     C                             %TRIMR(USPHON)
+     C                   ENDIF
+     C                   ENDIF
+     C                   ENDIF
      C                   WHEN      SELN = 8
      C                   EVAL      CMD = 'WRKSPLF'
      C                   EXSR      RUNCMD
@@ -489,6 +532,11 @@
      C     NXT           SUBDUR    F1            MDAYS:*D
      C     F1            SUBDUR    BASEDT        NDAYS:*D
      C                   EVAL      FDOW = %REM(%REM(NDAYS:7) + 7:7)
+     C                   EVAL      MWK = 'Su Mo Tu We Th Fr Sa'
+     C                   IF        UWEEK = 'M'
+     C                   EVAL      FDOW = %REM(FDOW + 6:7)
+     C                   EVAL      MWK = 'Mo Tu We Th Fr Sa Su'
+     C                   ENDIF
      C                   EVAL      MCA = *BLANKS
      C     1             DO        MDAYS         DY
      C                   EVAL      CELL = FDOW + DY
@@ -513,14 +561,128 @@
      C                   EVAL      PDEPT = USDEPT
      C                   EVAL      PPHON = USPHON
      C                   EVAL      PPOP = *BLANK
-     C                   EVAL      HDRID = 'OFCPROFILE'
+     C                   EVAL      ANIMON = 'Y'
+     C                   EVAL      SAVMIN = 2
+     C                   EVAL      CHATAU = 'A'
+     C     PGMUSR        CHAIN(N)  SETREC
+     C                   IF        %FOUND(OVSETUP)
+     C                   EVAL      ANIMON = STANIM
+     C                   EVAL      SAVMIN = STSAVE
+     C                   EVAL      CHATAU = STCHAT
+     C                   ENDIF
+     C                   EVAL      PANIM = ANIMON
+     C                   EVAL      PSAVE = %CHAR(SAVMIN)
+     C                   EVAL      PCHAT = CHATAU
+     C                   EVAL      PCHAR = %SUBST(MNAMEL:MIDX*7-6:7)
+     C                   EVAL      PZONE = UZONE
+     C                   EVAL      PZH = 'Blank = office time, UTC' + UOFFZ
+     C                   EVAL      PWEEK = UWEEK
+     C                   EVAL      PDBEG = %SUBST(%EDITC(UDBEG:'X'):1:2) + ':' +
+     C                             %SUBST(%EDITC(UDBEG:'X'):3:2)
+     C                   EVAL      PDEND = %SUBST(%EDITC(UDEND:'X'):1:2) + ':' +
+     C                             %SUBST(%EDITC(UDEND:'X'):3:2)
+     C                   EVAL      PUNIT = UNITS
+     C                   EVAL      PMSG = *BLANKS
+     C                   DOW       1 = 1
+     C                   EVAL      HDRID = 'OFCSETTING'
      C                   EXSR      HDR
      C                   EVAL      PHDR = HDRLN
      C                   EVAL      PFK = 'F1=Help   Enter=Save   F12=Cancel'
-     C                   EVAL      PMSG = *BLANKS
      C                   EXFMT     PROF
-     C                   IF        *IN03 = *OFF AND *IN12 = *OFF AND PNAME <>
-     C                             *BLANKS
+     C                   EVAL      PMSG = *BLANKS
+     C                   IF        *IN03 = *ON OR *IN12 = *ON
+     C                   LEAVE
+     C                   ENDIF
+     C                   EVAL      WCHR = %TRIML(PCHAR)
+     C     LCASE:UCASE   XLATE     WCHR          WCHR
+     C                   EVAL      K = 0
+     C     1             DO        6             I
+     C                   IF        %SUBST(MNAMEL:I*7-6:7) = WCHR
+     C                   EVAL      K = I
+     C                   ENDIF
+     C                   ENDDO
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %TRIML(PSAVE)
+     C                   EXSR      TONUM
+     C                   SELECT
+     C                   WHEN      PANIM <> 'Y' AND PANIM <> 'N'
+     C                   EVAL      PMSG = 'Animations must be Y or N.'
+     C                   WHEN      K = 0
+     C                   EVAL      PMSG = 'Character must be COFFEE, CAT,' +
+     C                             ' DOG, ROBOT, FISH or NONE.'
+     C                   WHEN      NERR = '1' OR NVAL > 999
+     C                   EVAL      PMSG = 'Screen saver must be a number ' +
+     C                             'of minutes, 0 for never.'
+     C                   WHEN      PCHAT <> 'A' AND PCHAT <> 'M'
+     C                   EVAL      PMSG = 'Chat refresh must be A or M.'
+     C                   WHEN      PNAME = *BLANKS
+     C                   EVAL      PMSG = 'Type your name.'
+     C                   ENDSL
+     C                   IF        PMSG <> *BLANKS
+     C                   ITER
+     C                   ENDIF
+     C                   EVAL      WSAV = NVAL
+      * the calendar and clock part
+     C                   EVAL      ZOUT = *BLANKS
+     C                   IF        PZONE <> *BLANKS
+     C                   EVAL      ZTX = PZONE
+     C                   EXSR      PARSZN
+     C                   IF        NERR = '1'
+     C                   EVAL      PMSG = 'Time zone is hours from UTC, s' +
+     C                             'uch as -05:00 or +01:00, or bl' + 'ank.'
+     C                   ITER
+     C                   ENDIF
+     C                   ENDIF
+     C                   IF        PWEEK <> 'S' AND PWEEK <> 'M'
+     C                   EVAL      PMSG = 'Week starts on must be S or M.'
+     C                   ITER
+     C                   ENDIF
+     C                   EVAL      TM = PDBEG
+     C                   EXSR      PARSTM
+     C                   IF        NERR = '1' OR CLT < 0
+     C                   EVAL      PMSG = 'Type the start of your working' +
+     C                             ' day as HH:MM, such as 08:00.'
+     C                   ITER
+     C                   ENDIF
+     C                   EVAL      WBEG = CLT
+     C                   EVAL      TM = PDEND
+     C                   EXSR      PARSTM
+     C                   IF        NERR = '1' OR CLT <= WBEG
+     C                   EVAL      PMSG = 'The end of your working day mu' +
+     C                             'st be HH:MM, after the start.'
+     C                   ITER
+     C                   ENDIF
+     C                   IF        PUNIT <> 'I' AND PUNIT <> 'M'
+     C                   EVAL      PMSG = 'Units must be I or M.'
+     C                   ITER
+     C                   ENDIF
+     C     PGMUSR        CHAIN     SETREC
+     C                   EVAL      STUSER = PGMUSR
+     C                   EVAL      STANIM = PANIM
+     C                   EVAL      STCHAT = PCHAT
+     C                   EVAL      STSAVE = WSAV
+     C                   EVAL      STZONE = ZOUT
+     C                   EVAL      STWEEK = PWEEK
+     C                   EVAL      STDBEG = WBEG
+     C                   EVAL      STDEND = CLT
+     C                   EVAL      STUNIT = PUNIT
+     C                   IF        %FOUND(OVSETUP)
+     C                   UPDATE    SETREC
+     C                   ELSE
+     C                   WRITE     SETREC
+     C                   ENDIF
+     C                   EVAL      MIDX = K
+     C     PGMUSR        CHAIN     PREFREC
+     C                   EVAL      PRUSER = PGMUSR
+     C                   EVAL      PRMASC = %SUBST(MNAMEL:K*7-6:7)
+     C                   IF        %FOUND(OVPREFP)
+     C                   UPDATE    PREFREC
+     C                   ELSE
+     C                   WRITE     PREFREC
+     C                   ENDIF
+     C                   LEAVE
+     C                   ENDDO
+     C                   IF        *IN03 = *OFF AND *IN12 = *OFF
      C     PGMUSR        CHAIN     USERREC
      C                   IF        %FOUND(OVUSERP)
      C                   EVAL      USNAME = %TRIML(PNAME)
@@ -537,11 +699,97 @@
      C                   EVAL      *IN50 = *OFF
      C                   ENDIF
      C                   UPDATE    USERREC
-     C                   EVAL      MSG = 'Your profile was saved.'
+     C                   EVAL      MSG = 'Settings saved.'
+     C                   EXSR      LOADSET
      C                   ENDIF
      C                   ENDIF
      C                   EVAL      *IN03 = *OFF
      C                   EVAL      *IN12 = *OFF
+      * ---- ZTX such as -05:00 into ZMIN minutes from UTC and ZOUT, or NERR
+     C     PARSZN        BEGSR
+     C                   EVAL      NERR = '0'
+     C                   EVAL      ZMIN = 0
+     C                   EVAL      ZH = 0
+     C                   EVAL      ZM = 0
+     C                   EVAL      ZSG = 1
+     C                   EVAL      ZT = %TRIM(ZTX)
+     C                   EVAL      CH = %SUBST(ZT:1:1)
+     C                   IF        CH = '+' OR CH = '-'
+     C                   IF        CH = '-'
+     C                   EVAL      ZSG = -1
+     C                   ENDIF
+     C                   EVAL      ZT = %TRIM(%SUBST(ZT:2))
+     C                   ENDIF
+     C                   EVAL      ZL = %LEN(%TRIMR(ZT))
+     C                   EVAL      P1 = %SCAN(':':ZT)
+     C                   SELECT
+     C                   WHEN      ZL = 0 OR P1 = 1
+     C                   EVAL      NERR = '1'
+     C                   WHEN      P1 > 1
+     C                   EVAL      NSTR = %SUBST(ZT:1:P1-1)
+     C                   EXSR      TONUM
+     C                   EVAL      ZHV = NVAL
+     C                   EVAL      ZMV = 0
+     C                   IF        P1 < ZL
+     C                   EVAL      NSTR = %SUBST(ZT:P1+1:ZL-P1)
+     C                   EXSR      TONUM
+     C                   EVAL      ZMV = NVAL
+     C                   ENDIF
+     C                   WHEN      ZL <= 2
+     C                   EVAL      NSTR = %SUBST(ZT:1:ZL)
+     C                   EXSR      TONUM
+     C                   EVAL      ZHV = NVAL
+     C                   EVAL      ZMV = 0
+     C                   WHEN      ZL = 4
+     C                   EVAL      NSTR = %SUBST(ZT:1:2)
+     C                   EXSR      TONUM
+     C                   EVAL      ZHV = NVAL
+     C                   EVAL      NSTR = %SUBST(ZT:3:2)
+     C                   EXSR      TONUM
+     C                   EVAL      ZMV = NVAL
+     C                   OTHER
+     C                   EVAL      NERR = '1'
+     C                   ENDSL
+     C                   IF        NERR = '0' AND (ZHV > 14 OR ZMV > 59)
+     C                   EVAL      NERR = '1'
+     C                   ENDIF
+     C                   IF        NERR = '0'
+     C                   EVAL      ZH = ZHV
+     C                   EVAL      ZM = ZMV
+     C                   EVAL      ZMIN = ZSG * (ZHV * 60 + ZMV)
+     C                   EVAL      ZOUT = '+' + %EDITC(ZH:'X') + ':' +
+     C                             %EDITC(ZM:'X')
+     C                   IF        ZMIN < 0
+     C                   EVAL      ZOUT = '-' + %EDITC(ZH:'X') + ':' +
+     C                             %EDITC(ZM:'X')
+     C                   ENDIF
+     C                   ENDIF
+     C                   ENDSR
+      * ---- TM holds HH:MM or blank: sets CLT (-1 is all day) or NERR ----
+     C     PARSTM        BEGSR
+     C                   EVAL      NERR = '0'
+     C                   EVAL      CLT = -1
+     C                   EVAL      TM = %TRIML(TM)
+     C                   IF        TM <> *BLANKS
+     C                   EVAL      P1 = %SCAN(':':TM)
+     C                   IF        P1 >= 2 AND P1 <= 3
+     C                   EVAL      NSTR = %SUBST(TM:1:P1-1)
+     C                   EXSR      TONUM
+     C                   EVAL      HH = NVAL
+     C                   EVAL      NSTR = %SUBST(TM:P1+1:2)
+     C                   EXSR      TONUM
+     C                   EVAL      MI = NVAL
+     C                   ELSE
+     C                   EVAL      NERR = '1'
+     C                   ENDIF
+     C                   IF        NERR = '0' AND (HH > 23 OR MI > 59)
+     C                   EVAL      NERR = '1'
+     C                   ENDIF
+     C                   IF        NERR = '0'
+     C                   EVAL      CLT = HH * 100 + MI
+     C                   ENDIF
+     C                   ENDIF
+     C                   ENDSR
      C                   ENDSR
       * ---- shared routines ----
      C     *INZSR        BEGSR
@@ -552,6 +800,38 @@
      C                   ENDIF
      C                   EVAL      *IN50 = *OFF
      C                   EVAL      KUSER = PGMUSR
+     C                   EXSR      LOADSET
+     C                   ENDSR
+      * ---- this person's settings: units, week start, working day, time zone
+     C     LOADSET       BEGSR
+     C                   EVAL      USET = 'IS08001700      +0000'
+     C                   CALL      'OVGSET'                             50
+     C                   PARM                    USET
+     C                   EVAL      *IN50 = *OFF
+     C                   EVAL      UNITS = %SUBST(USET:1:1)
+     C                   EVAL      UWEEK = %SUBST(USET:2:1)
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:3:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDBEG = 800
+     C                   IF        NERR = '0' AND NVAL <= 2359
+     C                   EVAL      UDBEG = NVAL
+     C                   ENDIF
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:7:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDEND = 1700
+     C                   IF        NERR = '0' AND NVAL <= 2359 AND NVAL > UDBEG
+     C                   EVAL      UDEND = NVAL
+     C                   ENDIF
+     C                   EVAL      UZONE = %SUBST(USET:11:6)
+     C                   EVAL      UOFFS = %SUBST(USET:17:5)
+     C                   IF        %SUBST(UOFFS:1:1) <> '+' AND
+     C                             %SUBST(UOFFS:1:1) <> '-'
+     C                   EVAL      UOFFS = '+0000'
+     C                   ENDIF
+     C                   EVAL      UOFFZ = %SUBST(UOFFS:1:3) + ':' +
+     C                             %SUBST(UOFFS:4:2)
      C                   ENDSR
      C     HDR           BEGSR
      C                   TIME                    HTS
@@ -562,6 +842,10 @@
      C                   EVAL      HDT = %CHAR(%DIV(%REM(HN8:10000):100)) + '/'
      C                             + %CHAR(%REM(HN8:100)) + '/' +
      C                             %SUBST(HSTMP:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      HDT = %SUBST(HSTMP:9:2) + '.' +
+     C                             %SUBST(HSTMP:6:2) + '.' + %SUBST(HSTMP:1:4)
+     C                   ENDIF
      C                   EVAL      HDRLN = *BLANKS
      C                   EVAL      %SUBST(HDRLN:2:10) = HDRID
      C                   EVAL      %SUBST(HDRLN:33:15) = 'OfficeVibes/400'
@@ -573,6 +857,12 @@
      C                             %SUBST(WSTMP:9:2) + '/' + %SUBST(WSTMP:1:4) +
      C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
      C                             %SUBST(WSTMP:15:2)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      WDT = %SUBST(WSTMP:9:2) + '.' +
+     C                             %SUBST(WSTMP:6:2) + '.' + %SUBST(WSTMP:1:4) +
+     C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
+     C                             %SUBST(WSTMP:15:2)
+     C                   ENDIF
      C                   ENDSR
      C     CSR           BEGSR
      C                   EVAL      CSRROW = %DIV(CSRLOC:256)
@@ -643,6 +933,12 @@
      C                   EVAL      NERR = '0'
      C                   EVAL      DUEVAL = 0
      C                   EVAL      DUE = %TRIML(DUE)
+      * day.month.year with dots is read the European way round
+     C                   EVAL      DOTF = '0'
+     C                   IF        %SCAN('.':DUE) > 0
+     C                   EVAL      DOTF = '1'
+     C     '.':'/'       XLATE     DUE           DUE
+     C                   ENDIF
      C                   EVAL      DLEN = %LEN(%TRIMR(DUE))
      C                   IF        DLEN > 0
      C                   EVAL      P1 = %SCAN('/':DUE)
@@ -678,6 +974,11 @@
      C                   EXSR      TONUM
      C                   EVAL      YY = NVAL
      C                   ENDIF
+     C                   ENDIF
+     C                   IF        NERR = '0' AND DOTF = '1'
+     C                   EVAL      P1 = MM
+     C                   EVAL      MM = DD
+     C                   EVAL      DD = P1
      C                   ENDIF
      C                   IF        NERR = '0'
      C                   IF        YY < 100

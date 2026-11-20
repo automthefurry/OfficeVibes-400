@@ -1,0 +1,6 @@
+/* OVTZC - the system's offset from UTC, such as -0500 */
+PGM        PARM(&OFF)
+  DCL        VAR(&OFF) TYPE(*CHAR) LEN(5)
+  RTVSYSVAL  SYSVAL(QUTCOFFSET) RTNVAR(&OFF)
+  MONMSG     MSGID(CPF0000) EXEC(CHGVAR VAR(&OFF) VALUE('+0000'))
+ENDPGM

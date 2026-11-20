@@ -42,7 +42,7 @@ Option 12 submits a batch job, **OVREMIND**, that sends each user a message 15 m
 - `WRKACTJOB` shows it as `OVREMIND`.
 - Restart it after an IPL.
 
-Whether a reminder pops up or waits in the user's message queue depends on their **Pop-up messages** setting under My profile.
+Whether a reminder pops up or waits in the user's message queue depends on their **Pop-up messages** setting under Settings.
 
 ## Authority
 

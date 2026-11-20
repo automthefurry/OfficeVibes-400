@@ -18,7 +18,7 @@ OfficeVibes/400 is a hobby project inspired by IBM's OfficeVision. It runs on 52
         6. Office directory                             29 30
         7. Games and the office cat
         8. Printed output                                     /|_/|
-        9. My profile                                        ( o.o )
+        9. Settings                                          ( o.o )
        10. Administration                                     > w <
 ```
 

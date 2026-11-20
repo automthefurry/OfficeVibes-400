@@ -66,24 +66,37 @@
      DNERR             S              1A
      DCH               S              1A
      DPOS              S              5  0
+     DDOTF             S              1A
+     DUSET             S             40A
+     DUNITS            S              1A
+     DUWEEK            S              1A
+     DUDBEG            S              4  0
+     DUDEND            S              4  0
+     DUZONE            S              6A
+     DUOFFS            S              5A
+     DUOFFZ            S              6A
      DLCASE            C                   'abcdefghijklmnopqrstuvwxyz'
      DUCASE            C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
      D                 DS
-     DLKLA                          380A
-     D LKL                           38A   DIM(10) OVERLAY(LKLA)
-     D LKL01                         38A   OVERLAY(LKLA:1)
-     D LKL02                         38A   OVERLAY(LKLA:39)
-     D LKL03                         38A   OVERLAY(LKLA:77)
-     D LKL04                         38A   OVERLAY(LKLA:115)
-     D LKL05                         38A   OVERLAY(LKLA:153)
-     D LKL06                         38A   OVERLAY(LKLA:191)
-     D LKL07                         38A   OVERLAY(LKLA:229)
-     D LKL08                         38A   OVERLAY(LKLA:267)
-     D LKL09                         38A   OVERLAY(LKLA:305)
-     D LKL10                         38A   OVERLAY(LKLA:343)
+     DLKLA                         1008A
+     D LKL                           72A   DIM(14) OVERLAY(LKLA)
+     D LKL01                         72A   OVERLAY(LKLA:1)
+     D LKL02                         72A   OVERLAY(LKLA:73)
+     D LKL03                         72A   OVERLAY(LKLA:145)
+     D LKL04                         72A   OVERLAY(LKLA:217)
+     D LKL05                         72A   OVERLAY(LKLA:289)
+     D LKL06                         72A   OVERLAY(LKLA:361)
+     D LKL07                         72A   OVERLAY(LKLA:433)
+     D LKL08                         72A   OVERLAY(LKLA:505)
+     D LKL09                         72A   OVERLAY(LKLA:577)
+     D LKL10                         72A   OVERLAY(LKLA:649)
+     D LKL11                         72A   OVERLAY(LKLA:721)
+     D LKL12                         72A   OVERLAY(LKLA:793)
+     D LKL13                         72A   OVERLAY(LKLA:865)
+     D LKL14                         72A   OVERLAY(LKLA:937)
      D                 DS
-     DLKOA                           10A
-     D LKO                            1A   DIM(10) OVERLAY(LKOA)
+     DLKOA                           14A
+     D LKO                            1A   DIM(14) OVERLAY(LKOA)
      D LKO01                          1A   OVERLAY(LKOA:1)
      D LKO02                          1A   OVERLAY(LKOA:2)
      D LKO03                          1A   OVERLAY(LKOA:3)
@@ -94,7 +107,11 @@
      D LKO08                          1A   OVERLAY(LKOA:8)
      D LKO09                          1A   OVERLAY(LKOA:9)
      D LKO10                          1A   OVERLAY(LKOA:10)
-     DKU               S             10A   DIM(10)
+     D LKO11                          1A   OVERLAY(LKOA:11)
+     D LKO12                          1A   OVERLAY(LKOA:12)
+     D LKO13                          1A   OVERLAY(LKOA:13)
+     D LKO14                          1A   OVERLAY(LKOA:14)
+     DKU               S             10A   DIM(14)
      DPSEL             S             10A
      DULINE            S             60A
      C     *ENTRY        PLIST
@@ -107,7 +124,18 @@
      C                   EXSR      LOAD
      C                   ENDIF
      C                   EVAL      LKMSG = MSG
+     C                   IF        MSG = *BLANKS
+     C                   EVAL      LKMSG = %CHAR(NMATCH) +
+     C                             ' user(s).  Type any letter bes' +
+     C                             'ide one, or cursor + Enter.'
+     C                   ENDIF
      C                   EVAL      MSG = *BLANKS
+     C                   EVAL      LKOA = *BLANKS
+     C                   EVAL      HDRID = 'OFCDIRECT'
+     C                   EXSR      HDR
+     C                   EVAL      LKHDR = HDRLN
+     C                   EVAL      LKFK = 'F1=Help   Enter=Select   F7/F8' +
+     C                             '=Page   F12=Cancel'
      C                   EXFMT     LKWIN
      C                   EXSR      CSR
      C                   EVAL      UNEED = %TRIML(LKFND)
@@ -122,7 +150,7 @@
      C                   ITER
      C                   ENDIF
      C                   IF        *IN08 = *ON
-     C                   IF        BASE + 10 < NMATCH
+     C                   IF        BASE + 14 < NMATCH
      C                   EVAL      PGNO = PGNO + 1
      C                   ENDIF
      C                   ITER
@@ -147,26 +175,28 @@
      C     LOAD          BEGSR
      C                   EVAL      LKLA = *BLANKS
      C                   EVAL      NMATCH = 0
-     C                   EVAL      BASE = PGNO * 10
+     C                   EVAL      BASE = PGNO * 14
      C     *LOVAL        SETLL     USERREC
      C                   READ      USERREC
      C                   DOW       NOT %EOF(OVUSERP)
-     C                   EVAL      ULINE = USUSER + ' ' + USNAME
+     C                   EVAL      ULINE = USUSER + ' ' + USNAME + ' ' + USDEPT
      C     LCASE:UCASE   XLATE     ULINE         ULINE
      C                   IF        USSTAT = 'A' AND (UNEED = *BLANKS OR
      C                             %SCAN(%TRIMR(UNEED):ULINE) > 0)
      C                   EVAL      NMATCH = NMATCH + 1
-     C                   IF        NMATCH > BASE AND NMATCH <= BASE + 10
+     C                   IF        NMATCH > BASE AND NMATCH <= BASE + 14
      C                   EVAL      ROW = NMATCH - BASE
-     C                   EVAL      LKL(ROW) = USUSER + ' ' + USNAME
+     C                   EVAL      LKL(ROW) = USUSER + ' ' + USNAME + ' ' +
+     C                             %SUBST(USDEPT:1:16) + ' ' +
+     C                             %SUBST(USPHON:1:13)
      C                   EVAL      KU(ROW) = USUSER
      C                   ENDIF
      C                   ENDIF
      C                   READ      USERREC
      C                   ENDDO
      C                   EVAL      NSHOW = NMATCH - BASE
-     C                   IF        NSHOW > 10
-     C                   EVAL      NSHOW = 10
+     C                   IF        NSHOW > 14
+     C                   EVAL      NSHOW = 14
      C                   ENDIF
      C                   IF        NSHOW < 0
      C                   EVAL      NSHOW = 0
@@ -181,6 +211,38 @@
      C                   ENDIF
      C                   EVAL      *IN50 = *OFF
      C                   EVAL      KUSER = PGMUSR
+     C                   EXSR      LOADSET
+     C                   ENDSR
+      * ---- this person's settings: units, week start, working day, time zone
+     C     LOADSET       BEGSR
+     C                   EVAL      USET = 'IS08001700      +0000'
+     C                   CALL      'OVGSET'                             50
+     C                   PARM                    USET
+     C                   EVAL      *IN50 = *OFF
+     C                   EVAL      UNITS = %SUBST(USET:1:1)
+     C                   EVAL      UWEEK = %SUBST(USET:2:1)
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:3:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDBEG = 800
+     C                   IF        NERR = '0' AND NVAL <= 2359
+     C                   EVAL      UDBEG = NVAL
+     C                   ENDIF
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:7:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDEND = 1700
+     C                   IF        NERR = '0' AND NVAL <= 2359 AND NVAL > UDBEG
+     C                   EVAL      UDEND = NVAL
+     C                   ENDIF
+     C                   EVAL      UZONE = %SUBST(USET:11:6)
+     C                   EVAL      UOFFS = %SUBST(USET:17:5)
+     C                   IF        %SUBST(UOFFS:1:1) <> '+' AND
+     C                             %SUBST(UOFFS:1:1) <> '-'
+     C                   EVAL      UOFFS = '+0000'
+     C                   ENDIF
+     C                   EVAL      UOFFZ = %SUBST(UOFFS:1:3) + ':' +
+     C                             %SUBST(UOFFS:4:2)
      C                   ENDSR
      C     HDR           BEGSR
      C                   TIME                    HTS
@@ -191,6 +253,10 @@
      C                   EVAL      HDT = %CHAR(%DIV(%REM(HN8:10000):100)) + '/'
      C                             + %CHAR(%REM(HN8:100)) + '/' +
      C                             %SUBST(HSTMP:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      HDT = %SUBST(HSTMP:9:2) + '.' +
+     C                             %SUBST(HSTMP:6:2) + '.' + %SUBST(HSTMP:1:4)
+     C                   ENDIF
      C                   EVAL      HDRLN = *BLANKS
      C                   EVAL      %SUBST(HDRLN:2:10) = HDRID
      C                   EVAL      %SUBST(HDRLN:33:15) = 'OfficeVibes/400'
@@ -202,6 +268,12 @@
      C                             %SUBST(WSTMP:9:2) + '/' + %SUBST(WSTMP:1:4) +
      C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
      C                             %SUBST(WSTMP:15:2)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      WDT = %SUBST(WSTMP:9:2) + '.' +
+     C                             %SUBST(WSTMP:6:2) + '.' + %SUBST(WSTMP:1:4) +
+     C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
+     C                             %SUBST(WSTMP:15:2)
+     C                   ENDIF
      C                   ENDSR
      C     CSR           BEGSR
      C                   EVAL      CSRROW = %DIV(CSRLOC:256)
@@ -272,6 +344,12 @@
      C                   EVAL      NERR = '0'
      C                   EVAL      DUEVAL = 0
      C                   EVAL      DUE = %TRIML(DUE)
+      * day.month.year with dots is read the European way round
+     C                   EVAL      DOTF = '0'
+     C                   IF        %SCAN('.':DUE) > 0
+     C                   EVAL      DOTF = '1'
+     C     '.':'/'       XLATE     DUE           DUE
+     C                   ENDIF
      C                   EVAL      DLEN = %LEN(%TRIMR(DUE))
      C                   IF        DLEN > 0
      C                   EVAL      P1 = %SCAN('/':DUE)
@@ -307,6 +385,11 @@
      C                   EXSR      TONUM
      C                   EVAL      YY = NVAL
      C                   ENDIF
+     C                   ENDIF
+     C                   IF        NERR = '0' AND DOTF = '1'
+     C                   EVAL      P1 = MM
+     C                   EVAL      MM = DD
+     C                   EVAL      DD = P1
      C                   ENDIF
      C                   IF        NERR = '0'
      C                   IF        YY < 100

@@ -67,6 +67,15 @@
      DNERR             S              1A
      DCH               S              1A
      DPOS              S              5  0
+     DDOTF             S              1A
+     DUSET             S             40A
+     DUNITS            S              1A
+     DUWEEK            S              1A
+     DUDBEG            S              4  0
+     DUDEND            S              4  0
+     DUZONE            S              6A
+     DUOFFS            S              5A
+     DUOFFZ            S              6A
      DLCASE            C                   'abcdefghijklmnopqrstuvwxyz'
      DUCASE            C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
      D                 DS
@@ -265,6 +274,38 @@
      C                   ENDIF
      C                   EVAL      *IN50 = *OFF
      C                   EVAL      KUSER = PGMUSR
+     C                   EXSR      LOADSET
+     C                   ENDSR
+      * ---- this person's settings: units, week start, working day, time zone
+     C     LOADSET       BEGSR
+     C                   EVAL      USET = 'IS08001700      +0000'
+     C                   CALL      'OVGSET'                             50
+     C                   PARM                    USET
+     C                   EVAL      *IN50 = *OFF
+     C                   EVAL      UNITS = %SUBST(USET:1:1)
+     C                   EVAL      UWEEK = %SUBST(USET:2:1)
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:3:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDBEG = 800
+     C                   IF        NERR = '0' AND NVAL <= 2359
+     C                   EVAL      UDBEG = NVAL
+     C                   ENDIF
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:7:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDEND = 1700
+     C                   IF        NERR = '0' AND NVAL <= 2359 AND NVAL > UDBEG
+     C                   EVAL      UDEND = NVAL
+     C                   ENDIF
+     C                   EVAL      UZONE = %SUBST(USET:11:6)
+     C                   EVAL      UOFFS = %SUBST(USET:17:5)
+     C                   IF        %SUBST(UOFFS:1:1) <> '+' AND
+     C                             %SUBST(UOFFS:1:1) <> '-'
+     C                   EVAL      UOFFS = '+0000'
+     C                   ENDIF
+     C                   EVAL      UOFFZ = %SUBST(UOFFS:1:3) + ':' +
+     C                             %SUBST(UOFFS:4:2)
      C                   ENDSR
      C     HDR           BEGSR
      C                   TIME                    HTS
@@ -275,6 +316,10 @@
      C                   EVAL      HDT = %CHAR(%DIV(%REM(HN8:10000):100)) + '/'
      C                             + %CHAR(%REM(HN8:100)) + '/' +
      C                             %SUBST(HSTMP:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      HDT = %SUBST(HSTMP:9:2) + '.' +
+     C                             %SUBST(HSTMP:6:2) + '.' + %SUBST(HSTMP:1:4)
+     C                   ENDIF
      C                   EVAL      HDRLN = *BLANKS
      C                   EVAL      %SUBST(HDRLN:2:10) = HDRID
      C                   EVAL      %SUBST(HDRLN:33:15) = 'OfficeVibes/400'
@@ -286,6 +331,12 @@
      C                             %SUBST(WSTMP:9:2) + '/' + %SUBST(WSTMP:1:4) +
      C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
      C                             %SUBST(WSTMP:15:2)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      WDT = %SUBST(WSTMP:9:2) + '.' +
+     C                             %SUBST(WSTMP:6:2) + '.' + %SUBST(WSTMP:1:4) +
+     C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
+     C                             %SUBST(WSTMP:15:2)
+     C                   ENDIF
      C                   ENDSR
      C     CSR           BEGSR
      C                   EVAL      CSRROW = %DIV(CSRLOC:256)
@@ -356,6 +407,12 @@
      C                   EVAL      NERR = '0'
      C                   EVAL      DUEVAL = 0
      C                   EVAL      DUE = %TRIML(DUE)
+      * day.month.year with dots is read the European way round
+     C                   EVAL      DOTF = '0'
+     C                   IF        %SCAN('.':DUE) > 0
+     C                   EVAL      DOTF = '1'
+     C     '.':'/'       XLATE     DUE           DUE
+     C                   ENDIF
      C                   EVAL      DLEN = %LEN(%TRIMR(DUE))
      C                   IF        DLEN > 0
      C                   EVAL      P1 = %SCAN('/':DUE)
@@ -391,6 +448,11 @@
      C                   EXSR      TONUM
      C                   EVAL      YY = NVAL
      C                   ENDIF
+     C                   ENDIF
+     C                   IF        NERR = '0' AND DOTF = '1'
+     C                   EVAL      P1 = MM
+     C                   EVAL      MM = DD
+     C                   EVAL      DD = P1
      C                   ENDIF
      C                   IF        NERR = '0'
      C                   IF        YY < 100

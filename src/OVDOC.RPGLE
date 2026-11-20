@@ -67,24 +67,37 @@
      DNERR             S              1A
      DCH               S              1A
      DPOS              S              5  0
+     DDOTF             S              1A
+     DUSET             S             40A
+     DUNITS            S              1A
+     DUWEEK            S              1A
+     DUDBEG            S              4  0
+     DUDEND            S              4  0
+     DUZONE            S              6A
+     DUOFFS            S              5A
+     DUOFFZ            S              6A
      DLCASE            C                   'abcdefghijklmnopqrstuvwxyz'
      DUCASE            C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
      D                 DS
-     DDLNA                          300A
-     D DLN                           30A   DIM(10) OVERLAY(DLNA)
-     D DLN01                         30A   OVERLAY(DLNA:1)
-     D DLN02                         30A   OVERLAY(DLNA:31)
-     D DLN03                         30A   OVERLAY(DLNA:61)
-     D DLN04                         30A   OVERLAY(DLNA:91)
-     D DLN05                         30A   OVERLAY(DLNA:121)
-     D DLN06                         30A   OVERLAY(DLNA:151)
-     D DLN07                         30A   OVERLAY(DLNA:181)
-     D DLN08                         30A   OVERLAY(DLNA:211)
-     D DLN09                         30A   OVERLAY(DLNA:241)
-     D DLN10                         30A   OVERLAY(DLNA:271)
+     DDLNA                         1008A
+     D DLN                           72A   DIM(14) OVERLAY(DLNA)
+     D DLN01                         72A   OVERLAY(DLNA:1)
+     D DLN02                         72A   OVERLAY(DLNA:73)
+     D DLN03                         72A   OVERLAY(DLNA:145)
+     D DLN04                         72A   OVERLAY(DLNA:217)
+     D DLN05                         72A   OVERLAY(DLNA:289)
+     D DLN06                         72A   OVERLAY(DLNA:361)
+     D DLN07                         72A   OVERLAY(DLNA:433)
+     D DLN08                         72A   OVERLAY(DLNA:505)
+     D DLN09                         72A   OVERLAY(DLNA:577)
+     D DLN10                         72A   OVERLAY(DLNA:649)
+     D DLN11                         72A   OVERLAY(DLNA:721)
+     D DLN12                         72A   OVERLAY(DLNA:793)
+     D DLN13                         72A   OVERLAY(DLNA:865)
+     D DLN14                         72A   OVERLAY(DLNA:937)
      D                 DS
-     DDOPA                           20A
-     D DOP                            2A   DIM(10) OVERLAY(DOPA)
+     DDOPA                           28A
+     D DOP                            2A   DIM(14) OVERLAY(DOPA)
      D DOP01                          2A   OVERLAY(DOPA:1)
      D DOP02                          2A   OVERLAY(DOPA:3)
      D DOP03                          2A   OVERLAY(DOPA:5)
@@ -95,45 +108,10 @@
      D DOP08                          2A   OVERLAY(DOPA:15)
      D DOP09                          2A   OVERLAY(DOPA:17)
      D DOP10                          2A   OVERLAY(DOPA:19)
-     D                 DS
-     DDLBA                          300A
-     D DLB                           30A   DIM(10) OVERLAY(DLBA)
-     D DLB01                         30A   OVERLAY(DLBA:1)
-     D DLB02                         30A   OVERLAY(DLBA:31)
-     D DLB03                         30A   OVERLAY(DLBA:61)
-     D DLB04                         30A   OVERLAY(DLBA:91)
-     D DLB05                         30A   OVERLAY(DLBA:121)
-     D DLB06                         30A   OVERLAY(DLBA:151)
-     D DLB07                         30A   OVERLAY(DLBA:181)
-     D DLB08                         30A   OVERLAY(DLBA:211)
-     D DLB09                         30A   OVERLAY(DLBA:241)
-     D DLB10                         30A   OVERLAY(DLBA:271)
-     D                 DS
-     DDLCA                          300A
-     D DLC                           30A   DIM(10) OVERLAY(DLCA)
-     D DLC01                         30A   OVERLAY(DLCA:1)
-     D DLC02                         30A   OVERLAY(DLCA:31)
-     D DLC03                         30A   OVERLAY(DLCA:61)
-     D DLC04                         30A   OVERLAY(DLCA:91)
-     D DLC05                         30A   OVERLAY(DLCA:121)
-     D DLC06                         30A   OVERLAY(DLCA:151)
-     D DLC07                         30A   OVERLAY(DLCA:181)
-     D DLC08                         30A   OVERLAY(DLCA:211)
-     D DLC09                         30A   OVERLAY(DLCA:241)
-     D DLC10                         30A   OVERLAY(DLCA:271)
-     D                 DS
-     DDICA                           30A
-     D DIC                            3A   DIM(10) OVERLAY(DICA)
-     D DIC01                          3A   OVERLAY(DICA:1)
-     D DIC02                          3A   OVERLAY(DICA:4)
-     D DIC03                          3A   OVERLAY(DICA:7)
-     D DIC04                          3A   OVERLAY(DICA:10)
-     D DIC05                          3A   OVERLAY(DICA:13)
-     D DIC06                          3A   OVERLAY(DICA:16)
-     D DIC07                          3A   OVERLAY(DICA:19)
-     D DIC08                          3A   OVERLAY(DICA:22)
-     D DIC09                          3A   OVERLAY(DICA:25)
-     D DIC10                          3A   OVERLAY(DICA:28)
+     D DOP11                          2A   OVERLAY(DOPA:21)
+     D DOP12                          2A   OVERLAY(DOPA:23)
+     D DOP13                          2A   OVERLAY(DOPA:25)
+     D DOP14                          2A   OVERLAY(DOPA:27)
      D                 DS
      DEDA                          1140A
      D ED                            76A   DIM(15) OVERLAY(EDA)
@@ -159,15 +137,16 @@
      DCLN              S              5  0
      DDIRTY            S              1A
      DWARN             S              1A
-     DKD               S             10A   DIM(10)
+     DKD               S             10A   DIM(14)
+     DW12              S             11A
      DKDOC             S             10A
      DWTITL            S             40A
-     DCOLH             C                   'Each card is a document.  Type-
-     D                                      an option beside it, or curso-
-     D                                     r + Enter.'
+     DCOLH             C                   'Opt      Name       Title     -
+     D                                                              Size -
+     D                                           Changed'
      DFK1              C                   '2=Edit  4=Delete  6=Print   Cu-
-     D                                     rsor anywhere on a card + Ente-
-     D                                     r opens it'
+     D                                     rsor on a line + Enter opens i-
+     D                                     t'
      DFK2              C                   'F1=Help  F3=Exit  F6=New docum-
      D                                     ent  F7/F8=Page'
      DEK1              C                   'F6=Insert line at cursor   F9=-
@@ -196,15 +175,9 @@
      C                   EVAL      MSG = *BLANKS
      C                   EXFMT     DLIST
      C                   EXSR      CSR
+     C                   EVAL      CSRSEL = CSRROW - 5
+     C                   IF        CSRSEL < 1 OR CSRSEL > NSHOW OR CSRCOL < 2
      C                   EVAL      CSRSEL = 0
-     C                   IF        CSRROW >= 6 AND CSRROW <= 20
-     C                   EVAL      CSRSEL = %DIV(CSRROW - 6:3) * 2 + 1
-     C                   IF        CSRCOL >= 42
-     C                   EVAL      CSRSEL = CSRSEL + 1
-     C                   ENDIF
-     C                   IF        CSRSEL > NSHOW
-     C                   EVAL      CSRSEL = 0
-     C                   ENDIF
      C                   ENDIF
      C                   IF        *IN03 = *ON OR *IN12 = *ON
      C                   LEAVE
@@ -220,7 +193,7 @@
      C                   ITER
      C                   ENDIF
      C                   IF        *IN08 = *ON
-     C                   IF        BASE + 10 < NMATCH
+     C                   IF        BASE + 14 < NMATCH
      C                   EVAL      PGNO = PGNO + 1
      C                   ENDIF
      C                   ITER
@@ -270,37 +243,36 @@
      C                   EVAL      *INLR = *ON
      C     LOAD          BEGSR
      C                   EVAL      DLNA = *BLANKS
-     C                   EVAL      DLBA = *BLANKS
-     C                   EVAL      DLCA = *BLANKS
-     C                   EVAL      DICA = *BLANKS
      C                   EVAL      NMATCH = 0
-     C                   EVAL      BASE = PGNO * 10
+     C                   EVAL      BASE = PGNO * 14
      C     KUSER         SETLL     DOCREC
      C     KUSER         READE(N)  DOCREC
      C                   DOW       NOT %EOF(OVDOCP)
      C                   EVAL      NMATCH = NMATCH + 1
-     C                   IF        NMATCH > BASE AND NMATCH <= BASE + 10
+     C                   IF        NMATCH > BASE AND NMATCH <= BASE + 14
      C                   EVAL      ROW = NMATCH - BASE
      C                   MOVE      DCSTMP        WSTMP
      C                   EXSR      FMTDT
-     C                   EVAL      DIC(ROW) = '[=]'
-     C                   EVAL      DLN(ROW) = DCNAME
-     C                   EVAL      DLB(ROW) = DCTITL
-     C                   EVAL      DLC(ROW) = %CHAR(DCLINE) + ' lines, ' +
+     C                   EVAL      W12 = %CHAR(DCLINE) + ' lines'
+     C                   EVAL      DLN(ROW) = '[=] ' + DCNAME + ' ' +
+     C                             %SUBST(DCTITL:1:34) + ' ' + W12 +
      C                             %SUBST(WDT:1:10)
      C                   EVAL      KD(ROW) = DCNAME
      C                   ENDIF
      C     KUSER         READE(N)  DOCREC
      C                   ENDDO
      C                   EVAL      NSHOW = NMATCH - BASE
-     C                   IF        NSHOW > 10
-     C                   EVAL      NSHOW = 10
+     C                   IF        NSHOW > 14
+     C                   EVAL      NSHOW = 14
      C                   ENDIF
      C                   IF        NSHOW < 0
      C                   EVAL      NSHOW = 0
      C                   ENDIF
-     C                   EVAL      TTLW = %CHAR(NMATCH) +
-     C                             ' document(s), ten cards to a page'
+     C                   EVAL      TTLW = %CHAR(NMATCH) + ' document(s)'
+     C                   IF        NMATCH = 0
+     C                   EVAL      TTLW = 'No documents yet.  Press F6 to' +
+     C                             ' write one.'
+     C                   ENDIF
      C                   ENDSR
       * ---- create a document, then edit it ----
      C     NEWDOC        BEGSR
@@ -507,6 +479,38 @@
      C                   ENDIF
      C                   EVAL      *IN50 = *OFF
      C                   EVAL      KUSER = PGMUSR
+     C                   EXSR      LOADSET
+     C                   ENDSR
+      * ---- this person's settings: units, week start, working day, time zone
+     C     LOADSET       BEGSR
+     C                   EVAL      USET = 'IS08001700      +0000'
+     C                   CALL      'OVGSET'                             50
+     C                   PARM                    USET
+     C                   EVAL      *IN50 = *OFF
+     C                   EVAL      UNITS = %SUBST(USET:1:1)
+     C                   EVAL      UWEEK = %SUBST(USET:2:1)
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:3:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDBEG = 800
+     C                   IF        NERR = '0' AND NVAL <= 2359
+     C                   EVAL      UDBEG = NVAL
+     C                   ENDIF
+     C                   EVAL      NERR = '0'
+     C                   EVAL      NSTR = %SUBST(USET:7:4)
+     C                   EXSR      TONUM
+     C                   EVAL      UDEND = 1700
+     C                   IF        NERR = '0' AND NVAL <= 2359 AND NVAL > UDBEG
+     C                   EVAL      UDEND = NVAL
+     C                   ENDIF
+     C                   EVAL      UZONE = %SUBST(USET:11:6)
+     C                   EVAL      UOFFS = %SUBST(USET:17:5)
+     C                   IF        %SUBST(UOFFS:1:1) <> '+' AND
+     C                             %SUBST(UOFFS:1:1) <> '-'
+     C                   EVAL      UOFFS = '+0000'
+     C                   ENDIF
+     C                   EVAL      UOFFZ = %SUBST(UOFFS:1:3) + ':' +
+     C                             %SUBST(UOFFS:4:2)
      C                   ENDSR
      C     HDR           BEGSR
      C                   TIME                    HTS
@@ -517,6 +521,10 @@
      C                   EVAL      HDT = %CHAR(%DIV(%REM(HN8:10000):100)) + '/'
      C                             + %CHAR(%REM(HN8:100)) + '/' +
      C                             %SUBST(HSTMP:1:4)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      HDT = %SUBST(HSTMP:9:2) + '.' +
+     C                             %SUBST(HSTMP:6:2) + '.' + %SUBST(HSTMP:1:4)
+     C                   ENDIF
      C                   EVAL      HDRLN = *BLANKS
      C                   EVAL      %SUBST(HDRLN:2:10) = HDRID
      C                   EVAL      %SUBST(HDRLN:33:15) = 'OfficeVibes/400'
@@ -528,6 +536,12 @@
      C                             %SUBST(WSTMP:9:2) + '/' + %SUBST(WSTMP:1:4) +
      C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
      C                             %SUBST(WSTMP:15:2)
+     C                   IF        UNITS = 'M'
+     C                   EVAL      WDT = %SUBST(WSTMP:9:2) + '.' +
+     C                             %SUBST(WSTMP:6:2) + '.' + %SUBST(WSTMP:1:4) +
+     C                             ' ' + %SUBST(WSTMP:12:2) + ':' +
+     C                             %SUBST(WSTMP:15:2)
+     C                   ENDIF
      C                   ENDSR
      C     CSR           BEGSR
      C                   EVAL      CSRROW = %DIV(CSRLOC:256)
@@ -598,6 +612,12 @@
      C                   EVAL      NERR = '0'
      C                   EVAL      DUEVAL = 0
      C                   EVAL      DUE = %TRIML(DUE)
+      * day.month.year with dots is read the European way round
+     C                   EVAL      DOTF = '0'
+     C                   IF        %SCAN('.':DUE) > 0
+     C                   EVAL      DOTF = '1'
+     C     '.':'/'       XLATE     DUE           DUE
+     C                   ENDIF
      C                   EVAL      DLEN = %LEN(%TRIMR(DUE))
      C                   IF        DLEN > 0
      C                   EVAL      P1 = %SCAN('/':DUE)
@@ -633,6 +653,11 @@
      C                   EXSR      TONUM
      C                   EVAL      YY = NVAL
      C                   ENDIF
+     C                   ENDIF
+     C                   IF        NERR = '0' AND DOTF = '1'
+     C                   EVAL      P1 = MM
+     C                   EVAL      MM = DD
+     C                   EVAL      DD = P1
      C                   ENDIF
      C                   IF        NERR = '0'
      C                   IF        YY < 100

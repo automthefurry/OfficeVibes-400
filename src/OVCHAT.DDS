@@ -21,6 +21,7 @@
      A                                      HLPRCD(HCHATSCR)
      A            CHHDR         78A  O  1  2DSPATR(HI)
      A            CHTTL         60A  O  2  3DSPATR(HI)
+     A            CHTOP         76A  O  3  3COLOR(YLW)
      A            CH01          76A  O  4  3OVRDTA
      A            CH02          76A  O  5  3OVRDTA
      A            CH03          76A  O  6  3OVRDTA
@@ -40,49 +41,144 @@
      A                                      DSPATR(UL)
      A            CHMSG         74A  O 21  3DSPATR(HI)
      A            CHFK          78A  O 23  2COLOR(BLU)
-     A          R CHWHO
+     A          R CHLST
      A          H                           HLPARA(*RCD)
-     A                                      HLPRCD(HCHWHO)
-     A            WHDR          78A  O  1  2DSPATR(HI)
-     A            WMSG          74A  O 21  3DSPATR(HI)
-     A            WFK           78A  O 23  2COLOR(BLU)
-     A                                  4  3'Chat with'
-     A            WWHO          10A  B  4 24DSPATR(UL)
-     A                                  4 37'A user ID, or EVERYONE.  F4 shows -
-     A                                      a list'
+     A                                      HLPRCD(HCHLST)
+     A            GHDR          78A  O  1  2DSPATR(HI)
+     A                                  2 32'L I V E   C H A T'
+     A                                      DSPATR(HI)
+     A                                  4  3'Private chat with'
+     A            GWHO          10A  B  4 22DSPATR(UL)
+     A                                  4 34'a user ID.  F4 lists users'
+     A                                      COLOR(BLU)
+     A                                  6  3'Group rooms, newest topic first'
+     A                                      COLOR(WHT)
+     A                                  7  2'Opt  Room           Topic         -
+     A                                                           Set by     Whe-
+     A                                      n'
+     A                                      COLOR(BLU)
+     A            GOP01          1A  I  8  3DSPATR(UL)
+     A            GLN01         72A  O  8  7COLOR(TRQ)
+     A            GOP02          1A  I  9  3DSPATR(UL)
+     A            GLN02         72A  O  9  7COLOR(GRN)
+     A            GOP03          1A  I 10  3DSPATR(UL)
+     A            GLN03         72A  O 10  7COLOR(TRQ)
+     A            GOP04          1A  I 11  3DSPATR(UL)
+     A            GLN04         72A  O 11  7COLOR(GRN)
+     A            GOP05          1A  I 12  3DSPATR(UL)
+     A            GLN05         72A  O 12  7COLOR(TRQ)
+     A            GOP06          1A  I 13  3DSPATR(UL)
+     A            GLN06         72A  O 13  7COLOR(GRN)
+     A            GOP07          1A  I 14  3DSPATR(UL)
+     A            GLN07         72A  O 14  7COLOR(TRQ)
+     A            GOP08          1A  I 15  3DSPATR(UL)
+     A            GLN08         72A  O 15  7COLOR(GRN)
+     A            GOP09          1A  I 16  3DSPATR(UL)
+     A            GLN09         72A  O 16  7COLOR(TRQ)
+     A            GOP10          1A  I 17  3DSPATR(UL)
+     A            GLN10         72A  O 17  7COLOR(GRN)
+     A                                 19  3'1=Join   4=Delete room   F6=New ro-
+     A                                      om with a topic'
+     A                                      COLOR(BLU)
+     A            GMSG          76A  O 21  3DSPATR(HI)
+     A            GFK           78A  O 23  2COLOR(BLU)
+     A          R CHNEW
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HCHNEW)
+     A            NHDR          78A  O  1  2DSPATR(HI)
+     A            NMSG          74A  O 21  3DSPATR(HI)
+     A            NFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Room name'
+     A            NROOM         14A  B  4 24DSPATR(UL)
+     A                                  4 40'one word'
+     A                                      COLOR(BLU)
+     A                                  6  3'Topic'
+     A            NTOPC         50A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  8  3'Everyone in the office can see the-
+     A                                       room and join it.'
+     A                                      COLOR(BLU)
+     A          R CHTOPS
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HCHTOPS)
+     A            THDR          78A  O  1  2DSPATR(HI)
+     A            TMSG          74A  O 21  3DSPATR(HI)
+     A            TFK           78A  O 23  2COLOR(BLU)
+     A            TROOM         40A  O  3  3COLOR(WHT)
+     A                                  5  3'New topic'
+     A            TTOPC         50A  B  5 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  7  3'The room is moved to the top of th-
+     A                                      e list, and everyone in it sees the-
+     A                                       change.'
      A                                      COLOR(BLU)
      A          R HCHATSCR
      A                                  1  2'Help - Live chat'
      A                                      DSPATR(HI)
      A                                  3  3'The screen shows the latest fourte-
-     A                                      en lines of the conversation and'
-     A                                  4  3'refreshes by itself every two seco-
-     A                                      nds, so you see replies as they arr-
-     A                                      ive.'
-     A                                  6  3'Type what you want to say and pres-
+     A                                      en lines of the conversation.'
+     A                                  5  3'New lines appear by themselves whe-
+     A                                      n they arrive.  Whatever you have t-
+     A                                      yped'
+     A                                  6  3'is kept, but the cursor goes back -
+     A                                      to the start of the line, so press'
+     A                                  7  3'End or Field Exit to carry on typi-
+     A                                      ng.  Settings can turn this off, so-
+     A                                       that'
+     A                                  8  3'new lines only appear when you pre-
+     A                                      ss F5.'
+     A                                 10  3'Type what you want to say and pres-
      A                                      s Enter to send it.'
-     A                                  7  3'F6 switches to a different person -
-     A                                      or to the EVERYONE room.'
-     A                                  8  3'F5 refreshes at once.  F3 leaves t-
-     A                                      he chat.'
-     A                                 10  3'The first time you write to someon-
+     A                                 11  3'F6 goes back to the room list.  F9-
+     A                                       changes the topic of a group room.'
+     A                                 12  3'F3 leaves the chat.'
+     A                                 14  3'The first time you write to someon-
      A                                      e in a session they get a system'
-     A                                 11  3'message telling them you are waiti-
+     A                                 15  3'message telling them you are waiti-
      A                                      ng, in case they are not in the cha-
      A                                      t.'
-     A                                 13  3'If the screen does not refresh by -
-     A                                      itself on your display, press Enter'
-     A                                 14  3'or F5 to see new lines.'
      A                                 23  2'Press Enter to return.'
      A                                      COLOR(BLU)
-     A          R HCHWHO
-     A                                  1  2'Help - Live chat - who with'
+     A          R HCHLST
+     A                                  1  2'Help - Live chat rooms'
      A                                      DSPATR(HI)
-     A                                  3  3'Type the user ID of the person to -
-     A                                      chat with and press Enter.'
-     A                                  4  3'F4 opens a list of enrolled users -
-     A                                      to pick from.'
-     A                                  6  3'Type EVERYONE to join the office c-
-     A                                      hat room, which all users share.'
+     A                                  3  3'Group rooms are open to everyone i-
+     A                                      n the office.  The room whose topic'
+     A                                  4  3'changed most recently is at the to-
+     A                                      p, so you can see where people are.'
+     A                                  6  3'Type 1 beside a room, or put the c-
+     A                                      ursor on it, and press Enter to joi-
+     A                                      n it.'
+     A                                  7  3'Type 4 to delete a room you made. -
+     A                                       Administrators can delete any room'
+     A                                  8  3'except EVERYONE.  F6 makes a new r-
+     A                                      oom and asks for its topic.'
+     A                                 10  3'For a private chat, type a user ID-
+     A                                       in Private chat with, or press F4 -
+     A                                      to'
+     A                                 11  3'pick someone.  They get a message -
+     A                                      saying you are waiting.'
+     A                                 12  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HCHNEW
+     A                                  1  2'Help - New room'
+     A                                      DSPATR(HI)
+     A                                  3  3'Give the room a one-word name and -
+     A                                      a topic.  The room appears at the t-
+     A                                      op'
+     A                                  4  3'of the room list for everyone.  Yo-
+     A                                      u join it straight away.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HCHTOPS
+     A                                  1  2'Help - Room topic'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the new topic and press Enter-
+     A                                      .  Everyone in the room sees a line'
+     A                                  4  3'saying you changed it, and the roo-
+     A                                      m moves to the top of the room list-
+     A                                      .'
      A                                 23  2'Press Enter to return.'
      A                                      COLOR(BLU)

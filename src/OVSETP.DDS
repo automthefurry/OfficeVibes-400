@@ -1,0 +1,7 @@
+     A* OVSETP - OfficeVibes/400 data file
+     A          R SETREC
+     A            STUSER        10A
+     A            STANIM         1A
+     A            STSAVE         3S 0
+     A            STCHAT         1A
+     A          K STUSER
