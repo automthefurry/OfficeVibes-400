@@ -1,0 +1,91 @@
+     A* OVFIND - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R FLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HFLIST)
+     A            FHDR          78A  O  1  2DSPATR(HI)
+     A                                  2 35'S E A R C H'
+     A                                      DSPATR(HI)
+     A                                  3 14'+----------------------------------
+     A                                      -----------------+'
+     A                                      COLOR(BLU)
+     A                                  5 14'+----------------------------------
+     A                                      -----------------+'
+     A                                      COLOR(BLU)
+     A                                  4 14'|'
+     A                                      COLOR(BLU)
+     A                                  4 65'|'
+     A                                      COLOR(BLU)
+     A                                  4 16'Look for'
+     A            FFND          30A  B  4 26CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(PC)
+     A            FTTL          50A  O  6  3DSPATR(HI)
+     A            FCOL          74A  O  7  3COLOR(BLU)
+     A            FOP01          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN01         72A  O  8  7
+     A            FOP02          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN02         72A  O  9  7
+     A            FOP03          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN03         72A  O 10  7
+     A            FOP04          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN04         72A  O 11  7
+     A            FOP05          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN05         72A  O 12  7
+     A            FOP06          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN06         72A  O 13  7
+     A            FOP07          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN07         72A  O 14  7
+     A            FOP08          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN08         72A  O 15  7
+     A            FOP09          2A  I 16  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN09         72A  O 16  7
+     A            FOP10          2A  I 17  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            FLN10         72A  O 17  7
+     A            FINF          74A  O 18  3COLOR(TRQ)
+     A            FIN2          74A  O 19  3COLOR(TRQ)
+     A            FIN3          74A  O 20  3COLOR(TRQ)
+     A            FMSG          74A  O 21  3DSPATR(HI)
+     A            FFK1          78A  O 22  2COLOR(BLU)
+     A            FFK2          78A  O 23  2COLOR(BLU)
+     A          R HFLIST
+     A                                  1  2'Help - Search everything'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type a word or part of one in Find-
+     A                                       and press Enter.'
+     A                                  5  3'The search looks through your mess-
+     A                                      ages, mail, calendar, notes, tasks,'
+     A                                  6  3'phone book and documents, and the -
+     A                                      office directory.'
+     A                                  7  3'It only finds items that are yours-
+     A                                      , or were sent to or by you.'
+     A                                  9  3'Type 5 beside a result, or put the-
+     A                                       cursor on it, and press Enter to s-
+     A                                      ee'
+     A                                 10  3'the whole item below the list.'
+     A                                 11  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

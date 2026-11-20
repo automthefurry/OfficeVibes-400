@@ -1,0 +1,8 @@
+     A* OVLOGP - OfficeVibes/400 data file
+     A          R LOGREC
+     A            LGSTMP          Z
+     A            LGUSER        10A
+     A            LGAPP         10A
+     A            LGACT         10A
+     A            LGTEXT        60A
+     A          K LGSTMP

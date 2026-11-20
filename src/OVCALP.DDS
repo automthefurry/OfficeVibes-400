@@ -1,0 +1,11 @@
+     A* OVCALP - OfficeVibes/400 data file
+     A          R CALREC
+     A            CLUSER        10A
+     A            CLDATE         8S 0
+     A            CLTIME         4S 0
+     A            CLSTMP          Z
+     A            CLTEXT        60A
+     A          K CLUSER
+     A          K CLDATE
+     A          K CLTIME
+     A          K CLSTMP

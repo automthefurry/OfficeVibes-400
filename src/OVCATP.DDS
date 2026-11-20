@@ -1,0 +1,8 @@
+     A* OVCATP - OfficeVibes/400 data file
+     A          R CATREC
+     A            CTUSER        10A
+     A            CTNAME        12A
+     A            CTFOOD         3S 0
+     A            CTJOY          3S 0
+     A            CTSTMP          Z
+     A          K CTUSER

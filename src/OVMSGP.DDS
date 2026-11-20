@@ -1,0 +1,9 @@
+     A* OVMSGP - OfficeVibes/400 data file
+     A          R MSGREC
+     A            MGSTMP          Z
+     A            MGTO          10A
+     A            MGFROM        10A
+     A            MGSTAT         1A
+     A            MGTEXT        72A
+     A          K MGSTMP
+     A          K MGTO

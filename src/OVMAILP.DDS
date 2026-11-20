@@ -1,0 +1,17 @@
+     A* OVMAILP - OfficeVibes/400 data file
+     A          R MAILREC
+     A            MMSTMP          Z
+     A            MMTO          10A
+     A            MMFROM        10A
+     A            MMSTAT         1A
+     A            MMSUBJ        50A
+     A            MMB1          72A
+     A            MMB2          72A
+     A            MMB3          72A
+     A            MMB4          72A
+     A            MMB5          72A
+     A            MMB6          72A
+     A            MMB7          72A
+     A            MMB8          72A
+     A          K MMSTMP
+     A          K MMTO

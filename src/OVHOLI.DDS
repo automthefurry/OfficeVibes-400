@@ -1,0 +1,87 @@
+     A* OVHOLI - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R HOLLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HHOLLIST)
+     A            HHDR          78A  O  1  2DSPATR(HI)
+     A            HTTL          60A  O  3  3DSPATR(HI)
+     A            HCOL          74A  O  5  3COLOR(BLU)
+     A            HOP01          2A  I  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN01         72A  O  6  7COLOR(RED)
+     A            HOP02          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN02         72A  O  7  7COLOR(RED)
+     A            HOP03          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN03         72A  O  8  7COLOR(RED)
+     A            HOP04          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN04         72A  O  9  7COLOR(RED)
+     A            HOP05          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN05         72A  O 10  7COLOR(RED)
+     A            HOP06          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN06         72A  O 11  7COLOR(RED)
+     A            HOP07          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN07         72A  O 12  7COLOR(RED)
+     A            HOP08          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN08         72A  O 13  7COLOR(RED)
+     A            HOP09          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN09         72A  O 14  7COLOR(RED)
+     A            HOP10          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            HLN10         72A  O 15  7COLOR(RED)
+     A            HMSG          74A  O 21  3DSPATR(HI)
+     A            HFK1          78A  O 22  2COLOR(BLU)
+     A            HFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 25'C O M P A N Y   H O L I D A Y S'
+     A                                      DSPATR(HI)
+     A          R HOLADD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HHOLADD)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            AMSG          74A  O 21  3DSPATR(HI)
+     A            AFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Date'
+     A            AHDT          10A  B  4 24DSPATR(UL)
+     A                                  4 37'M/D/YYYY'
+     A                                      COLOR(BLU)
+     A                                  6  3'Name'
+     A            AHNM          30A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R HHOLLIST
+     A                                  1  2'Help - Company holidays'
+     A                                      DSPATR(HI)
+     A                                  3  3'Holidays are shown on every calend-
+     A                                      ar: in the day schedule, the month'
+     A                                  4  3'and the six-month view.'
+     A                                  6  3'Administrators can add holidays wi-
+     A                                      th F6 and delete them with 4.'
+     A                                  7  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HHOLADD
+     A                                  1  2'Help - Add a company holiday'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the date, such as 12/25/2026,-
+     A                                       and a name for the holiday.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

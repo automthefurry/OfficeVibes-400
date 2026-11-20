@@ -1,0 +1,47 @@
+     A* OVCAT - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R CATSCR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HCATSCR)
+     A            CHDR          78A  O  1  2DSPATR(HI)
+     A                                  3 28'T H E   O F F I C E   C A T'
+     A                                      DSPATR(HI)
+     A            CA1           30A  O  5 26COLOR(YLW)
+     A            CA2           30A  O  6 26COLOR(YLW)
+     A            CA3           30A  O  7 26COLOR(YLW)
+     A            CA4           30A  O  8 26COLOR(YLW)
+     A            CA5           30A  O  9 26COLOR(YLW)
+     A            CSAY          50A  O 11 15DSPATR(HI)
+     A                                 13 15'Name'
+     A            CNAME         12A  B 13 27CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                 14 15'Tummy'
+     A            CFOOD         20A  O 14 27COLOR(GRN)
+     A                                 15 15'Happiness'
+     A            CJOY          20A  O 15 27COLOR(PNK)
+     A            CMSG          74A  O 21  3DSPATR(HI)
+     A            CFK           78A  O 23  2COLOR(BLU)
+     A          R HCATSCR
+     A                                  1  2'Help - The office cat'
+     A                                      DSPATR(HI)
+     A                                  3  3'Every user has a cat.  It gets hun-
+     A                                      grier and less happy as the hours p-
+     A                                      ass.'
+     A                                  5  3'F5 pets it.  F6 feeds it.  F7 play-
+     A                                      s with it.'
+     A                                  6  3'Type a new name and press Enter to-
+     A                                       rename it.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

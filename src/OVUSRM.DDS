@@ -1,0 +1,146 @@
+     A* OVUSRM - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R ULIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HULIST)
+     A            UHDR          78A  O  1  2DSPATR(HI)
+     A            UTTL          32A  O  3 47DSPATR(HI)
+     A                                  3  3'Find . . .'
+     A            UFND          30A  B  3 14CHECK(LC)
+     A                                      DSPATR(UL)
+     A            UCOL          74A  O  5  3COLOR(BLU)
+     A            UOP01          2A  I  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN01         70A  O  6  8
+     A  61                                  COLOR(RED)
+     A  71                                  DSPATR(HI)
+     A            UOP02          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN02         70A  O  7  8
+     A  62                                  COLOR(RED)
+     A  72                                  DSPATR(HI)
+     A            UOP03          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN03         70A  O  8  8
+     A  63                                  COLOR(RED)
+     A  73                                  DSPATR(HI)
+     A            UOP04          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN04         70A  O  9  8
+     A  64                                  COLOR(RED)
+     A  74                                  DSPATR(HI)
+     A            UOP05          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN05         70A  O 10  8
+     A  65                                  COLOR(RED)
+     A  75                                  DSPATR(HI)
+     A            UOP06          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN06         70A  O 11  8
+     A  66                                  COLOR(RED)
+     A  76                                  DSPATR(HI)
+     A            UOP07          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN07         70A  O 12  8
+     A  67                                  COLOR(RED)
+     A  77                                  DSPATR(HI)
+     A            UOP08          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN08         70A  O 13  8
+     A  68                                  COLOR(RED)
+     A  78                                  DSPATR(HI)
+     A            UOP09          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN09         70A  O 14  8
+     A  69                                  COLOR(RED)
+     A  79                                  DSPATR(HI)
+     A            UOP10          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ULN10         70A  O 15  8
+     A  70                                  COLOR(RED)
+     A  80                                  DSPATR(HI)
+     A            UMSG          74A  O 21  3DSPATR(HI)
+     A            UFK1          78A  O 22  2COLOR(BLU)
+     A            UFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 29'O F F I C E   U S E R S'
+     A                                      DSPATR(HI)
+     A                                 17  3'Administrators are bright.'
+     A                                      DSPATR(HI)
+     A                                 17 31'Disabled users are red.'
+     A                                      COLOR(RED)
+     A          R UEDIT
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HUEDIT)
+     A            EHDR          78A  O  1  2DSPATR(HI)
+     A            EMSG          74A  O 21  3DSPATR(HI)
+     A            EFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'User ID'
+     A            EUSER         10A  B  4 24DSPATR(UL)
+     A  40                                  DSPATR(PR)
+     A                                  6  3'Full name'
+     A            ENAME         30A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  8  3'Department'
+     A            EDEPT         20A  B  8 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                 10  3'Phone'
+     A            EPHON         20A  B 10 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                 12  3'Administrator (Y/N)'
+     A            EADM           1A  B 12 24DSPATR(UL)
+     A                                 14  3'For a new user you can also create-
+     A                                       the OS/400 sign-on:'
+     A                                      COLOR(BLU)
+     A                                 15  3'Create sign-on (Y/N)'
+     A            ECRT           1A  B 15 24DSPATR(UL)
+     A                                 16  3'Password'
+     A            EPWD          10A  B 16 24DSPATR(ND)
+     A                                 16 37'Not shown as you type'
+     A                                      COLOR(BLU)
+     A          R HULIST
+     A                                  1  2'Help - Users'
+     A                                      DSPATR(HI)
+     A                                  3  3'Everyone enrolled in the office.'
+     A                                  5  3'Type part of a name, ID or departm-
+     A                                      ent in Find and press Enter to sear-
+     A                                      ch.'
+     A                                  6  3'Options: 2 changes a user, 5 disab-
+     A                                      les or enables, 4 removes.'
+     A                                  7  3'You can also put the cursor on a l-
+     A                                      ine and press Enter to pick it.'
+     A                                  9  3'A disabled user cannot open the of-
+     A                                      fice.  You cannot disable yourself.'
+     A                                 10  3'F6 enrolls a new user.'
+     A                                 11  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HUEDIT
+     A                                  1  2'Help - Enroll or change a user'
+     A                                      DSPATR(HI)
+     A                                  3  3'User ID is the OS/400 user profile-
+     A                                       name.  It cannot be changed later.'
+     A                                  4  3'Administrator: Y lets the user int-
+     A                                      o the Administration menu.'
+     A                                  6  3'For a new user, Create sign-on Y a-
+     A                                      lso creates the OS/400 user profile-
+     A                                       with'
+     A                                  7  3'the password you type, and makes t-
+     A                                      he office menu the first thing they-
+     A                                       see.'
+     A                                  8  3'That needs *SECADM special authori-
+     A                                      ty.  The password is never logged.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

@@ -1,0 +1,176 @@
+     A* OVMAIL - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R LLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HLLIST)
+     A            LHDR          78A  O  1  2DSPATR(HI)
+     A            LTTL          50A  O  3 24DSPATR(HI)
+     A            LCOL          74A  O  8  3COLOR(BLU)
+     A            LOP01          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN01         72A  O  9  7
+     A  61                                  DSPATR(HI)
+     A            LOP02          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN02         72A  O 10  7
+     A  62                                  DSPATR(HI)
+     A            LOP03          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN03         72A  O 11  7
+     A  63                                  DSPATR(HI)
+     A            LOP04          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN04         72A  O 12  7
+     A  64                                  DSPATR(HI)
+     A            LOP05          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN05         72A  O 13  7
+     A  65                                  DSPATR(HI)
+     A            LOP06          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN06         72A  O 14  7
+     A  66                                  DSPATR(HI)
+     A            LOP07          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN07         72A  O 15  7
+     A  67                                  DSPATR(HI)
+     A            LOP08          2A  I 16  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN08         72A  O 16  7
+     A  68                                  DSPATR(HI)
+     A            LOP09          2A  I 17  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN09         72A  O 17  7
+     A  69                                  DSPATR(HI)
+     A            LOP10          2A  I 18  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LLN10         72A  O 18  7
+     A  70                                  DSPATR(HI)
+     A            LMSG          74A  O 21  3DSPATR(HI)
+     A            LFK1          78A  O 22  2COLOR(BLU)
+     A            LFK2          78A  O 23  2COLOR(BLU)
+     A                                  2  4'+------------+'
+     A                                      COLOR(YLW)
+     A                                  3  4'|\          /|'
+     A                                      COLOR(YLW)
+     A                                  4  4'|  \      /  |'
+     A                                      COLOR(YLW)
+     A                                  5  4'|    \__/    |'
+     A                                      COLOR(YLW)
+     A                                  6  4'+------------+'
+     A                                      COLOR(YLW)
+     A                                  2 24'M A I L B O X'
+     A                                      DSPATR(HI)
+     A            LTB1          10A  O  4 24COLOR(WHT)
+     A N41                                  DSPATR(RI)
+     A            LTB2           8A  O  4 36COLOR(WHT)
+     A  41                                  DSPATR(RI)
+     A                                  4 46'F10 switches folders'
+     A                                      COLOR(BLU)
+     A                                  5 24'F6 writes a new memo.  Unread mail-
+     A                                       is bright.'
+     A                                      COLOR(BLU)
+     A          R LCOMP
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HLCOMP)
+     A            CHDR          78A  O  1  2DSPATR(HI)
+     A            CMSG          74A  O 21  3DSPATR(HI)
+     A            CFK           78A  O 23  2COLOR(BLU)
+     A                                  3  3'To user, group or ALL'
+     A            CTO           10A  B  3 27DSPATR(UL)
+     A                                  3 40'F4 shows a list'
+     A                                      COLOR(BLU)
+     A                                  4  3'Subject'
+     A            CSUBJ         50A  B  4 27CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  6  3'Text'
+     A                                      COLOR(BLU)
+     A            CB1           72A  B  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB2           72A  B  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB3           72A  B  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB4           72A  B 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB5           72A  B 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB6           72A  B 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB7           72A  B 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB8           72A  B 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R LREAD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HLREAD)
+     A            RHDR          78A  O  1  2DSPATR(HI)
+     A            RMSG          74A  O 21  3DSPATR(HI)
+     A            RFK           78A  O 23  2COLOR(BLU)
+     A            RINF1         74A  O  3  3
+     A            RINF2         74A  O  4  3
+     A            RSUBJ         74A  O  5  3DSPATR(HI)
+     A            RB1           72A  O  7  3
+     A            RB2           72A  O  8  3
+     A            RB3           72A  O  9  3
+     A            RB4           72A  O 10  3
+     A            RB5           72A  O 11  3
+     A            RB6           72A  O 12  3
+     A            RB7           72A  O 13  3
+     A            RB8           72A  O 14  3
+     A          R HLLIST
+     A                                  1  2'Help - Mailbox'
+     A                                      DSPATR(HI)
+     A                                  3  3'Memos sent to you, newest first.  -
+     A                                      Unread ones are bright, with a star-
+     A                                      .'
+     A                                  4  3'F10 switches between your mailbox -
+     A                                      and the mail you have sent.'
+     A                                  6  3'Options: 4 deletes, 5 opens the me-
+     A                                      mo.'
+     A                                  7  3'You can also put the cursor on a l-
+     A                                      ine and press Enter to pick it.'
+     A                                  9  3'F6 writes a new memo.  F4 searches-
+     A                                       all of your office items.'
+     A                                 10  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HLCOMP
+     A                                  1  2'Help - Compose mail'
+     A                                      DSPATR(HI)
+     A                                  3  3'Fill in who it is for, a subject a-
+     A                                      nd up to eight lines, then press En-
+     A                                      ter.'
+     A                                  5  3'To can be a user ID, the name of a-
+     A                                       distribution group, or ALL for eve-
+     A                                      ryone.'
+     A                                  6  3'F4 opens a list of enrolled users -
+     A                                      to pick from.'
+     A                                  8  3'F12 leaves without sending.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HLREAD
+     A                                  1  2'Help - Read mail'
+     A                                      DSPATR(HI)
+     A                                  3  3'F6 replies to the sender.'
+     A                                  4  3'F9 forwards the memo to someone el-
+     A                                      se, with the text copied in.'
+     A                                  5  3'F10 prints the memo.  Find it unde-
+     A                                      r Printed output on the main menu.'
+     A                                  6  3'Enter or F12 goes back to the list-
+     A                                      .'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

@@ -1,0 +1,10 @@
+     A* OVPRTF - OfficeVibes/400 report printer file
+     A          R PHEAD                     SKIPB(3)
+     A                                      SPACEA(2)
+     A            PTITLE        60A        1
+     A                                    70DATE EDTCDE(Y)
+     A                                    82TIME
+     A                                    95'Page'
+     A                                   100PAGNBR EDTCDE(Z)
+     A          R PLINE                     SPACEA(1)
+     A            PTEXT        100A        1

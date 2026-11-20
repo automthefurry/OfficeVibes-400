@@ -1,0 +1,135 @@
+     A* OVTASK - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R TLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HTLIST)
+     A            THDR          78A  O  1  2DSPATR(HI)
+     A            TTTL          50A  O  3  3DSPATR(HI)
+     A            TCOL          74A  O  6  3COLOR(BLU)
+     A            TOP01          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN01         72A  O  7  7
+     A  61                                  COLOR(RED)
+     A  71                                  COLOR(BLU)
+     A            TOP02          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN02         72A  O  8  7
+     A  62                                  COLOR(RED)
+     A  72                                  COLOR(BLU)
+     A            TOP03          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN03         72A  O  9  7
+     A  63                                  COLOR(RED)
+     A  73                                  COLOR(BLU)
+     A            TOP04          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN04         72A  O 10  7
+     A  64                                  COLOR(RED)
+     A  74                                  COLOR(BLU)
+     A            TOP05          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN05         72A  O 11  7
+     A  65                                  COLOR(RED)
+     A  75                                  COLOR(BLU)
+     A            TOP06          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN06         72A  O 12  7
+     A  66                                  COLOR(RED)
+     A  76                                  COLOR(BLU)
+     A            TOP07          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN07         72A  O 13  7
+     A  67                                  COLOR(RED)
+     A  77                                  COLOR(BLU)
+     A            TOP08          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN08         72A  O 14  7
+     A  68                                  COLOR(RED)
+     A  78                                  COLOR(BLU)
+     A            TOP09          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN09         72A  O 15  7
+     A  69                                  COLOR(RED)
+     A  79                                  COLOR(BLU)
+     A            TOP10          2A  I 16  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            TLN10         72A  O 16  7
+     A  70                                  COLOR(RED)
+     A  80                                  COLOR(BLU)
+     A            TMSG          74A  O 21  3DSPATR(HI)
+     A            TFK1          78A  O 22  2COLOR(BLU)
+     A            TFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 31'T O - D O   L I S T'
+     A                                      DSPATR(HI)
+     A                                  4  3'Progress'
+     A            TBAR          32A  O  4 13COLOR(GRN)
+     A            TPCT          12A  O  4 47DSPATR(HI)
+     A                                 18  3'[ ] open'
+     A                                      COLOR(GRN)
+     A                                 18 14'[X] done'
+     A                                      COLOR(BLU)
+     A                                 18 25'OVERDUE'
+     A                                      COLOR(RED)
+     A                                 18 35'H M L = priority'
+     A                                      COLOR(WHT)
+     A          R TADD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HTADD)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            AMSG          74A  O 21  3DSPATR(HI)
+     A            AFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Task'
+     A            ATEXT         72A  B  5  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  7  3'Due date'
+     A            ADUE          10A  B  7 24DSPATR(UL)
+     A                                  7 37'M/D or M/D/YYYY, blank for none'
+     A                                      COLOR(BLU)
+     A                                  9  3'Priority'
+     A            APRI           1A  B  9 24DSPATR(UL)
+     A                                  9 37'H=High  M=Medium  L=Low'
+     A                                      COLOR(BLU)
+     A          R HTLIST
+     A                                  1  2'Help - To-do list'
+     A                                      DSPATR(HI)
+     A                                  3  3'Your to-do list.  [X] marks a fini-
+     A                                      shed task.  The letter is the prior-
+     A                                      ity:'
+     A                                  4  3'H high, M medium, L low.  Finished-
+     A                                       tasks are blue, overdue ones red.'
+     A                                  5  3'The progress bar shows how much of-
+     A                                       the list is done.'
+     A                                  7  3'Options: 2 marks a task done, 9 re-
+     A                                      opens it, 4 deletes it.'
+     A                                  8  3'Cursor on a task and Enter marks i-
+     A                                      t done.'
+     A                                 10  3'F6 adds a task.  F9 prints the lis-
+     A                                      t.  F11 removes every finished task-
+     A                                      .'
+     A                                 11  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HTADD
+     A                                  1  2'Help - Add a task'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type what needs doing.  The due da-
+     A                                      te and priority are optional.'
+     A                                  5  3'Due date: month/day, such as 3/15,-
+     A                                       or month/day/year.'
+     A                                  6  3'Priority: H, M or L.  Anything els-
+     A                                      e is taken as M.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

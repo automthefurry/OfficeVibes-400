@@ -1,0 +1,97 @@
+     A* OVGRPM - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R GLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HGLIST)
+     A            GHDR          78A  O  1  2DSPATR(HI)
+     A            GTTL          50A  O  3  3DSPATR(HI)
+     A            GCOL          74A  O  5  3COLOR(BLU)
+     A            GOP01          2A  I  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN01         70A  O  6  8COLOR(TRQ)
+     A            GOP02          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN02         70A  O  7  8COLOR(TRQ)
+     A            GOP03          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN03         70A  O  8  8COLOR(TRQ)
+     A            GOP04          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN04         70A  O  9  8COLOR(TRQ)
+     A            GOP05          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN05         70A  O 10  8COLOR(TRQ)
+     A            GOP06          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN06         70A  O 11  8COLOR(TRQ)
+     A            GOP07          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN07         70A  O 12  8COLOR(TRQ)
+     A            GOP08          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN08         70A  O 13  8COLOR(TRQ)
+     A            GOP09          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN09         70A  O 14  8COLOR(TRQ)
+     A            GOP10          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GLN10         70A  O 15  8COLOR(TRQ)
+     A            GMSG          74A  O 21  3DSPATR(HI)
+     A            GFK1          78A  O 22  2COLOR(BLU)
+     A            GFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 22'D I S T R I B U T I O N   G R O U -
+     A                                      P S'
+     A                                      DSPATR(HI)
+     A                                 17  3'Address mail or a message to a gro-
+     A                                      up name to reach every member.'
+     A                                      COLOR(BLU)
+     A          R GADD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HGADD)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            AMSG          74A  O 21  3DSPATR(HI)
+     A            AFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Group name'
+     A            AGRP          10A  B  4 24DSPATR(UL)
+     A                                  6  3'User to add'
+     A            AUSR          10A  B  6 24DSPATR(UL)
+     A                                  6 37'F4 shows a list'
+     A                                      COLOR(BLU)
+     A          R HGLIST
+     A                                  1  2'Help - Groups'
+     A                                      DSPATR(HI)
+     A                                  3  3'Each line is one member of one gro-
+     A                                      up.'
+     A                                  5  3'Mail or a message addressed to a g-
+     A                                      roup name goes to every member.'
+     A                                  6  3'Type 4 beside a line and press Ent-
+     A                                      er to remove that member.'
+     A                                  7  3'F6 adds a member, and creates the -
+     A                                      group if it is new.'
+     A                                  8  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HGADD
+     A                                  1  2'Help - Add a group member'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the group name and the user t-
+     A                                      o add, then press Enter.'
+     A                                  4  3'F4 opens a list of enrolled users -
+     A                                      to pick from.'
+     A                                  5  3'You can keep adding members.  F12 -
+     A                                      goes back to the list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

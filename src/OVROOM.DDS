@@ -1,0 +1,96 @@
+     A* OVROOM - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R RMLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HRMLIST)
+     A            RHDR          78A  O  1  2DSPATR(HI)
+     A            RTTL          60A  O  3  3DSPATR(HI)
+     A            RCOL          74A  O  5  3COLOR(BLU)
+     A            ROP01          2A  I  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN01         72A  O  6  7
+     A            ROP02          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN02         72A  O  7  7
+     A            ROP03          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN03         72A  O  8  7
+     A            ROP04          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN04         72A  O  9  7
+     A            ROP05          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN05         72A  O 10  7
+     A            ROP06          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN06         72A  O 11  7
+     A            ROP07          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN07         72A  O 12  7
+     A            ROP08          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN08         72A  O 13  7
+     A            ROP09          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN09         72A  O 14  7
+     A            ROP10          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            RLN10         72A  O 15  7
+     A            RMSG          74A  O 21  3DSPATR(HI)
+     A            RFK1          78A  O 22  2COLOR(BLU)
+     A            RFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 25'C O N F E R E N C E   R O O M S'
+     A                                      DSPATR(HI)
+     A          R RMADD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HRMADD)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            AMSG          74A  O 21  3DSPATR(HI)
+     A            AFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Room code'
+     A            ARID           9A  B  4 24DSPATR(UL)
+     A                                  6  3'Name'
+     A            ARNM          30A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  8  3'Seats'
+     A            ARST           3A  B  8 24DSPATR(UL)
+     A          R HRMLIST
+     A                                  1  2'Help - Conference rooms'
+     A                                      DSPATR(HI)
+     A                                  3  3'Every conference room, with how ma-
+     A                                      ny bookings it has on the chosen da-
+     A                                      y.'
+     A                                  5  3'Type 5 beside a room, or put the c-
+     A                                      ursor on it and press Enter, to see-
+     A                                       and'
+     A                                  6  3'book its schedule.  A room calenda-
+     A                                      r is shared: anyone can book it.'
+     A                                  8  3'Administrators can add rooms with -
+     A                                      F6 and delete them with 4.'
+     A                                  9  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HRMADD
+     A                                  1  2'Help - Add a conference room'
+     A                                      DSPATR(HI)
+     A                                  3  3'Room code: a short name such as RO-
+     A                                      OM1 or BOARD.  Its calendar is #ROO-
+     A                                      M1.'
+     A                                  4  3'Name: a longer description, such a-
+     A                                      s Third floor board room.'
+     A                                  5  3'Seats: how many people it holds.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

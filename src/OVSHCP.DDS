@@ -1,0 +1,11 @@
+     A* OVSHCP - OfficeVibes/400 data file
+     A          R SHCREC
+     A            SXUSER        10A
+     A            SXNAME        10A
+     A            SXROW          3S 0
+     A            SXCOL          2S 0
+     A            SXTEXT        30A
+     A          K SXUSER
+     A          K SXNAME
+     A          K SXROW
+     A          K SXCOL

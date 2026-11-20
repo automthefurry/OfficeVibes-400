@@ -1,0 +1,5 @@
+/* OVSYSN - return the system name for the banner */
+PGM        PARM(&N)
+  DCL        VAR(&N) TYPE(*CHAR) LEN(8)
+  RTVNETA    SYSNAME(&N)
+ENDPGM

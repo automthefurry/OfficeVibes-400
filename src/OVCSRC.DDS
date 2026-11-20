@@ -1,0 +1,73 @@
+     A* OVCSRC - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R CSLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HCSLIST)
+     A            SHDR          78A  O  1  2DSPATR(HI)
+     A            STTL          32A  O  3 47DSPATR(HI)
+     A                                  3  3'Find . . .'
+     A            SFND          30A  B  3 14CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SCOL          74A  O  5  3COLOR(BLU)
+     A            SOP01          2A  I  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN01         72A  O  6  7
+     A            SOP02          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN02         72A  O  7  7
+     A            SOP03          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN03         72A  O  8  7
+     A            SOP04          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN04         72A  O  9  7
+     A            SOP05          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN05         72A  O 10  7
+     A            SOP06          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN06         72A  O 11  7
+     A            SOP07          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN07         72A  O 12  7
+     A            SOP08          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN08         72A  O 13  7
+     A            SOP09          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN09         72A  O 14  7
+     A            SOP10          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN10         72A  O 15  7
+     A            SMSG          74A  O 21  3DSPATR(HI)
+     A            SFK1          78A  O 22  2COLOR(BLU)
+     A            SFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 22'S E A R C H   T H E   C A L E N D -
+     A                                      A R'
+     A                                      DSPATR(HI)
+     A          R HCSLIST
+     A                                  1  2'Help - Search the calendar'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type a word in Find and press Ente-
+     A                                      r to list every appointment that'
+     A                                  4  3'contains it, on any date.  Leave F-
+     A                                      ind empty to list them all.'
+     A                                  6  3'Type 5 beside one, or put the curs-
+     A                                      or on it and press Enter, to open'
+     A                                  7  3'that day.'
+     A                                  8  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

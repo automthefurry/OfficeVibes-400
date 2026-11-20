@@ -1,0 +1,80 @@
+     A* OVMEET - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R MEET
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HMEET)
+     A            MHDR          78A  O  1  2DSPATR(HI)
+     A            MMSG          74A  O 21  3DSPATR(HI)
+     A            MFK           78A  O 23  2COLOR(BLU)
+     A                                  2 23'S C H E D U L E   A   M E E T I N -
+     A                                      G'
+     A                                      DSPATR(HI)
+     A                                  3  3'Book a meeting and invite the peop-
+     A                                      le below.'
+     A                                      COLOR(BLU)
+     A                                  5  3'Subject'
+     A            MSUBJ         45A  B  5 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  6  3'Date'
+     A            MDATE         10A  B  6 24DSPATR(UL)
+     A                                  6 37'M/D/YYYY'
+     A                                      COLOR(BLU)
+     A                                  7  3'Time'
+     A            MTIME          5A  B  7 24DSPATR(UL)
+     A                                  7 37'HH:MM, 24-hour'
+     A                                      COLOR(BLU)
+     A                                  8  3'Conference room'
+     A            MROOM          9A  B  8 24DSPATR(UL)
+     A                                  8 37'Optional.  A room code, such as RO-
+     A                                      OM1'
+     A                                      COLOR(BLU)
+     A                                 10  3'People to invite.  Put the cursor -
+     A                                      on a field and press F4 for a list.'
+     A            MP1           10A  B 11  5DSPATR(UL)
+     A            MP2           10A  B 11 18DSPATR(UL)
+     A            MP3           10A  B 11 31DSPATR(UL)
+     A            MP4           10A  B 11 44DSPATR(UL)
+     A            MP5           10A  B 11 57DSPATR(UL)
+     A            MP6           10A  B 11 70DSPATR(UL)
+     A                                 13  3'Clashes'
+     A                                      COLOR(BLU)
+     A            MC1           74A  O 14  3COLOR(RED)
+     A            MC2           74A  O 15  3COLOR(RED)
+     A            MC3           74A  O 16  3COLOR(RED)
+     A            MC4           74A  O 17  3COLOR(RED)
+     A            MC5           74A  O 18  3COLOR(RED)
+     A            MC6           74A  O 19  3COLOR(RED)
+     A          R HMEET
+     A                                  1  2'Help - Schedule a meeting'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the subject, date and time, a-
+     A                                      nd up to six people to invite.'
+     A                                  4  3'Put the cursor on a person field a-
+     A                                      nd press F4 to pick from a list.'
+     A                                  5  3'A conference room is optional.'
+     A                                  7  3'Press Enter.  If anyone, or the ro-
+     A                                      om, already has something in that h-
+     A                                      our,'
+     A                                  8  3'the clashes are listed in red.  Ch-
+     A                                      ange the time, or press F10 to book-
+     A                                       it'
+     A                                  9  3'anyway.'
+     A                                 11  3'The meeting goes on your calendar,-
+     A                                       every invited calendar and the roo-
+     A                                      m.'
+     A                                 12  3'Each person invited gets a message-
+     A                                       about it.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

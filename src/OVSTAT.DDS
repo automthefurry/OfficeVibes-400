@@ -1,0 +1,71 @@
+     A* OVSTAT - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R SSTAT
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSSTAT)
+     A            SHDR          78A  O  1  2DSPATR(HI)
+     A            SMSG          74A  O 21  3DSPATR(HI)
+     A            SFK           78A  O 23  2COLOR(BLU)
+     A                                  3  3'What is stored in the office'
+     A                                      DSPATR(HI)
+     A                                  5  3'Enrolled users'
+     A            SC1            7A  O  5 24
+     A            SB1           40A  O  5 33COLOR(GRN)
+     A                                  6  3'Messages'
+     A            SC2            7A  O  6 24
+     A            SB2           40A  O  6 33COLOR(GRN)
+     A                                  7  3'Mail memos'
+     A            SC3            7A  O  7 24
+     A            SB3           40A  O  7 33COLOR(GRN)
+     A                                  8  3'Notes'
+     A            SC4            7A  O  8 24
+     A            SB4           40A  O  8 33COLOR(GRN)
+     A                                  9  3'Tasks'
+     A            SC5            7A  O  9 24
+     A            SB5           40A  O  9 33COLOR(GRN)
+     A                                 10  3'Phone book entries'
+     A            SC6            7A  O 10 24
+     A            SB6           40A  O 10 33COLOR(GRN)
+     A                                 11  3'Appointments'
+     A            SC7            7A  O 11 24
+     A            SB7           40A  O 11 33COLOR(GRN)
+     A                                 12  3'Documents'
+     A            SC8            7A  O 12 24
+     A            SB8           40A  O 12 33COLOR(GRN)
+     A                                 13  3'Log entries'
+     A            SC9            7A  O 13 24
+     A            SB9           40A  O 13 33COLOR(GRN)
+     A                                 15  3'Most active users, by log entries'
+     A                                      DSPATR(HI)
+     A            SU1           28A  O 16  3
+     A            SV1           40A  O 16 33COLOR(YLW)
+     A            SU2           28A  O 17  3
+     A            SV2           40A  O 17 33COLOR(YLW)
+     A            SU3           28A  O 18  3
+     A            SV3           40A  O 18 33COLOR(YLW)
+     A            SU4           28A  O 19  3
+     A            SV4           40A  O 19 33COLOR(YLW)
+     A            SU5           28A  O 20  3
+     A            SV5           40A  O 20 33COLOR(YLW)
+     A          R HSSTAT
+     A                                  1  2'Help - Statistics'
+     A                                      DSPATR(HI)
+     A                                  3  3'The upper bars show how many items-
+     A                                       of each kind are stored.'
+     A                                  4  3'The lower bars show the users with-
+     A                                       the most activity log entries.'
+     A                                  5  3'Press Enter to go back.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

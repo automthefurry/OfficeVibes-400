@@ -1,0 +1,8 @@
+     A* OVSHTP - OfficeVibes/400 data file
+     A          R SHTREC
+     A            SHUSER        10A
+     A            SHNAME        10A
+     A            SHTITL        40A
+     A            SHSTMP          Z
+     A          K SHUSER
+     A          K SHNAME

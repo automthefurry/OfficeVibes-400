@@ -1,0 +1,139 @@
+     A* OVMSGS - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R MLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HMLIST)
+     A            MHDR          78A  O  1  2DSPATR(HI)
+     A            MTTL          42A  O  3 36DSPATR(HI)
+     A            MCOL          74A  O  4  3COLOR(BLU)
+     A            MOP01          2A  I  5  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN01         72A  O  5  7
+     A  61                                  DSPATR(HI)
+     A            MOP02          2A  I  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN02         72A  O  6  7
+     A  62                                  DSPATR(HI)
+     A            MOP03          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN03         72A  O  7  7
+     A  63                                  DSPATR(HI)
+     A            MOP04          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN04         72A  O  8  7
+     A  64                                  DSPATR(HI)
+     A            MOP05          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN05         72A  O  9  7
+     A  65                                  DSPATR(HI)
+     A            MOP06          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN06         72A  O 10  7
+     A  66                                  DSPATR(HI)
+     A            MOP07          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN07         72A  O 11  7
+     A  67                                  DSPATR(HI)
+     A            MOP08          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN08         72A  O 12  7
+     A  68                                  DSPATR(HI)
+     A            MOP09          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN09         72A  O 13  7
+     A  69                                  DSPATR(HI)
+     A            MOP10          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            MLN10         72A  O 14  7
+     A  70                                  DSPATR(HI)
+     A            MMSG          74A  O 21  3DSPATR(HI)
+     A            MFK1          78A  O 22  2COLOR(BLU)
+     A            MFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 27'M E S S A G E   C E N T E R'
+     A                                      DSPATR(HI)
+     A            MTB1          18A  O  3  3COLOR(WHT)
+     A N41                                  DSPATR(RI)
+     A            MTB2          10A  O  3 23COLOR(WHT)
+     A  41                                  DSPATR(RI)
+     A                                 15  3'+----------------------------------
+     A                                      ------------------------------------
+     A                                      ------+'
+     A                                      COLOR(BLU)
+     A                                 18  3'+----------------------------------
+     A                                      ------------------------------------
+     A                                      ------+'
+     A                                      COLOR(BLU)
+     A                                 16  3'|'
+     A                                      COLOR(BLU)
+     A                                 16 78'|'
+     A                                      COLOR(BLU)
+     A                                 17  3'|'
+     A                                      COLOR(BLU)
+     A                                 17 78'|'
+     A                                      COLOR(BLU)
+     A                                 19  7'\|'
+     A                                      COLOR(BLU)
+     A            MINF          72A  O 16  5DSPATR(HI)
+     A            MIN2          72A  O 17  5
+     A          R MSEND
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HMSEND)
+     A            SHDR          78A  O  1  2DSPATR(HI)
+     A            SMSG          74A  O 21  3DSPATR(HI)
+     A            SFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'To user, group or ALL'
+     A            STO           10A  B  4 27DSPATR(UL)
+     A                                  4 40'F4 shows a list'
+     A                                      COLOR(BLU)
+     A                                  6  3'Message'
+     A            STEXT         72A  B  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R HMLIST
+     A                                  1  2'Help - Message Center'
+     A                                      DSPATR(HI)
+     A                                  3  3'Short messages sent to you, newest-
+     A                                       first.  Unread ones are bright and'
+     A                                  4  3'marked with a star.  The tabs show-
+     A                                       whether you are looking at your in-
+     A                                      box'
+     A                                  5  3'or the messages you have sent.  F1-
+     A                                      0 switches between them.'
+     A                                  7  3'Options: 4 deletes, 5 shows the me-
+     A                                      ssage in the box at the bottom, R r-
+     A                                      eplies.'
+     A                                  8  3'You can also put the cursor on a l-
+     A                                      ine and press Enter to pick it.'
+     A                                 10  3'F6 sends a new message.  F9 sends -
+     A                                      one to everybody.'
+     A                                 11  3'F4 searches all of your office ite-
+     A                                      ms.'
+     A                                 12  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HMSEND
+     A                                  1  2'Help - Send a message'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type who it is for and one line of-
+     A                                       text, then press Enter.'
+     A                                  5  3'To can be a user ID, the name of a-
+     A                                       distribution group, or ALL for eve-
+     A                                      ryone.'
+     A                                  6  3'F4 opens a list of enrolled users -
+     A                                      to pick from.'
+     A                                  8  3'The person also gets a system mess-
+     A                                      age telling them it has arrived.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

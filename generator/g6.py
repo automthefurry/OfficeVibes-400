@@ -1,0 +1,748 @@
+# ---------------- OVSHEET: spreadsheet ----------------
+s = Scr('OVSHEET'); lay_sheets(s); s.edit('SNEW', 'N')
+s.inp('Sheet name', 'NNAME', 10, 4, lc=False); s.t(4, 37, 'Up to 10 letters or digits', 'COLOR(BLU)'); s.inp('Title', 'NTITL', 40, 6)
+s.rec('SGRID', 'CSRLOC(CSLIN CSCOL)')
+s.f('GHDR', 78, 'O', 1, 2, 'DSPATR(HI)'); s.f('GTTL', 50, 'O', 2, 3, 'DSPATR(HI)'); s.f('GDIR', 22, 'O', 2, 56, 'COLOR(TRQ)')
+for k, c in enumerate('ABCDEFGH'):
+    s.f('HD' + c, 8, 'O', 3, 6 + 9 * k, ('N%02d' % (81 + k), 'COLOR(BLU)'), (' %02d' % (81 + k), 'DSPATR(RI)'))
+for i in range(1, 15):
+    s.f('GN%02d' % i, 3, 'O', 3 + i, 2, 'COLOR(BLU)', (' %02d' % (60 + i), 'DSPATR(RI)'))
+    for k, c in enumerate('ABCDEFGH'): s.f('C%s%02d' % (c, i), 8, 'B', 3 + i, 6 + 9 * k, 'CHECK(LC)', 'DSPATR(UL)')
+s.f('SINF', 74, 'O', 18, 3, 'COLOR(TRQ)'); s.t(19, 3, 'Cell'); s.f('SCELL', 3, 'B', 19, 9, 'DSPATR(UL)')
+s.t(19, 15, 'Contents'); s.f('SCONT', 30, 'B', 19, 25, 'CHECK(LC)', 'DSPATR(UL)')
+s.t(20, 3, 'Formulas:  =B2*C2+10   =SUM(B2:B9)   AVG  MIN  MAX  COUNT', 'COLOR(BLU)')
+s.f('GMSG', 74, 'O', 21, 3, 'DSPATR(HI)'); s.f('GFK1', 78, 'O', 22, 2, 'COLOR(BLU)'); s.f('GFK2', 78, 'O', 23, 2, 'COLOR(BLU)')
+s.L.append(dds(name='CSLIN', length=3, dtype='S', dec=0, usage='H')); s.L.append(dds(name='CSCOL', length=3, dtype='S', dec=0, usage='H'))
+s.fl |= {'CSLIN', 'CSCOL'}
+s.rec('SCHART'); s.f('KHDR', 78, 'O', 1, 2, 'DSPATR(HI)'); s.f('KTTL', 60, 'O', 2, 3, 'DSPATR(HI)')
+for i in range(1, 16):
+    s.f('KL%02d' % i, 10, 'O', 3 + i, 3, 'COLOR(BLU)'); s.f('KV%02d' % i, 10, 'O', 3 + i, 14)
+    s.f('KB%02d' % i, 50, 'O', 3 + i, 26, 'COLOR(YLW)' if i % 2 else 'COLOR(TRQ)')
+s.f('KSCL', 74, 'O', 20, 3, 'COLOR(BLU)'); s.f('KFK', 78, 'O', 23, 2, 'COLOR(BLU)')
+s.save()
+FL = lambda n, kw='': D(n, 'S', 8, 'F', kw=kw)
+DELCELLS = """
+KEY2S | SETLL | SHCREC
+KEY2S | READE | SHCREC
+DOW NOT %EOF(OVSHCP)
+ | DELETE | SHCREC
+KEY2S | READE | SHCREC
+ENDDO
+"""
+prog('OVSHEET', [('OVSHTP', 'U'), ('OVSHCP', 'U')], 'OVSHEET', listds('S', 72) + arrds('GCA', 'GC', 8, ['CA01', 'CB01', 'CC01', 'CD01', 'CE01', 'CF01', 'CG01', 'CH01', 'CA02', 'CB02', 'CC02', 'CD02', 'CE02', 'CF02', 'CG02', 'CH02', 'CA03', 'CB03', 'CC03', 'CD03', 'CE03', 'CF03', 'CG03', 'CH03', 'CA04', 'CB04', 'CC04', 'CD04', 'CE04', 'CF04', 'CG04', 'CH04', 'CA05', 'CB05', 'CC05', 'CD05', 'CE05', 'CF05', 'CG05', 'CH05', 'CA06', 'CB06', 'CC06', 'CD06', 'CE06', 'CF06', 'CG06', 'CH06', 'CA07', 'CB07', 'CC07', 'CD07', 'CE07', 'CF07', 'CG07', 'CH07', 'CA08', 'CB08', 'CC08', 'CD08', 'CE08', 'CF08', 'CG08', 'CH08', 'CA09', 'CB09', 'CC09', 'CD09', 'CE09', 'CF09', 'CG09', 'CH09', 'CA10', 'CB10', 'CC10', 'CD10', 'CE10', 'CF10', 'CG10', 'CH10', 'CA11', 'CB11', 'CC11', 'CD11', 'CE11', 'CF11', 'CG11', 'CH11', 'CA12', 'CB12', 'CC12', 'CD12', 'CE12', 'CF12', 'CG12', 'CH12', 'CA13', 'CB13', 'CC13', 'CD13', 'CE13', 'CF13', 'CG13', 'CH13', 'CA14', 'CB14', 'CC14', 'CD14', 'CE14', 'CF14', 'CG14', 'CH14']) +
+ arrds('GNA', 'GN', 3, ['GN%02d' % i for i in range(1, 15)]) + arrds('HDS', 'HD', 8, ['HD' + c for c in 'ABCDEFGH']) +
+ arrds('KLA', 'KL', 10, ['KL%02d' % i for i in range(1, 16)]) + arrds('KVA', 'KV', 10, ['KV%02d' % i for i in range(1, 16)]) +
+ arrds('KBA', 'KB', 50, ['KB%02d' % i for i in range(1, 16)]) +
+ [S('DSPV', 8, kw='DIM(112)'), S('CHG', 1), S('OSR', 5, 0), S('OSC', 5, 0), S('LSTR', 5, 0), S('LSTC', 5, 0), S('DIR', 1, kw="INZ('D')"),
+  S('KROWS', 5, 0, 'DIM(15)'), S('BLN', 5, 0)] + DC('HASH50', '#' * 50) + DC('DASH50', '-' * 50) +
+ [S('TX', 30, kw='DIM(792)'), FL('VAL', 'DIM(792)'), S('ISN', 1, kw='DIM(792)'), S('KSN', 10, kw='DIM(10)'), S('KSHT', 10), S('KROW', 3, 0), S('KCOL', 2, 0),
+  S('TOPR', 5, 0), S('SELR', 5, 0), S('SELC', 5, 0), S('SIDX', 5, 0), S('IDX', 5, 0), S('IDX2', 5, 0), S('PASS', 5, 0), S('RX', 5, 0), S('CX', 5, 0),
+  S('P', 5, 0), S('FLEN', 5, 0), S('FTXT', 30), S('FERR', 1), FL('FVAL'), FL('RES'), FL('TERM'), FL('OPV'), FL('NUMV'), FL('SCALE'), FL('SUMV'), FL('MINV'), FL('MAXV'),
+  S('PEND', 1), S('OPR', 1), S('NEG', 1), S('NOK', 1), S('RERR', 1), S('DG', 5, 0), S('RR', 5, 0), S('RC', 5, 0), S('NDG', 5, 0), S('K', 5, 0), S('FN', 5),
+  S('R1', 5, 0), S('C1', 5, 0), S('R2', 5, 0), S('C2', 5, 0), S('RA', 5, 0), S('CA', 5, 0), S('CNTN', 5, 0), S('V2', 13, 2), S('VI', 11, 0), S('WS', 20),
+  S('CELL8', 8), S('MARK', 1), S('R2D', 2, 0), S('CNAME', 3), S('OLDC', 30), S('OLDN', 3), S('RLINE', 75), S('ANY', 1), S('SHOWM', 1), S('WTITL', 40), S('NEWN', 3),
+  D('COLS', 'C', kw="'ABCDEFGH'")] +
+ DC('COLH', 'Opt  Name       Title                                    Changed') +
+ DC('FK1', '2=Open  4=Delete  6=Print   or put the cursor on a sheet and press Enter') + DC('FK2', 'F1=Help  F3=Exit  F6=New sheet  F7/F8=Page') +
+ DC('GK1', 'Type in the cells.  Tab/Backtab move across.  Enter stores and moves on.') +
+ DC('GK2', 'F1=Help F3=Exit F6=Empty cell F7/F8=Rows F9=Print F10=Down/Right F11=Chart') +
+ DC('PCOLH', '   ' + ''.join('    %s    ' % c for c in 'ABCDEFGH')), """
+KEY2S | KLIST
+ | KFLD | | KUSER
+ | KFLD | | KSHT
+KEY4 | KLIST
+ | KFLD | | KUSER
+ | KFLD | | KSHT
+ | KFLD | | KROW
+ | KFLD | | KCOL
+EVAL LAPP = 'SHEETS'
+""" + listmain('S', 'SLIST', 'OFCSHEETS', deflt='2', r0=9, lcol=7, keys="""
+IF *IN06 = *ON
+EXSR NEWSHT
+ITER
+ENDIF
+""", acts="""
+EVAL DCNT = 0
+1 | DO | NSHOW | ROW
+EVAL OP = %TRIM(SOP(ROW))
+IF OP = '2' OR OP = '4' OR OP = '6'
+EVAL KSHT = KSN(ROW)
+SELECT
+WHEN OP = '2'
+EXSR GRID
+WHEN OP = '6'
+EXSR LOADS
+EXSR RECALC
+EXSR PRINTS
+OTHER
+""" + DELCELLS + """
+KEY2S | CHAIN | SHTREC
+IF %FOUND(OVSHTP)
+ | DELETE | SHTREC
+EVAL DCNT = DCNT + 1
+ENDIF
+ENDSL
+ENDIF
+ | ENDDO
+IF DCNT > 0
+EVAL MSG = %CHAR(DCNT) + ' sheet(s) deleted.'
+ENDIF
+""") + """
+EVAL *INLR = *ON
+LOAD | BEGSR
+EVAL SLNA = *BLANKS
+EVAL NMATCH = 0
+EVAL BASE = PGNO * 10
+KUSER | SETLL | SHTREC
+KUSER | READE(N) | SHTREC
+DOW NOT %EOF(OVSHTP)
+EVAL NMATCH = NMATCH + 1
+""" + PAGED + """
+ | MOVE | SHSTMP | WSTMP
+EXSR FMTDT
+EVAL SLN(ROW) = SHNAME + ' ' + SHTITL + ' ' + WDT
+EVAL KSN(ROW) = SHNAME
+ENDIF
+KUSER | READE(N) | SHTREC
+ENDDO
+""" + SHOWN + """
+EVAL TTLW = 'Spreadsheets - ' + %CHAR(NMATCH)
+ | ENDSR
+NEWSHT | BEGSR
+EVAL NNAME = *BLANKS
+EVAL NTITL = *BLANKS
+EVAL NMSG = *BLANKS
+DOW 1 = 1
+""" + hdr('N', 'OFCNEWSHT', 'Enter=Create   F12=Cancel') + """
+ | EXFMT | SNEW
+EVAL NMSG = *BLANKS
+IF *IN03 = *ON OR *IN12 = *ON OR NNAME = *BLANKS
+LEAVE
+ENDIF
+EVAL KSHT = %TRIML(NNAME)
+KEY2S | CHAIN(N) | SHTREC
+IF %FOUND(OVSHTP)
+EVAL NMSG = 'You already have a sheet with that name.'
+ITER
+ENDIF
+EVAL SHUSER = PGMUSR
+EVAL SHNAME = KSHT
+EVAL SHTITL = %TRIML(NTITL)
+ | TIME | | SHSTMP
+ | WRITE | SHTREC
+""" + log('NEWSHEET', 'KSHT') + INDOFF + """
+EXSR GRID
+LEAVE
+ENDDO
+""" + INDOFF + """
+ | ENDSR
+* ---- read the sheet into memory ----
+LOADS | BEGSR
+EVAL TX = *BLANKS
+EVAL WTITL = *BLANKS
+KEY2S | CHAIN(N) | SHTREC
+IF %FOUND(OVSHTP)
+EVAL WTITL = SHTITL
+ENDIF
+KEY2S | SETLL | SHCREC
+KEY2S | READE(N) | SHCREC
+DOW NOT %EOF(OVSHCP)
+IF SXROW >= 1 AND SXROW <= 99 AND SXCOL >= 1 AND SXCOL <= 8
+EVAL TX((SXROW - 1) * 8 + SXCOL) = SXTEXT
+ENDIF
+KEY2S | READE(N) | SHCREC
+ENDDO
+ | ENDSR
+* ---- write the current cell to the file ----
+STORE | BEGSR
+EVAL KROW = SELR
+EVAL KCOL = SELC
+KEY4 | CHAIN | SHCREC
+IF TX(SIDX) = *BLANKS
+IF %FOUND(OVSHCP)
+ | DELETE | SHCREC
+ENDIF
+ELSE
+EVAL SXUSER = PGMUSR
+EVAL SXNAME = KSHT
+EVAL SXROW = SELR
+EVAL SXCOL = SELC
+EVAL SXTEXT = TX(SIDX)
+IF %FOUND(OVSHCP)
+ | UPDATE | SHCREC
+ELSE
+ | WRITE | SHCREC
+ENDIF
+ENDIF
+KEY2S | CHAIN | SHTREC
+IF %FOUND(OVSHTP)
+ | TIME | | SHSTMP
+ | UPDATE | SHTREC
+ENDIF
+ | ENDSR
+* ---- work out every cell.  Six passes let formulas feed formulas ----
+RECALC | BEGSR
+1 | DO | 6 | PASS
+1 | DO | 792 | IDX
+IF TX(IDX) = *BLANKS
+EVAL ISN(IDX) = '0'
+EVAL VAL(IDX) = 0
+ELSE
+IF %SUBST(TX(IDX):1:1) = '='
+EVAL FTXT = %SUBST(TX(IDX):2)
+LCASE:UCASE | XLATE | FTXT | FTXT
+EXSR EVALF
+EVAL VAL(IDX) = FVAL
+EVAL ISN(IDX) = '1'
+IF FERR = '1'
+EVAL ISN(IDX) = 'E'
+EVAL VAL(IDX) = 0
+ENDIF
+ELSE
+IF PASS = 1
+EVAL ISN(IDX) = '0'
+EVAL VAL(IDX) = 0
+EVAL FTXT = TX(IDX)
+EVAL FLEN = %LEN(%TRIMR(FTXT))
+EVAL P = 1
+IF %SCAN(%SUBST(FTXT:1:1):'0123456789.-') > 0
+EXSR GETNUM
+IF NOK = '1' AND P > FLEN
+EVAL ISN(IDX) = '1'
+EVAL VAL(IDX) = NUMV
+ENDIF
+ENDIF
+ENDIF
+ENDIF
+ENDIF
+ | ENDDO
+ | ENDDO
+ | ENDSR
+* ---- formula in FTXT: sets FVAL and FERR ----
+EVALF | BEGSR
+EVAL FERR = '0'
+EVAL FVAL = 0
+EVAL P = 1
+EVAL FLEN = %LEN(%TRIMR(FTXT))
+EXSR GETOPD
+EVAL RES = 0
+EVAL TERM = OPV
+EVAL PEND = '+'
+DOW FERR = '0' AND P <= FLEN
+EVAL CH = %SUBST(FTXT:P:1)
+EVAL P = P + 1
+IF CH = ' '
+ITER
+ENDIF
+IF CH <> '+' AND CH <> '-' AND CH <> '*' AND CH <> '/'
+EVAL FERR = '1'
+LEAVE
+ENDIF
+EVAL OPR = CH
+EXSR GETOPD
+IF FERR = '1'
+LEAVE
+ENDIF
+SELECT
+WHEN OPR = '*'
+EVAL TERM = TERM * OPV
+WHEN OPR = '/'
+IF OPV = 0
+EVAL FERR = '1'
+ELSE
+EVAL TERM = TERM / OPV
+ENDIF
+OTHER
+IF PEND = '+'
+EVAL RES = RES + TERM
+ELSE
+EVAL RES = RES - TERM
+ENDIF
+EVAL PEND = OPR
+EVAL TERM = OPV
+ENDSL
+ENDDO
+IF PEND = '+'
+EVAL RES = RES + TERM
+ELSE
+EVAL RES = RES - TERM
+ENDIF
+EVAL FVAL = RES
+ | ENDSR
+* ---- next operand at P: a number, a cell or a function: sets OPV ----
+GETOPD | BEGSR
+EVAL OPV = 0
+DOW P <= FLEN AND %SUBST(FTXT:P:1) = ' '
+EVAL P = P + 1
+ENDDO
+IF P > FLEN
+EVAL FERR = '1'
+ELSE
+EVAL CH = %SUBST(FTXT:P:1)
+SELECT
+WHEN %SCAN(CH:'0123456789.-') > 0
+EXSR GETNUM
+EVAL OPV = NUMV
+IF NOK = '0'
+EVAL FERR = '1'
+ENDIF
+WHEN %SCAN(CH:COLS) > 0 AND P < FLEN AND %SCAN(%SUBST(FTXT:P+1:1):'0123456789') > 0
+EXSR GETREF
+IF RERR = '1'
+EVAL FERR = '1'
+ELSE
+EVAL IDX2 = (RR - 1) * 8 + RC
+IF ISN(IDX2) = '1'
+EVAL OPV = VAL(IDX2)
+ENDIF
+IF ISN(IDX2) = 'E'
+EVAL FERR = '1'
+ENDIF
+ENDIF
+OTHER
+EXSR GETFN
+ENDSL
+ENDIF
+ | ENDSR
+* ---- number at P: sets NUMV, NOK ----
+GETNUM | BEGSR
+EVAL NOK = '0'
+EVAL NUMV = 0
+EVAL NEG = '0'
+EVAL SCALE = 0
+IF %SUBST(FTXT:P:1) = '-'
+EVAL NEG = '1'
+EVAL P = P + 1
+ENDIF
+DOW P <= FLEN
+EVAL CH = %SUBST(FTXT:P:1)
+EVAL DG = %SCAN(CH:'0123456789')
+IF DG > 0
+IF SCALE = 0
+EVAL NUMV = NUMV * 10 + DG - 1
+ELSE
+EVAL NUMV = NUMV + (DG - 1) * SCALE
+EVAL SCALE = SCALE / 10
+ENDIF
+EVAL NOK = '1'
+ELSE
+IF CH = '.' AND SCALE = 0
+EVAL SCALE = 0.1
+ELSE
+LEAVE
+ENDIF
+ENDIF
+EVAL P = P + 1
+ENDDO
+IF NEG = '1'
+EVAL NUMV = 0 - NUMV
+ENDIF
+ | ENDSR
+* ---- cell name at P, such as B12: sets RR, RC, RERR ----
+GETREF | BEGSR
+EVAL RERR = '0'
+EVAL RR = 0
+EVAL RC = 0
+IF P <= FLEN
+EVAL RC = %SCAN(%SUBST(FTXT:P:1):COLS)
+ENDIF
+IF RC = 0
+EVAL RERR = '1'
+ELSE
+EVAL P = P + 1
+EVAL NDG = 0
+DOW P <= FLEN AND NDG < 2 AND %SCAN(%SUBST(FTXT:P:1):'0123456789') > 0
+EVAL RR = RR * 10 + %SCAN(%SUBST(FTXT:P:1):'0123456789') - 1
+EVAL NDG = NDG + 1
+EVAL P = P + 1
+ENDDO
+IF RR < 1 OR RR > 99
+EVAL RERR = '1'
+ENDIF
+ENDIF
+ | ENDSR
+* ---- function at P, such as SUM(B2:B9): sets OPV ----
+GETFN | BEGSR
+EVAL FN = *BLANKS
+EVAL K = 0
+DOW P <= FLEN AND K < 5 AND %SCAN(%SUBST(FTXT:P:1):UCASE) > 0
+EVAL K = K + 1
+EVAL %SUBST(FN:K:1) = %SUBST(FTXT:P:1)
+EVAL P = P + 1
+ENDDO
+IF P > FLEN OR K = 0
+EVAL FERR = '1'
+ELSE
+IF %SUBST(FTXT:P:1) <> '('
+EVAL FERR = '1'
+ENDIF
+ENDIF
+IF FERR = '0'
+EVAL P = P + 1
+EXSR GETREF
+EVAL R1 = RR
+EVAL C1 = RC
+IF RERR = '1' OR P > FLEN
+EVAL FERR = '1'
+ELSE
+IF %SUBST(FTXT:P:1) <> ':'
+EVAL FERR = '1'
+ENDIF
+ENDIF
+ENDIF
+IF FERR = '0'
+EVAL P = P + 1
+EXSR GETREF
+EVAL R2 = RR
+EVAL C2 = RC
+IF RERR = '1' OR P > FLEN
+EVAL FERR = '1'
+ELSE
+IF %SUBST(FTXT:P:1) <> ')'
+EVAL FERR = '1'
+ENDIF
+ENDIF
+ENDIF
+IF FERR = '0'
+EVAL P = P + 1
+EVAL CNTN = 0
+EVAL SUMV = 0
+EVAL MINV = 0
+EVAL MAXV = 0
+R1 | DO | R2 | RA
+C1 | DO | C2 | CA
+EVAL IDX2 = (RA - 1) * 8 + CA
+IF ISN(IDX2) = '1'
+EVAL CNTN = CNTN + 1
+EVAL SUMV = SUMV + VAL(IDX2)
+IF CNTN = 1 OR VAL(IDX2) < MINV
+EVAL MINV = VAL(IDX2)
+ENDIF
+IF CNTN = 1 OR VAL(IDX2) > MAXV
+EVAL MAXV = VAL(IDX2)
+ENDIF
+ENDIF
+ | ENDDO
+ | ENDDO
+SELECT
+WHEN FN = 'SUM'
+EVAL OPV = SUMV
+WHEN FN = 'AVG' AND CNTN > 0
+EVAL OPV = SUMV / CNTN
+WHEN FN = 'MIN'
+EVAL OPV = MINV
+WHEN FN = 'MAX'
+EVAL OPV = MAXV
+WHEN FN = 'COUNT'
+EVAL OPV = CNTN
+OTHER
+EVAL FERR = '1'
+ENDSL
+ENDIF
+ | ENDSR
+* ---- cell IDX as eight characters: sets CELL8 ----
+FMTC | BEGSR
+EVAL CELL8 = *BLANKS
+SELECT
+WHEN TX(IDX) = *BLANKS
+EVAL CELL8 = *BLANKS
+WHEN ISN(IDX) = 'E'
+EVAL CELL8 = '   ERROR'
+WHEN ISN(IDX) = '1'
+IF VAL(IDX) > 9999999 OR VAL(IDX) < -999999
+EVAL CELL8 = '########'
+ELSE
+EVAL(H) V2 = VAL(IDX)
+EVAL VI = V2
+IF VI = V2
+EVAL WS = %TRIM(%EDITC(VI:'P'))
+ELSE
+EVAL WS = %TRIM(%EDITC(V2:'P'))
+ENDIF
+IF %LEN(%TRIM(WS)) > 8
+EVAL CELL8 = '########'
+ELSE
+EVALR CELL8 = %TRIM(WS)
+ENDIF
+ENDIF
+OTHER
+EVAL CELL8 = TX(IDX)
+ENDSL
+ | ENDSR
+* ---- one row RX as a line: sets RLINE and ANY ----
+ROWLN | BEGSR
+EVAL R2D = RX
+EVAL RLINE = %EDITC(R2D:'Z')
+EVAL ANY = '0'
+1 | DO | 8 | CX
+EVAL IDX = (RX - 1) * 8 + CX
+EXSR FMTC
+IF TX(IDX) <> *BLANKS
+EVAL ANY = '1'
+ENDIF
+EVAL MARK = ' '
+IF SHOWM = '1' AND RX = SELR AND CX = SELC
+EVAL MARK = '>'
+ENDIF
+EVAL %SUBST(RLINE:CX*9-5:9) = MARK + CELL8
+ | ENDDO
+ | ENDSR
+* ---- the grid ----
+GRID | BEGSR
+EXSR LOADS
+EXSR RECALC
+EVAL TOPR = 1
+EVAL SELR = 1
+EVAL SELC = 1
+EVAL GMSG = *BLANKS
+DOW 1 = 1
+EXSR SHOWG
+ | EXFMT | SGRID
+EXSR CSR
+EVAL GMSG = *BLANKS
+EXSR TAKEIN
+IF *IN03 = *ON OR *IN12 = *ON
+LEAVE
+ENDIF
+SELECT
+WHEN *IN07 = *ON
+EVAL TOPR = TOPR - 14
+IF TOPR < 1
+EVAL TOPR = 1
+ENDIF
+WHEN *IN08 = *ON
+EVAL TOPR = TOPR + 14
+IF TOPR > 86
+EVAL TOPR = 86
+ENDIF
+WHEN *IN09 = *ON
+EXSR PRINTS
+EVAL GMSG = MSG
+EVAL MSG = *BLANKS
+WHEN *IN06 = *ON
+EVAL SIDX = (SELR - 1) * 8 + SELC
+EVAL TX(SIDX) = *BLANKS
+EXSR STORE
+EXSR RECALC
+WHEN *IN10 = *ON
+IF DIR = 'D'
+EVAL DIR = 'R'
+ELSE
+EVAL DIR = 'D'
+ENDIF
+WHEN *IN11 = *ON
+EXSR CHART
+WHEN CHG = '1'
+EVAL SELR = LSTR
+EVAL SELC = LSTC
+IF DIR = 'D'
+IF SELR < 99
+EVAL SELR = SELR + 1
+ENDIF
+ELSE
+IF SELC < 8
+EVAL SELC = SELC + 1
+ELSE
+IF SELR < 99
+EVAL SELC = 1
+EVAL SELR = SELR + 1
+ENDIF
+ENDIF
+ENDIF
+EXSR INVIEW
+WHEN CSRROW >= 4 AND CSRROW <= 17 AND CSRCOL >= 5 AND CSRCOL <= 76
+EVAL SELR = TOPR + CSRROW - 4
+EVAL SELC = %DIV(CSRCOL - 5:9) + 1
+OTHER
+EVAL FTXT = %TRIML(SCELL)
+LCASE:UCASE | XLATE | FTXT | FTXT
+IF FTXT <> OLDN
+EVAL FLEN = %LEN(%TRIMR(FTXT))
+EVAL P = 1
+EVAL RERR = '1'
+IF FLEN > 0
+EXSR GETREF
+ENDIF
+IF RERR = '1' OR P <= FLEN
+EVAL GMSG = 'Cell must be a letter A to H and a row 1 to 99, such as C12.'
+ELSE
+EVAL SELR = RR
+EVAL SELC = RC
+EXSR INVIEW
+ENDIF
+ENDIF
+ENDSL
+ENDDO
+EVAL DIR = 'D'
+""" + INDOFF + """
+ | ENDSR
+* ---- put the sheet on the screen ----
+SHOWG | BEGSR
+1 | DO | 14 | I
+EVAL RX = TOPR + I - 1
+EVAL R2D = RX
+EVAL GN(I) = %EDITC(R2D:'Z')
+EVAL *IN(60 + I) = (RX = SELR)
+1 | DO | 8 | CX
+EVAL IDX = (RX - 1) * 8 + CX
+EXSR FMTC
+EVAL J = (I - 1) * 8 + CX
+EVAL GC(J) = CELL8
+EVAL DSPV(J) = CELL8
+ | ENDDO
+ | ENDDO
+1 | DO | 8 | CX
+EVAL HD(CX) = '   ' + %SUBST(COLS:CX:1)
+EVAL *IN(80 + CX) = (CX = SELC)
+ | ENDDO
+EVAL SIDX = (SELR - 1) * 8 + SELC
+EVAL CNAME = %SUBST(COLS:SELC:1) + %CHAR(SELR)
+EVAL SCELL = CNAME
+EVAL SCONT = TX(SIDX)
+EVAL OLDC = SCONT
+EVAL OLDN = CNAME
+EVAL IDX = SIDX
+EXSR FMTC
+SELECT
+WHEN TX(SIDX) = *BLANKS
+EVAL SINF = %TRIM(CNAME) + ' is empty.'
+WHEN ISN(SIDX) = 'E'
+EVAL SINF = %TRIM(CNAME) + ' cannot be worked out: ' + TX(SIDX)
+WHEN %SUBST(TX(SIDX):1:1) = '='
+EVAL SINF = %TRIM(CNAME) + ' = ' + %TRIM(CELL8) + '      from the formula  ' + TX(SIDX)
+OTHER
+EVAL SINF = %TRIM(CNAME) + ' holds  ' + TX(SIDX)
+ENDSL
+EVAL CSLIN = 19
+EVAL CSCOL = 25
+IF SELR >= TOPR AND SELR <= TOPR + 13
+EVAL CSLIN = 4 + SELR - TOPR
+EVAL CSCOL = 6 + (SELC - 1) * 9
+ENDIF
+EVAL GDIR = 'Enter moves: DOWN'
+IF DIR = 'R'
+EVAL GDIR = 'Enter moves: RIGHT'
+ENDIF
+EVAL HDRID = 'OFCSHEET'
+EXSR HDR
+EVAL GHDR = HDRLN
+EVAL GTTL = %TRIMR(KSHT) + ': ' + WTITL
+EVAL GFK1 = GK1
+EVAL GFK2 = GK2
+ | ENDSR
+* ---- store what was typed in the grid, then the Contents line ----
+TAKEIN | BEGSR
+EVAL CHG = '0'
+EVAL OSR = SELR
+EVAL OSC = SELC
+1 | DO | 112 | J
+IF GC(J) <> DSPV(J)
+EVAL SELR = TOPR + %DIV(J - 1:8)
+EVAL SELC = %REM(J - 1:8) + 1
+EVAL SIDX = (SELR - 1) * 8 + SELC
+EVAL TX(SIDX) = %TRIM(GC(J))
+EXSR STORE
+EVAL CHG = '1'
+EVAL LSTR = SELR
+EVAL LSTC = SELC
+ENDIF
+ | ENDDO
+EVAL SELR = OSR
+EVAL SELC = OSC
+EVAL SIDX = (SELR - 1) * 8 + SELC
+IF SCONT <> OLDC
+EVAL TX(SIDX) = %TRIML(SCONT)
+EXSR STORE
+EVAL CHG = '1'
+EVAL LSTR = SELR
+EVAL LSTC = SELC
+ENDIF
+IF CHG = '1'
+EXSR RECALC
+ENDIF
+ | ENDSR
+INVIEW | BEGSR
+IF SELR < TOPR
+EVAL TOPR = SELR
+ENDIF
+IF SELR > TOPR + 13
+EVAL TOPR = SELR - 13
+ENDIF
+IF TOPR > 86
+EVAL TOPR = 86
+ENDIF
+IF TOPR < 1
+EVAL TOPR = 1
+ENDIF
+ | ENDSR
+* ---- bar chart of the numbers in the current column ----
+CHART | BEGSR
+EVAL KLA = *BLANKS
+EVAL KVA = *BLANKS
+EVAL KBA = *BLANKS
+EVAL CNTN = 0
+EVAL MAXV = 0
+1 | DO | 99 | RA
+EVAL IDX2 = (RA - 1) * 8 + SELC
+IF ISN(IDX2) = '1' AND CNTN < 15
+EVAL CNTN = CNTN + 1
+EVAL KROWS(CNTN) = RA
+IF %ABS(VAL(IDX2)) > MAXV
+EVAL MAXV = %ABS(VAL(IDX2))
+ENDIF
+ENDIF
+ | ENDDO
+1 | DO | CNTN | K
+EVAL RA = KROWS(K)
+EVAL IDX2 = (RA - 1) * 8 + SELC
+EVAL KL(K) = 'Row ' + %CHAR(RA)
+IF SELC > 1
+IF TX((RA - 1) * 8 + 1) <> *BLANKS AND ISN((RA - 1) * 8 + 1) = '0'
+EVAL KL(K) = TX((RA - 1) * 8 + 1)
+ENDIF
+ENDIF
+EVAL IDX = IDX2
+EXSR FMTC
+EVALR KV(K) = %TRIM(CELL8)
+EVAL BLN = 0
+IF MAXV > 0
+EVAL BLN = %INT(%ABS(VAL(IDX2)) * 50 / MAXV)
+ENDIF
+IF BLN = 0 AND VAL(IDX2) <> 0
+EVAL BLN = 1
+ENDIF
+IF BLN > 0
+IF VAL(IDX2) >= 0
+EVAL KB(K) = %SUBST(HASH50:1:BLN)
+ELSE
+EVAL KB(K) = %SUBST(DASH50:1:BLN)
+ENDIF
+ENDIF
+ | ENDDO
+EVAL KTTL = 'Column ' + %SUBST(COLS:SELC:1) + ' of ' + %TRIMR(KSHT) + ': ' + WTITL
+IF CNTN = 0
+EVAL KSCL = 'Column ' + %SUBST(COLS:SELC:1) + ' has no numbers to chart.'
+ELSE
+EVAL(H) V2 = MAXV
+EVAL KSCL = 'The longest bar is ' + %CHAR(V2) + '.  Negative numbers are drawn with -'
+ENDIF
+EVAL HDRID = 'OFCCHART'
+EXSR HDR
+EVAL KHDR = HDRLN
+EVAL KFK = 'F1=Help   Press Enter to go back to the sheet'
+ | EXFMT | SCHART
+""" + INDOFF + """
+ | ENDSR
+PRINTS | BEGSR
+""" + popen("%TRIMR(KSHT) + ': ' + WTITL") + pl('PCOLH') + """
+EVAL SHOWM = '0'
+1 | DO | 99 | J
+EVAL RX = J
+EXSR ROWLN
+IF ANY = '1'
+""" + pl('RLINE') + """
+ENDIF
+ | ENDDO
+""" + PCLOSE + """
+ | ENDSR
+""")

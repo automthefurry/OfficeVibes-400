@@ -1,0 +1,115 @@
+     A* OVADM - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R AMENU
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HAMENU)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            ABAR          78A  O  2  2DSPATR(RI)
+     A                                      COLOR(RED)
+     A            AINF1         74A  O  4  3COLOR(TRQ)
+     A                                  6  6' 1. Users'
+     A                                  7  6' 2. Groups'
+     A                                  8  6' 3. Activity log'
+     A                                  9  6' 4. Statistics'
+     A                                 10  6' 5. Clean up old items'
+     A                                 11  6' 6. Send a notice to every display'
+     A                                 12  6' 7. System status'
+     A                                 13  6' 8. Active jobs'
+     A                                 14  6' 9. Disk status'
+     A                                 15  6'10. All printed output'
+     A                                 16  6'11. System operator messages'
+     A                                 17  6'12. Start the reminder service'
+     A                                 18  6'13. Stop the reminder service'
+     A                                 20  3'===>'
+     A            ASEL           3A  B 20  8DSPATR(UL)
+     A            AMSG          74A  O 22  3DSPATR(HI)
+     A            AFK           78A  O 23  2COLOR(BLU)
+     A          R APURGE
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HAPURGE)
+     A            PHDR          78A  O  1  2DSPATR(HI)
+     A            PMSG          74A  O 21  3DSPATR(HI)
+     A            PFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Old items are deleted for every us-
+     A                                      er.  This cannot be undone.'
+     A                                      COLOR(RED)
+     A                                  6  3'Delete read messages and mail olde-
+     A                                      r than (days)'
+     A            PDAYS          3A  B  6 56DSPATR(UL)
+     A                                  8  3'Delete activity log entries older -
+     A                                      than (days)'
+     A            LDAYS          3A  B  8 56DSPATR(UL)
+     A          R ANOTE
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HANOTE)
+     A            NHDR          78A  O  1  2DSPATR(HI)
+     A            NMSG          74A  O 21  3DSPATR(HI)
+     A            NFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'The notice appears on every displa-
+     A                                      y, with an alarm.'
+     A                                      COLOR(BLU)
+     A            NTEXT         74A  B  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R HAMENU
+     A                                  1  2'Help - Administration'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type a number and press Enter, or -
+     A                                      put the cursor on a line and press -
+     A                                      Enter.'
+     A                                  5  3' 1  Users: enroll, change, disable-
+     A                                       and remove office users.'
+     A                                  6  3' 2  Groups: distribution lists for-
+     A                                       messages and mail.'
+     A                                  7  3' 3  Activity log: who did what, an-
+     A                                      d when.'
+     A                                  8  3' 4  Statistics: how much is stored-
+     A                                      , and who is most active.'
+     A                                  9  3' 5  Clean up: delete old read mess-
+     A                                      ages, mail and log entries.'
+     A                                 10  3' 6  Notice: a break message to eve-
+     A                                      ry display.'
+     A                                 11  3' 7 to 11  Operating system display-
+     A                                      s.  These need system authority.'
+     A                                 13  3'12  Start the reminder service.  T-
+     A                                      his runs as a batch job called OVRE-
+     A                                      MIND'
+     A                                 14  3'    and sends each user a message -
+     A                                      15 minutes before every timed'
+     A                                 15  3'    appointment.  Start it once; i-
+     A                                      t keeps running until you stop it.'
+     A                                 16  3'13  Stop the reminder service.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HAPURGE
+     A                                  1  2'Help - Clean up old items'
+     A                                      DSPATR(HI)
+     A                                  3  3'Deletes read messages and read mai-
+     A                                      l older than the first number of da-
+     A                                      ys,'
+     A                                  4  3'and activity log entries older tha-
+     A                                      n the second, for every user.'
+     A                                  6  3'Unread items are never deleted.  T-
+     A                                      his cannot be undone.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HANOTE
+     A                                  1  2'Help - Notice to every display'
+     A                                      DSPATR(HI)
+     A                                  3  3'The text is sent as a break messag-
+     A                                      e to every display station.'
+     A                                  4  3'You need *JOBCTL special authority-
+     A                                       for this to work.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

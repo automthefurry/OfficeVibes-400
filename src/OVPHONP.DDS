@@ -1,0 +1,12 @@
+     A* OVPHONP - OfficeVibes/400 data file
+     A          R PHONREC
+     A            PHUSER        10A
+     A            PHUNAM        30A
+     A            PHSTMP          Z
+     A            PHNAME        30A
+     A            PHPHON        20A
+     A            PHMAIL        40A
+     A            PHNOTE        40A
+     A          K PHUSER
+     A          K PHUNAM
+     A          K PHSTMP

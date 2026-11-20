@@ -1,0 +1,10 @@
+     A* OVSCORP - OfficeVibes/400 data file
+     A          R SCORREC
+     A            SCUSER        10A
+     A            SCGAME        10A
+     A            SCWIN          5S 0
+     A            SCLOSS         5S 0
+     A            SCDRAW         5S 0
+     A            SCBEST         5S 0
+     A          K SCUSER
+     A          K SCGAME

@@ -1,0 +1,160 @@
+     A* OVPHON - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R PLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HPLIST)
+     A            PHDR          78A  O  1  2DSPATR(HI)
+     A            PTTL          36A  O  3 42DSPATR(HI)
+     A                                  3  3'Find . . .'
+     A            PFND          24A  B  3 14CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PCOL          36A  O  5  3COLOR(BLU)
+     A            POP01          2A  I  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN01         32A  O  6  7
+     A            POP02          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN02         32A  O  7  7
+     A            POP03          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN03         32A  O  8  7
+     A            POP04          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN04         32A  O  9  7
+     A            POP05          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN05         32A  O 10  7
+     A            POP06          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN06         32A  O 11  7
+     A            POP07          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN07         32A  O 12  7
+     A            POP08          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN08         32A  O 13  7
+     A            POP09          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN09         32A  O 14  7
+     A            POP10          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            PLN10         32A  O 15  7
+     A            PMSG          74A  O 21  3DSPATR(HI)
+     A            PFK1          78A  O 22  2COLOR(BLU)
+     A            PFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 31'P H O N E   B O O K'
+     A                                      DSPATR(HI)
+     A                                  4  3'A B C D E F G H I J K L M N O P Q -
+     A                                      R S T U V W X Y Z *'
+     A                                      COLOR(TRQ)
+     A                                  4 58'cursor + Enter jumps'
+     A                                      COLOR(BLU)
+     A                                  6 41'+----------------------------------
+     A                                      ---+'
+     A                                      COLOR(YLW)
+     A                                 13 41'+----------------------------------
+     A                                      ---+'
+     A                                      COLOR(YLW)
+     A                                  7 41'|'
+     A                                      COLOR(YLW)
+     A                                  7 78'|'
+     A                                      COLOR(YLW)
+     A                                  8 41'|'
+     A                                      COLOR(YLW)
+     A                                  8 78'|'
+     A                                      COLOR(YLW)
+     A                                  9 41'|'
+     A                                      COLOR(YLW)
+     A                                  9 78'|'
+     A                                      COLOR(YLW)
+     A                                 10 41'|'
+     A                                      COLOR(YLW)
+     A                                 10 78'|'
+     A                                      COLOR(YLW)
+     A                                 11 41'|'
+     A                                      COLOR(YLW)
+     A                                 11 78'|'
+     A                                      COLOR(YLW)
+     A                                 12 41'|'
+     A                                      COLOR(YLW)
+     A                                 12 78'|'
+     A                                      COLOR(YLW)
+     A            PCNM          34A  O  7 43DSPATR(HI)
+     A                                  9 43'Phone'
+     A                                      COLOR(BLU)
+     A            PCPH          20A  O  9 50
+     A                                 10 43'Mail'
+     A                                      COLOR(BLU)
+     A            PCML          26A  O 10 50
+     A                                 11 43'Note'
+     A                                      COLOR(BLU)
+     A            PCNT          26A  O 11 50
+     A                                 14 46'O'
+     A                                      COLOR(YLW)
+     A                                 14 72'O'
+     A                                      COLOR(YLW)
+     A                                 16 41'5 or the cursor shows a card'
+     A                                      COLOR(BLU)
+     A          R PADD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HPADD)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            AMSG          74A  O 21  3DSPATR(HI)
+     A            AFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Name'
+     A            ANAME         30A  B  4 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  6  3'Phone'
+     A            APHONE        20A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  8  3'Mail address'
+     A            AEMAIL        40A  B  8 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                 10  3'Note'
+     A            ANOTE         40A  B 10 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R HPLIST
+     A                                  1  2'Help - Phone book'
+     A                                      DSPATR(HI)
+     A                                  3  3'Your own contacts, in name order. -
+     A                                       The card on the right shows one en-
+     A                                      try.'
+     A                                  5  3'Type part of a name, number or not-
+     A                                      e in Find and press Enter to search-
+     A                                      .'
+     A                                  6  3'Put the cursor on a letter of the -
+     A                                      alphabet line and press Enter to li-
+     A                                      st'
+     A                                  7  3'only names starting with it.  The -
+     A                                      * at the end shows every name again-
+     A                                      .'
+     A                                  9  3'Options: 5 shows the card, 2 chang-
+     A                                      es an entry, 4 deletes it.'
+     A                                 10  3'Cursor on a name and Enter also sh-
+     A                                      ows its card.'
+     A                                 12  3'F6 adds an entry.  F9 prints the p-
+     A                                      hone book.'
+     A                                 13  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HPADD
+     A                                  1  2'Help - Phone book entry'
+     A                                      DSPATR(HI)
+     A                                  3  3'Only the name is required.  Press -
+     A                                      Enter to save, F12 to leave unchang-
+     A                                      ed.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

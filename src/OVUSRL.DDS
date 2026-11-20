@@ -1,0 +1,65 @@
+     A* OVUSRL - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R DUMMY                     ASSUME
+     A                                  1  3' '
+     A          R LKWIN                     WINDOW(3 18 17 44)
+     A                                      WDWBORDER((*COLOR BLU))
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HLKWIN)
+     A                                  1  2'Select a user'
+     A                                      DSPATR(HI)
+     A                                  2  2'Find'
+     A            LKFND         10A  B  2  8CHECK(LC)
+     A                                      DSPATR(UL)
+     A            LKO01          1A  I  4  2DSPATR(UL)
+     A            LKL01         38A  O  4  5
+     A            LKO02          1A  I  5  2DSPATR(UL)
+     A            LKL02         38A  O  5  5
+     A            LKO03          1A  I  6  2DSPATR(UL)
+     A            LKL03         38A  O  6  5
+     A            LKO04          1A  I  7  2DSPATR(UL)
+     A            LKL04         38A  O  7  5
+     A            LKO05          1A  I  8  2DSPATR(UL)
+     A            LKL05         38A  O  8  5
+     A            LKO06          1A  I  9  2DSPATR(UL)
+     A            LKL06         38A  O  9  5
+     A            LKO07          1A  I 10  2DSPATR(UL)
+     A            LKL07         38A  O 10  5
+     A            LKO08          1A  I 11  2DSPATR(UL)
+     A            LKL08         38A  O 11  5
+     A            LKO09          1A  I 12  2DSPATR(UL)
+     A            LKL09         38A  O 12  5
+     A            LKO10          1A  I 13  2DSPATR(UL)
+     A            LKL10         38A  O 13  5
+     A            LKMSG         40A  O 15  2DSPATR(HI)
+     A                                 16  2'Enter=Select  F7/F8=Page  F12=Canc-
+     A                                      el'
+     A                                      COLOR(BLU)
+     A          R HLKWIN
+     A                                  1  2'Help - Select a user'
+     A                                      DSPATR(HI)
+     A                                  3  3'This window lists the enrolled use-
+     A                                      rs.'
+     A                                  5  3'Type part of a name or user ID in -
+     A                                      Find and press Enter to narrow the -
+     A                                      list.'
+     A                                  6  3'Type any character beside a user, -
+     A                                      or put the cursor on the user, and -
+     A                                      press'
+     A                                  7  3'Enter to choose.  F7 and F8 page. -
+     A                                       F12 closes the window without choo-
+     A                                      sing.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

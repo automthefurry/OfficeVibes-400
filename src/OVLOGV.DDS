@@ -1,0 +1,53 @@
+     A* OVLOGV - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R VLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HVLIST)
+     A            VHDR          78A  O  1  2DSPATR(HI)
+     A            VTTL          32A  O  3 47DSPATR(HI)
+     A                                  3  3'Find . . .'
+     A            VFND          30A  B  3 14CHECK(LC)
+     A                                      DSPATR(UL)
+     A            VCOL          76A  O  5  3DSPATR(RI)
+     A            VLN01         76A  O  6  3COLOR(GRN)
+     A            VLN02         76A  O  7  3COLOR(GRN)
+     A            VLN03         76A  O  8  3COLOR(GRN)
+     A            VLN04         76A  O  9  3COLOR(GRN)
+     A            VLN05         76A  O 10  3COLOR(GRN)
+     A            VLN06         76A  O 11  3COLOR(GRN)
+     A            VLN07         76A  O 12  3COLOR(GRN)
+     A            VLN08         76A  O 13  3COLOR(GRN)
+     A            VLN09         76A  O 14  3COLOR(GRN)
+     A            VLN10         76A  O 15  3COLOR(GRN)
+     A            VMSG          74A  O 21  3DSPATR(HI)
+     A            VFK1          78A  O 22  2COLOR(BLU)
+     A            VFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 29'A C T I V I T Y   L O G'
+     A                                      DSPATR(HI)
+     A          R HVLIST
+     A                                  1  2'Help - Activity log'
+     A                                      DSPATR(HI)
+     A                                  3  3'Newest entries first, like a termi-
+     A                                      nal.  Each line shows when, who, wh-
+     A                                      ere,'
+     A                                  4  3'the action and a short detail.'
+     A                                  6  3'Type part of a user, area or actio-
+     A                                      n in Find and press Enter to filter-
+     A                                      .'
+     A                                  7  3'F9 prints what is listed.'
+     A                                  8  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

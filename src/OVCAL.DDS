@@ -1,0 +1,437 @@
+     A* OVCAL - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R BLANK
+     A                                  1  2' '
+     A          R PMENU                     OVERLAY
+     A  45                                  INVITE
+     A  46                                  PUTOVR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HPMENU)
+     A            PHDR          78A  O  1  2DSPATR(HI)
+     A                                  2 24'P R O C E S S   C A L E N D A R S'
+     A                                      DSPATR(HI)
+     A                                  3  3'Calendar for'
+     A            POWN          10A  B  3 17DSPATR(UL)
+     A            PONM          30A  O  3 29COLOR(PNK)
+     A                                  4  3'Date . . . .'
+     A            PDATE         10A  B  4 17DSPATR(UL)
+     A            PDNM          12A  O  4 29COLOR(WHT)
+     A                                  5  3'Select one of the following.  Then-
+     A                                       press Enter.'
+     A                                      COLOR(BLU)
+     A            PTIM          18A  O  5 58OVRDTA
+     A                                      COLOR(TRQ)
+     A            PSEL           2A  B  7  3DSPATR(UL)
+     A                                  7  7' 1. Work with the schedule for the-
+     A                                       day'
+     A                                  9  7' 3. View the conference room sched-
+     A                                      ules'
+     A                                 10  7' 4. Work with the next day'
+     A                                 11  7' 5. Work with the previous day'
+     A                                 12  7' 6. View the month'
+     A                                 13  7' 7. Schedule a meeting'
+     A                                 15  7' 9. View the business week'
+     A                                 16  7'10. View six months'
+     A                                 17  7'11. Manage the list of authorized -
+     A                                      users'
+     A                                 18  7'12. Search the calendar'
+     A                                 19  7'13. Company holidays'
+     A                                  8  7' 2. View'
+     A            PNDV           2A  B  8 16DSPATR(UL)
+     A                                  8 19'days of the calendar'
+     A                                 14  7' 8. Print'
+     A            PNDP           2A  B 14 17DSPATR(UL)
+     A                                 14 20'days of the calendar'
+     A            PMCT          22A  O  6 55COLOR(TRQ)
+     A                                  7 55' Su Mo Tu We Th Fr Sa'
+     A                                      COLOR(TRQ)
+     A            PMC1          21A  O  8 55COLOR(TRQ)
+     A            PMC2          21A  O  9 55COLOR(TRQ)
+     A            PMC3          21A  O 10 55COLOR(TRQ)
+     A            PMC4          21A  O 11 55COLOR(TRQ)
+     A            PMC5          21A  O 12 55COLOR(TRQ)
+     A            PMC6          21A  O 13 55COLOR(TRQ)
+     A            PDOY          22A  O 14 55COLOR(TRQ)
+     A            CS1           12A  O 15 62OVRDTA
+     A                                      COLOR(YLW)
+     A            CS2           12A  O 16 62OVRDTA
+     A                                      COLOR(YLW)
+     A            CS3           12A  O 17 62OVRDTA
+     A                                      COLOR(YLW)
+     A            CS4           12A  O 18 62OVRDTA
+     A                                      COLOR(YLW)
+     A            CS5           12A  O 19 62OVRDTA
+     A                                      COLOR(YLW)
+     A            CS6           12A  O 20 62OVRDTA
+     A                                      COLOR(YLW)
+     A            PMSG          74A  O 21  3DSPATR(HI)
+     A            PFK1          78A  O 22  2COLOR(BLU)
+     A            PFK2          78A  O 23  2COLOR(BLU)
+     A          R DAYV
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HDAYV)
+     A            DHDR          78A  O  1  2DSPATR(HI)
+     A                                  2 24'W O R K   W I T H   T H E   D A Y'
+     A                                      DSPATR(HI)
+     A            DTTL          60A  O  3  3COLOR(PNK)
+     A            DDTE          40A  O  4  3COLOR(WHT)
+     A            DHOL          32A  O  4 46COLOR(RED)
+     A                                  6  3'Opt  Time     What'
+     A                                      COLOR(BLU)
+     A            DOP01          2A  I  7  3DSPATR(UL)
+     A            DLN01         70A  O  7  8COLOR(TRQ)
+     A            DOP02          2A  I  8  3DSPATR(UL)
+     A            DLN02         70A  O  8  8COLOR(TRQ)
+     A            DOP03          2A  I  9  3DSPATR(UL)
+     A            DLN03         70A  O  9  8COLOR(TRQ)
+     A            DOP04          2A  I 10  3DSPATR(UL)
+     A            DLN04         70A  O 10  8COLOR(TRQ)
+     A            DOP05          2A  I 11  3DSPATR(UL)
+     A            DLN05         70A  O 11  8COLOR(TRQ)
+     A            DOP06          2A  I 12  3DSPATR(UL)
+     A            DLN06         70A  O 12  8COLOR(TRQ)
+     A            DOP07          2A  I 13  3DSPATR(UL)
+     A            DLN07         70A  O 13  8COLOR(TRQ)
+     A            DOP08          2A  I 14  3DSPATR(UL)
+     A            DLN08         70A  O 14  8COLOR(TRQ)
+     A            DOP09          2A  I 15  3DSPATR(UL)
+     A            DLN09         70A  O 15  8COLOR(TRQ)
+     A            DOP10          2A  I 16  3DSPATR(UL)
+     A            DLN10         70A  O 16  8COLOR(TRQ)
+     A            DOP11          2A  I 17  3DSPATR(UL)
+     A            DLN11         70A  O 17  8COLOR(TRQ)
+     A            DOP12          2A  I 18  3DSPATR(UL)
+     A            DLN12         70A  O 18  8COLOR(TRQ)
+     A            DMSG          74A  O 21  3DSPATR(HI)
+     A            DFK1          78A  O 22  2COLOR(BLU)
+     A            DFK2          78A  O 23  2COLOR(BLU)
+     A          R CADD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HCADD)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            AMSG          74A  O 21  3DSPATR(HI)
+     A            AFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Date'
+     A            ADATE         10A  B  4 24DSPATR(UL)
+     A                                  4 37'M/D or M/D/YYYY'
+     A                                      COLOR(BLU)
+     A            ALB1          19A  O  5  3
+     A            AEND          10A  B  5 24DSPATR(UL)
+     A  42                                  DSPATR(ND)
+     A  42                                  DSPATR(PR)
+     A            ALB2          36A  O  5 37COLOR(BLU)
+     A                                  6  3'Time'
+     A            ATIME          5A  B  6 24DSPATR(UL)
+     A                                  6 37'HH:MM, 24-hour.  Blank = all day'
+     A                                      COLOR(BLU)
+     A                                  7 37'00:00 is midnight'
+     A                                      COLOR(BLU)
+     A                                  8  3'What'
+     A            ATEXT         60A  B  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R NDVR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HNDVR)
+     A            NHDR          78A  O  1  2DSPATR(HI)
+     A            NTTL          74A  O  2  3COLOR(PNK)
+     A            NL01          76A  O  4  3
+     A N61                                  COLOR(TRQ)
+     A  61                                  COLOR(WHT)
+     A            NL02          76A  O  5  3
+     A N62                                  COLOR(TRQ)
+     A  62                                  COLOR(WHT)
+     A            NL03          76A  O  6  3
+     A N63                                  COLOR(TRQ)
+     A  63                                  COLOR(WHT)
+     A            NL04          76A  O  7  3
+     A N64                                  COLOR(TRQ)
+     A  64                                  COLOR(WHT)
+     A            NL05          76A  O  8  3
+     A N65                                  COLOR(TRQ)
+     A  65                                  COLOR(WHT)
+     A            NL06          76A  O  9  3
+     A N66                                  COLOR(TRQ)
+     A  66                                  COLOR(WHT)
+     A            NL07          76A  O 10  3
+     A N67                                  COLOR(TRQ)
+     A  67                                  COLOR(WHT)
+     A            NL08          76A  O 11  3
+     A N68                                  COLOR(TRQ)
+     A  68                                  COLOR(WHT)
+     A            NL09          76A  O 12  3
+     A N69                                  COLOR(TRQ)
+     A  69                                  COLOR(WHT)
+     A            NL10          76A  O 13  3
+     A N70                                  COLOR(TRQ)
+     A  70                                  COLOR(WHT)
+     A            NL11          76A  O 14  3
+     A N71                                  COLOR(TRQ)
+     A  71                                  COLOR(WHT)
+     A            NL12          76A  O 15  3
+     A N72                                  COLOR(TRQ)
+     A  72                                  COLOR(WHT)
+     A            NL13          76A  O 16  3
+     A N73                                  COLOR(TRQ)
+     A  73                                  COLOR(WHT)
+     A            NL14          76A  O 17  3
+     A N74                                  COLOR(TRQ)
+     A  74                                  COLOR(WHT)
+     A            NL15          76A  O 18  3
+     A N75                                  COLOR(TRQ)
+     A  75                                  COLOR(WHT)
+     A            NL16          76A  O 19  3
+     A N76                                  COLOR(TRQ)
+     A  76                                  COLOR(WHT)
+     A            NMSG          74A  O 21  3DSPATR(HI)
+     A            NFK           78A  O 23  2COLOR(BLU)
+     A          R MONV
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HMONV)
+     A            MHDR          78A  O  1  2DSPATR(HI)
+     A            MTTL          76A  O  2  3COLOR(PNK)
+     A                                  3  2'   Sunday     Monday    Tuesday   -
+     A                                      Wednesday   Thursday    Friday    S-
+     A                                      aturday'
+     A                                      COLOR(WHT)
+     A                                  4  2'+----------+----------+----------+-
+     A                                      ----------+----------+----------+---
+     A                                      --------+'
+     A                                      COLOR(TRQ)
+     A                                  7  2'+----------+----------+----------+-
+     A                                      ----------+----------+----------+---
+     A                                      --------+'
+     A                                      COLOR(TRQ)
+     A                                 10  2'+----------+----------+----------+-
+     A                                      ----------+----------+----------+---
+     A                                      --------+'
+     A                                      COLOR(TRQ)
+     A                                 13  2'+----------+----------+----------+-
+     A                                      ----------+----------+----------+---
+     A                                      --------+'
+     A                                      COLOR(TRQ)
+     A                                 16  2'+----------+----------+----------+-
+     A                                      ----------+----------+----------+---
+     A                                      --------+'
+     A                                      COLOR(TRQ)
+     A                                 19  2'+----------+----------+----------+-
+     A                                      ----------+----------+----------+---
+     A                                      --------+'
+     A                                      COLOR(TRQ)
+     A                                 22  2'+----------+----------+----------+-
+     A                                      ----------+----------+----------+---
+     A                                      --------+'
+     A                                      COLOR(TRQ)
+     A            MDL1          78A  O  5  2COLOR(TRQ)
+     A            MVL1          78A  O  6  2COLOR(TRQ)
+     A            MDL2          78A  O  8  2COLOR(TRQ)
+     A            MVL2          78A  O  9  2COLOR(TRQ)
+     A            MDL3          78A  O 11  2COLOR(TRQ)
+     A            MVL3          78A  O 12  2COLOR(TRQ)
+     A            MDL4          78A  O 14  2COLOR(TRQ)
+     A            MVL4          78A  O 15  2COLOR(TRQ)
+     A            MDL5          78A  O 17  2COLOR(TRQ)
+     A            MVL5          78A  O 18  2COLOR(TRQ)
+     A            MDL6          78A  O 20  2COLOR(TRQ)
+     A            MVL6          78A  O 21  2COLOR(TRQ)
+     A            MFK           78A  O 23  2COLOR(BLU)
+     A          R WEEKVR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HWEEKVR)
+     A            WHDR          78A  O  1  2DSPATR(HI)
+     A            WTTL          76A  O  2  3COLOR(PNK)
+     A            WCOL          78A  O  4  2COLOR(WHT)
+     A            WL01          78A  O  5  2COLOR(TRQ)
+     A            WL02          78A  O  6  2COLOR(TRQ)
+     A            WL03          78A  O  7  2COLOR(TRQ)
+     A            WL04          78A  O  8  2COLOR(TRQ)
+     A            WL05          78A  O  9  2COLOR(TRQ)
+     A            WL06          78A  O 10  2COLOR(TRQ)
+     A            WL07          78A  O 11  2COLOR(TRQ)
+     A            WL08          78A  O 12  2COLOR(TRQ)
+     A            WL09          78A  O 13  2COLOR(TRQ)
+     A            WL10          78A  O 14  2COLOR(TRQ)
+     A            WL11          78A  O 15  2COLOR(TRQ)
+     A            WL12          78A  O 16  2COLOR(TRQ)
+     A            WL13          78A  O 17  2COLOR(TRQ)
+     A            WL14          78A  O 18  2COLOR(TRQ)
+     A            WMSG          74A  O 21  3DSPATR(HI)
+     A            WFK           78A  O 23  2COLOR(BLU)
+     A          R SIXVR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSIXVR)
+     A            SHDR          78A  O  1  2DSPATR(HI)
+     A            STTL          76A  O  2  3COLOR(PNK)
+     A            SX01          76A  O  4  3COLOR(WHT)
+     A            SX02          76A  O  5  3COLOR(WHT)
+     A            SX03          76A  O  6  3COLOR(TRQ)
+     A            SX04          76A  O  7  3COLOR(TRQ)
+     A            SX05          76A  O  8  3COLOR(TRQ)
+     A            SX06          76A  O  9  3COLOR(TRQ)
+     A            SX07          76A  O 10  3COLOR(TRQ)
+     A            SX08          76A  O 11  3COLOR(TRQ)
+     A            SX09          76A  O 13  3COLOR(WHT)
+     A            SX10          76A  O 14  3COLOR(WHT)
+     A            SX11          76A  O 15  3COLOR(TRQ)
+     A            SX12          76A  O 16  3COLOR(TRQ)
+     A            SX13          76A  O 17  3COLOR(TRQ)
+     A            SX14          76A  O 18  3COLOR(TRQ)
+     A            SX15          76A  O 19  3COLOR(TRQ)
+     A            SX16          76A  O 20  3COLOR(TRQ)
+     A                                 21  3'> the chosen day     * appointment-
+     A                                      s     H company holiday'
+     A                                      COLOR(BLU)
+     A            SFK           78A  O 23  2COLOR(BLU)
+     A          R HPMENU
+     A                                  1  2'Help - Process calendars'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the number of what you want t-
+     A                                      o do and press Enter.  You can also-
+     A                                       put'
+     A                                  4  3'the cursor on a line and press Ent-
+     A                                      er.'
+     A                                  6  3'Calendar for: type another user ID-
+     A                                       to look at their calendar, if they-
+     A                                       have'
+     A                                  7  3'allowed it.  A conference room cal-
+     A                                      endar starts with #, such as #ROOM1-
+     A                                      .'
+     A                                  8  3'Date: type a date to work with, or-
+     A                                       put the cursor on a day in the sma-
+     A                                      ll'
+     A                                  9  3'calendar and press Enter.  F10 and-
+     A                                       F11 move a month at a time.'
+     A                                 11  3' 1, 4, 5  The schedule for the cho-
+     A                                      sen day, the next day or the day be-
+     A                                      fore.'
+     A                                 12  3' 2, 8     Type how many days to vi-
+     A                                      ew or print, from 1 to 31.'
+     A                                 13  3' 3        Conference rooms, and wh-
+     A                                      at is booked in them.'
+     A                                 14  3' 6, 9, 10 The month, the business -
+     A                                      week, or six months at a glance.'
+     A                                 15  3' 7        Book a meeting with othe-
+     A                                      r users and a room, and invite them-
+     A                                      .'
+     A                                 16  3'11        Who may look at or chang-
+     A                                      e your calendar.'
+     A                                 17  3'12        Find an appointment by a-
+     A                                       word in it.'
+     A                                 18  3'13        Company holidays, shown -
+     A                                      on every calendar.'
+     A                                 20  3'F6 adds an appointment.  F5 change-
+     A                                      s the character beside the calendar-
+     A                                      .'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HDAYV
+     A                                  1  2'Help - Schedule for the day'
+     A                                      DSPATR(HI)
+     A                                  3  3'Every appointment on the chosen da-
+     A                                      y, earliest first.'
+     A                                  5  3'Type 2 beside an appointment to ch-
+     A                                      ange it, or 4 to delete it.'
+     A                                  6  3'F6 adds an appointment.  F7 and F8-
+     A                                       go to the day before and the day a-
+     A                                      fter.'
+     A                                  7  3'F9 prints the day.  F11 shows more-
+     A                                       when there are over twelve.'
+     A                                  9  3'You can only look at another calen-
+     A                                      dar, unless its owner has allowed'
+     A                                 10  3'you to change it.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HCADD
+     A                                  1  2'Help - Add or change an appointmen-
+     A                                      t'
+     A                                      DSPATR(HI)
+     A                                  3  3'Date: month/day, such as 3/15, or -
+     A                                      month/day/year.'
+     A                                  5  3'Last day: for something that lasts-
+     A                                       several days, such as a trip, type-
+     A                                       the'
+     A                                  6  3'last day too.  The appointment is -
+     A                                      added to every day in between, each'
+     A                                  7  3'marked with its day number, such a-
+     A                                      s (2/5).  Up to 31 days.  Each day -
+     A                                      can'
+     A                                  8  3'then be changed or deleted on its -
+     A                                      own.'
+     A                                 10  3'Time: hours and minutes on the 24--
+     A                                      hour clock, such as 9:00 or 14:30.'
+     A                                 11  3'Leave the time blank for something-
+     A                                       that lasts all day.  00:00 means'
+     A                                 12  3'midnight, not all day.'
+     A                                 14  3'Type what it is and press Enter to-
+     A                                       save.  F12 leaves without saving.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HNDVR
+     A                                  1  2'Help - Several days of the calenda-
+     A                                      r'
+     A                                      DSPATR(HI)
+     A                                  3  3'Each day is shown in white, with i-
+     A                                      ts appointments beneath it.'
+     A                                  5  3'F7 and F8 page up and down.  F9 pr-
+     A                                      ints these days.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HMONV
+     A                                  1  2'Help - The month'
+     A                                      DSPATR(HI)
+     A                                  3  3'Each box is one day.  The dots sta-
+     A                                      nd for the hours from 8 to 4: a let-
+     A                                      ter'
+     A                                  4  3'in place of a dot is the first let-
+     A                                      ter of an appointment in that hour.'
+     A                                  6  3'<  something before 8 in the morni-
+     A                                      ng     >  something after 4'
+     A                                  7  3'*  an appointment that lasts all d-
+     A                                      ay      Hol  a company holiday'
+     A                                  8  3'>  before the day number marks the-
+     A                                       chosen day'
+     A                                 10  3'Put the cursor on a day and press -
+     A                                      Enter to work with it.'
+     A                                 11  3'F10 and F11 go to the next and pre-
+     A                                      vious month.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HWEEKVR
+     A                                  1  2'Help - The business week'
+     A                                      DSPATR(HI)
+     A                                  3  3'Monday to Friday of the chosen wee-
+     A                                      k, one row for each hour from 8 to -
+     A                                      5.'
+     A                                  4  3'All day, early and late appointmen-
+     A                                      ts have rows of their own.'
+     A                                  6  3'A + at the end of a box means ther-
+     A                                      e is more than one appointment ther-
+     A                                      e.'
+     A                                  8  3'Put the cursor in a day column and-
+     A                                       press Enter to work with that day.'
+     A                                  9  3'F7 and F8 go to the previous and n-
+     A                                      ext week.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HSIXVR
+     A                                  1  2'Help - Six months'
+     A                                      DSPATR(HI)
+     A                                  3  3'Six months at a glance.  > marks t-
+     A                                      he chosen day, * a day with'
+     A                                  4  3'appointments and H a company holid-
+     A                                      ay.'
+     A                                  6  3'F7 and F8 move six months back or -
+     A                                      forward.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

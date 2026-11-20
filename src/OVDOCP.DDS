@@ -1,0 +1,9 @@
+     A* OVDOCP - OfficeVibes/400 data file
+     A          R DOCREC
+     A            DCUSER        10A
+     A            DCNAME        10A
+     A            DCTITL        40A
+     A            DCSTMP          Z
+     A            DCLINE         5S 0
+     A          K DCUSER
+     A          K DCNAME

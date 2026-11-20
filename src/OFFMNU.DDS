@@ -1,0 +1,164 @@
+     A* OFFMNU - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R MNUREC
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HMNUREC)
+     A            MHDR          78A  O  1  2DSPATR(HI)
+     A                                  2 26'O F F I C E V I B E S / 4 0 0'
+     A                                      DSPATR(HI)
+     A                                  3 29'Office Suite for OS/400'
+     A                                  4  3'Select one of the following:'
+     A                                  6  8' 1. Calendar'
+     A                                  7  8' 2. Mail, messages and chat'
+     A                                  8  8' 3. Notes, tasks and phone book'
+     A                                  9  8' 4. Documents and spreadsheets'
+     A                                 10  8' 5. Search everything'
+     A                                 11  8' 6. Office directory'
+     A                                 12  8' 7. Games and the office cat'
+     A                                 13  8' 8. Printed output'
+     A                                 14  8' 9. My profile'
+     A                                 15  8'10. Administration'
+     A            MI01          12A  O  6 41DSPATR(HI)
+     A            MI02          12A  O  7 41DSPATR(HI)
+     A            MI03          12A  O  8 41DSPATR(HI)
+     A                                 17  8'90. Sign off'
+     A            MCT           20A  O  5 56DSPATR(HI)
+     A                                  6 56'Su Mo Tu We Th Fr Sa'
+     A            MC1           21A  O  7 55
+     A            MC2           21A  O  8 55
+     A            MC3           21A  O  9 55
+     A            MC4           21A  O 10 55
+     A            MC5           21A  O 11 55
+     A            MC6           21A  O 12 55
+     A            MA1           12A  O 14 60
+     A            MA2           12A  O 15 60
+     A            MA3           12A  O 16 60
+     A            MA4           12A  O 17 60
+     A            MA5           12A  O 18 60
+     A            MA6           12A  O 19 60
+     A            MSGN          52A  O 21 27
+     A                                 21  3'Selection . . .'
+     A            MSEL           3A  B 21 20DSPATR(UL)
+     A            MMSG          74A  O 22  3DSPATR(HI)
+     A            MFKEY         78A  O 23  2COLOR(BLU)
+     A          R PROF
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HPROF)
+     A            PHDR          78A  O  1  2DSPATR(HI)
+     A            PMSG          74A  O 21  3DSPATR(HI)
+     A            PFK           78A  O 23  2COLOR(BLU)
+     A                                  3  3'This is how other people see you i-
+     A                                      n the office directory.'
+     A                                      COLOR(BLU)
+     A                                  5  3'Your name'
+     A            PNAME         30A  B  5 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  7  3'Department'
+     A            PDEPT         20A  B  7 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                  9  3'Phone'
+     A            PPHON         20A  B  9 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                 11  3'Pop-up messages'
+     A            PPOP           1A  B 11 24DSPATR(UL)
+     A                                 11 37'Y = show at once, N = wait quietly'
+     A                                      COLOR(BLU)
+     A          R SUBM
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSUBM)
+     A            SBHDR         78A  O  1  2DSPATR(HI)
+     A            SBTTL         40A  O  3 21DSPATR(HI)
+     A                                  5  3'Select one of the following:'
+     A            SO1           36A  O  7  8
+     A            SC1           16A  O  7 46DSPATR(HI)
+     A            SO2           36A  O  8  8
+     A            SC2           16A  O  8 46DSPATR(HI)
+     A            SO3           36A  O  9  8
+     A            SC3           16A  O  9 46DSPATR(HI)
+     A            SO4           36A  O 10  8
+     A            SC4           16A  O 10 46DSPATR(HI)
+     A            SO5           36A  O 11  8
+     A            SC5           16A  O 11 46DSPATR(HI)
+     A            SO6           36A  O 12  8
+     A            SC6           16A  O 12 46DSPATR(HI)
+     A                                 20  3'Selection . . .'
+     A            SSEL           2A  B 20 20DSPATR(UL)
+     A            SBMSG         74A  O 22  3DSPATR(HI)
+     A            SBFK          78A  O 23  2COLOR(BLU)
+     A          R HMNUREC
+     A                                  1  2'Help - Main menu'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the number of an option and p-
+     A                                      ress Enter.'
+     A                                  4  3'You can also put the cursor on a l-
+     A                                      ine and press Enter to pick it.'
+     A                                  6  3' 1  Calendar: appointments, meetin-
+     A                                      gs, rooms, holidays and shared cale-
+     A                                      ndars.'
+     A                                  7  3' 2  Mail, messages and chat: a men-
+     A                                      u of the three ways to reach people-
+     A                                      .'
+     A                                  8  3' 3  Notes, tasks and phone book: a-
+     A                                       menu of your own organizer.'
+     A                                  9  3' 4  Documents and spreadsheets, an-
+     A                                      d the printed output they make.'
+     A                                 10  3' 5  Search everything: one search -
+     A                                      across all of your office items.'
+     A                                 11  3' 6  Office directory: who is enrol-
+     A                                      led.'
+     A                                 12  3' 7  Games and the office cat.'
+     A                                 13  3' 8  Printed output: everything you-
+     A                                       printed with a Print key.'
+     A                                 14  3' 9  My profile: your name, phone a-
+     A                                      nd pop-up messages.'
+     A                                 15  3'10  Administration: for office adm-
+     A                                      inistrators only.'
+     A                                 17  3'The counts beside the options show-
+     A                                       what is waiting for you.'
+     A                                 18  3'F3 or 90 leaves the office.  F5 re-
+     A                                      freshes the counts.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HPROF
+     A                                  1  2'Help - My profile'
+     A                                      DSPATR(HI)
+     A                                  3  3'Your name, department and phone ar-
+     A                                      e shown to other users in the offic-
+     A                                      e'
+     A                                  4  3'directory and in the list that F4 -
+     A                                      opens when they address a message.'
+     A                                  6  3'Pop-up messages: Y makes reminders-
+     A                                      , new mail and chat requests appear-
+     A                                       on'
+     A                                  7  3'your screen as soon as they arrive-
+     A                                      .  N lets them wait quietly in your'
+     A                                  8  3'message queue, with the message li-
+     A                                      ght on.  Leave it blank to keep the'
+     A                                  9  3'present setting.'
+     A                                 11  3'Change any field and press Enter t-
+     A                                      o save.  F12 leaves without saving.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HSUBM
+     A                                  1  2'Help - Menu'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the number of an option and p-
+     A                                      ress Enter, or put the cursor on it'
+     A                                  4  3'and press Enter.'
+     A                                  6  3'The counts show new mail and messa-
+     A                                      ges, and open tasks.'
+     A                                  7  3'F12 goes back to the main menu.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

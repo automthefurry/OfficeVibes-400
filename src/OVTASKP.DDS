@@ -1,0 +1,10 @@
+     A* OVTASKP - OfficeVibes/400 data file
+     A          R TASKREC
+     A            TKUSER        10A
+     A            TKSTMP          Z
+     A            TKSTAT         1A
+     A            TKPRI          1A
+     A            TKDUE          8S 0
+     A            TKTEXT        72A
+     A          K TKUSER
+     A          K TKSTMP

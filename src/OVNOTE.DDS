@@ -1,0 +1,169 @@
+     A* OVNOTE - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R NLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HNLIST)
+     A            NHDR          78A  O  1  2DSPATR(HI)
+     A            NTTL          28A  O  3 50DSPATR(HI)
+     A                                  3  3'Find . . .'
+     A            NFND          30A  B  3 14CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NCOL          74A  O  4  4COLOR(BLU)
+     A            NOP01          2A  I  7  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN01         66A  O  7  9COLOR(YLW)
+     A            NOP02          2A  I  8  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN02         66A  O  8  9COLOR(YLW)
+     A            NOP03          2A  I  9  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN03         66A  O  9  9COLOR(YLW)
+     A            NOP04          2A  I 10  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN04         66A  O 10  9COLOR(YLW)
+     A            NOP05          2A  I 11  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN05         66A  O 11  9COLOR(YLW)
+     A            NOP06          2A  I 12  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN06         66A  O 12  9COLOR(YLW)
+     A            NOP07          2A  I 13  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN07         66A  O 13  9COLOR(YLW)
+     A            NOP08          2A  I 14  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN08         66A  O 14  9COLOR(YLW)
+     A            NOP09          2A  I 15  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN09         66A  O 15  9COLOR(YLW)
+     A            NOP10          2A  I 16  4CHECK(LC)
+     A                                      DSPATR(UL)
+     A            NLN10         66A  O 16  9COLOR(YLW)
+     A            NMSG          74A  O 21  3DSPATR(HI)
+     A            NFK1          78A  O 22  2COLOR(BLU)
+     A            NFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 34'N O T E P A D'
+     A                                      DSPATR(HI)
+     A                                  5  5' o   o   o   o   o   o   o   o   o-
+     A                                         o   o   o   o   o   o   o   o   -
+     A                                      o  '
+     A                                      COLOR(WHT)
+     A                                  6  2'+----------------------------------
+     A                                      ------------------------------------
+     A                                      ------+'
+     A                                      COLOR(YLW)
+     A                                 17  2'+----------------------------------
+     A                                      ------------------------------------
+     A                                      ------+'
+     A                                      COLOR(YLW)
+     A                                  7  2'|'
+     A                                      COLOR(YLW)
+     A                                  7 77'|'
+     A                                      COLOR(YLW)
+     A                                  8  2'|'
+     A                                      COLOR(YLW)
+     A                                  8 77'|'
+     A                                      COLOR(YLW)
+     A                                  9  2'|'
+     A                                      COLOR(YLW)
+     A                                  9 77'|'
+     A                                      COLOR(YLW)
+     A                                 10  2'|'
+     A                                      COLOR(YLW)
+     A                                 10 77'|'
+     A                                      COLOR(YLW)
+     A                                 11  2'|'
+     A                                      COLOR(YLW)
+     A                                 11 77'|'
+     A                                      COLOR(YLW)
+     A                                 12  2'|'
+     A                                      COLOR(YLW)
+     A                                 12 77'|'
+     A                                      COLOR(YLW)
+     A                                 13  2'|'
+     A                                      COLOR(YLW)
+     A                                 13 77'|'
+     A                                      COLOR(YLW)
+     A                                 14  2'|'
+     A                                      COLOR(YLW)
+     A                                 14 77'|'
+     A                                      COLOR(YLW)
+     A                                 15  2'|'
+     A                                      COLOR(YLW)
+     A                                 15 77'|'
+     A                                      COLOR(YLW)
+     A                                 16  2'|'
+     A                                      COLOR(YLW)
+     A                                 16 77'|'
+     A                                      COLOR(YLW)
+     A                                  7  7':'
+     A                                      COLOR(RED)
+     A                                  8  7':'
+     A                                      COLOR(RED)
+     A                                  9  7':'
+     A                                      COLOR(RED)
+     A                                 10  7':'
+     A                                      COLOR(RED)
+     A                                 11  7':'
+     A                                      COLOR(RED)
+     A                                 12  7':'
+     A                                      COLOR(RED)
+     A                                 13  7':'
+     A                                      COLOR(RED)
+     A                                 14  7':'
+     A                                      COLOR(RED)
+     A                                 15  7':'
+     A                                      COLOR(RED)
+     A                                 16  7':'
+     A                                      COLOR(RED)
+     A                                 18  3'2=Change  4=Delete   Notes are pri-
+     A                                      vate to you.'
+     A                                      COLOR(BLU)
+     A          R NEDIT
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HNEDIT)
+     A            EHDR          78A  O  1  2DSPATR(HI)
+     A            EMSG          74A  O 21  3DSPATR(HI)
+     A            EFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Type your note, then press Enter.'
+     A                                      COLOR(BLU)
+     A            ENOTE         72A  B  6  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R HNLIST
+     A                                  1  2'Help - Notepad'
+     A                                      DSPATR(HI)
+     A                                  3  3'Your own notes, oldest first, on a-
+     A                                       yellow pad.  Nobody else can see t-
+     A                                      hem.'
+     A                                  5  3'Type a word in Find and press Ente-
+     A                                      r to show only the notes that conta-
+     A                                      in it.'
+     A                                  6  3'Options: 2 changes a note, 4 delet-
+     A                                      es it.'
+     A                                  7  3'You can also put the cursor on a l-
+     A                                      ine and press Enter to pick it.'
+     A                                  9  3'F6 writes a new note.  F9 prints a-
+     A                                      ll of your notes.'
+     A                                 10  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HNEDIT
+     A                                  1  2'Help - Write a note'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the note and press Enter to s-
+     A                                      ave it.  F12 leaves without saving.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

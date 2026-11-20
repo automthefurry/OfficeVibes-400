@@ -1,0 +1,319 @@
+     A* OVGAME - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R GMENU
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HGMENU)
+     A            GHDR          78A  O  1  2DSPATR(HI)
+     A            GMSG          74A  O 21  3DSPATR(HI)
+     A            GFK           78A  O 23  2COLOR(BLU)
+     A                                  3 34'G A M E S'
+     A                                      DSPATR(HI)
+     A                                  6  6' 1. Guess the number'
+     A                                  7  6' 2. Tic-tac-toe'
+     A                                  8  6' 3. Tetris'
+     A                                 10  3'Your record'
+     A                                      COLOR(BLU)
+     A            GSC1          60A  O 11  6COLOR(TRQ)
+     A            GSC2          60A  O 12  6COLOR(TRQ)
+     A            GSC3          60A  O 13  6COLOR(TRQ)
+     A                                 20  3'===>'
+     A            GSEL           3A  B 20  8DSPATR(UL)
+     A          R GGUESS
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HGGUESS)
+     A            UHDR          78A  O  1  2DSPATR(HI)
+     A            UMSG          74A  O 21  3DSPATR(HI)
+     A            UFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'I am thinking of a number from 1 t-
+     A                                      o 100.'
+     A                                      COLOR(BLU)
+     A            UINF          60A  O  6  3DSPATR(HI)
+     A                                  8  3'Your guess'
+     A            UGUESS         3A  B  8 24DSPATR(UL)
+     A          R GTTT
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HGTTT)
+     A            THDR          78A  O  1  2DSPATR(HI)
+     A            TMSG          74A  O 21  3DSPATR(HI)
+     A            TFK           78A  O 23  2COLOR(BLU)
+     A                                  3  3'You are X.  Put the cursor on a sq-
+     A                                      uare and press Enter,'
+     A                                      COLOR(BLU)
+     A                                  4  3'or type its number below.'
+     A                                      COLOR(BLU)
+     A            TC1            1A  O  8 32DSPATR(HI)
+     A            TC2            1A  O  8 36DSPATR(HI)
+     A            TC3            1A  O  8 40DSPATR(HI)
+     A                                  8 34'|'
+     A                                      COLOR(BLU)
+     A                                  8 38'|'
+     A                                      COLOR(BLU)
+     A                                  8 52'1 | 2 | 3'
+     A                                      COLOR(BLU)
+     A                                  9 31'---+---+---'
+     A                                      COLOR(BLU)
+     A            TC4            1A  O 10 32DSPATR(HI)
+     A            TC5            1A  O 10 36DSPATR(HI)
+     A            TC6            1A  O 10 40DSPATR(HI)
+     A                                 10 34'|'
+     A                                      COLOR(BLU)
+     A                                 10 38'|'
+     A                                      COLOR(BLU)
+     A                                 10 52'4 | 5 | 6'
+     A                                      COLOR(BLU)
+     A                                 11 31'---+---+---'
+     A                                      COLOR(BLU)
+     A            TC7            1A  O 12 32DSPATR(HI)
+     A            TC8            1A  O 12 36DSPATR(HI)
+     A            TC9            1A  O 12 40DSPATR(HI)
+     A                                 12 34'|'
+     A                                      COLOR(BLU)
+     A                                 12 38'|'
+     A                                      COLOR(BLU)
+     A                                 12 52'7 | 8 | 9'
+     A                                      COLOR(BLU)
+     A                                 15  3'Square (1-9)'
+     A            TMOVE          1A  B 15 24DSPATR(UL)
+     A            TINF          60A  O 17  3DSPATR(HI)
+     A          R BLANK
+     A                                  1  2' '
+     A          R TETRIS                    OVERLAY
+     A  45                                  INVITE
+     A  46                                  PUTOVR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HTETRIS)
+     A            XHDR          78A  O  1  2DSPATR(HI)
+     A                                  2 35'T E T R I S'
+     A                                      DSPATR(HI)
+     A                                  3 27'<!'
+     A                                      COLOR(BLU)
+     A            XB01          20A  O  3 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                  3 51'!>'
+     A                                      COLOR(BLU)
+     A                                  4 27'<!'
+     A                                      COLOR(BLU)
+     A            XB02          20A  O  4 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                  4 51'!>'
+     A                                      COLOR(BLU)
+     A                                  5 27'<!'
+     A                                      COLOR(BLU)
+     A            XB03          20A  O  5 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                  5 51'!>'
+     A                                      COLOR(BLU)
+     A                                  6 27'<!'
+     A                                      COLOR(BLU)
+     A            XB04          20A  O  6 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                  6 51'!>'
+     A                                      COLOR(BLU)
+     A                                  7 27'<!'
+     A                                      COLOR(BLU)
+     A            XB05          20A  O  7 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                  7 51'!>'
+     A                                      COLOR(BLU)
+     A                                  8 27'<!'
+     A                                      COLOR(BLU)
+     A            XB06          20A  O  8 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                  8 51'!>'
+     A                                      COLOR(BLU)
+     A                                  9 27'<!'
+     A                                      COLOR(BLU)
+     A            XB07          20A  O  9 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                  9 51'!>'
+     A                                      COLOR(BLU)
+     A                                 10 27'<!'
+     A                                      COLOR(BLU)
+     A            XB08          20A  O 10 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 10 51'!>'
+     A                                      COLOR(BLU)
+     A                                 11 27'<!'
+     A                                      COLOR(BLU)
+     A            XB09          20A  O 11 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 11 51'!>'
+     A                                      COLOR(BLU)
+     A                                 12 27'<!'
+     A                                      COLOR(BLU)
+     A            XB10          20A  O 12 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 12 51'!>'
+     A                                      COLOR(BLU)
+     A                                 13 27'<!'
+     A                                      COLOR(BLU)
+     A            XB11          20A  O 13 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 13 51'!>'
+     A                                      COLOR(BLU)
+     A                                 14 27'<!'
+     A                                      COLOR(BLU)
+     A            XB12          20A  O 14 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 14 51'!>'
+     A                                      COLOR(BLU)
+     A                                 15 27'<!'
+     A                                      COLOR(BLU)
+     A            XB13          20A  O 15 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 15 51'!>'
+     A                                      COLOR(BLU)
+     A                                 16 27'<!'
+     A                                      COLOR(BLU)
+     A            XB14          20A  O 16 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 16 51'!>'
+     A                                      COLOR(BLU)
+     A                                 17 27'<!'
+     A                                      COLOR(BLU)
+     A            XB15          20A  O 17 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 17 51'!>'
+     A                                      COLOR(BLU)
+     A                                 18 27'<!'
+     A                                      COLOR(BLU)
+     A            XB16          20A  O 18 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 18 51'!>'
+     A                                      COLOR(BLU)
+     A                                 19 27'<!'
+     A                                      COLOR(BLU)
+     A            XB17          20A  O 19 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 19 51'!>'
+     A                                      COLOR(BLU)
+     A                                 20 27'<!'
+     A                                      COLOR(BLU)
+     A            XB18          20A  O 20 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 20 51'!>'
+     A                                      COLOR(BLU)
+     A                                 21 27'<!'
+     A                                      COLOR(BLU)
+     A            XB19          20A  O 21 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 21 51'!>'
+     A                                      COLOR(BLU)
+     A                                 22 27'<!'
+     A                                      COLOR(BLU)
+     A            XB20          20A  O 22 30OVRDTA
+     A                                      COLOR(YLW)
+     A                                 22 51'!>'
+     A                                      COLOR(BLU)
+     A                                 23 27'<!======================!>'
+     A                                      COLOR(BLU)
+     A                                  5  3'F4      Left'
+     A                                      COLOR(BLU)
+     A                                  6  3'F5      Right'
+     A                                      COLOR(BLU)
+     A                                  7  3'Enter   Turn'
+     A                                      COLOR(BLU)
+     A                                  8  3'F6      Turn'
+     A                                      COLOR(BLU)
+     A                                  9  3'F7      Down one'
+     A                                      COLOR(BLU)
+     A                                 10  3'F8      Drop'
+     A                                      COLOR(BLU)
+     A                                 12  3'F9      New game'
+     A                                      COLOR(BLU)
+     A                                 13  3'F3      Quit'
+     A                                      COLOR(BLU)
+     A                                  4 56'Score'
+     A            XSCO           8A  O  4 64OVRDTA
+     A                                      DSPATR(HI)
+     A                                  5 56'Lines'
+     A            XLIN           8A  O  5 64OVRDTA
+     A                                      DSPATR(HI)
+     A                                  6 56'Best'
+     A            XBST           8A  O  6 64OVRDTA
+     A                                  8 56'Next'
+     A                                      COLOR(BLU)
+     A            XN1            8A  O  9 58OVRDTA
+     A                                      COLOR(TRQ)
+     A            XN2            8A  O 10 58OVRDTA
+     A                                      COLOR(TRQ)
+     A            XN3            8A  O 11 58OVRDTA
+     A                                      COLOR(TRQ)
+     A            XN4            8A  O 12 58OVRDTA
+     A                                      COLOR(TRQ)
+     A            XSTA          22A  O 15 56OVRDTA
+     A                                      DSPATR(HI)
+     A            XST2          22A  O 16 56OVRDTA
+     A                                      DSPATR(HI)
+     A          R HGMENU
+     A                                  1  2'Help - Games'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type 1, 2 or 3 and press Enter, or-
+     A                                       put the cursor on a game and press'
+     A                                  4  3'Enter.  Your record for each game -
+     A                                      is shown below the list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HGGUESS
+     A                                  1  2'Help - Guess the number'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type a number from 1 to 100 and pr-
+     A                                      ess Enter.  You are told whether th-
+     A                                      e'
+     A                                  4  3'secret number is higher or lower. -
+     A                                       Fewer tries is better.  F12 gives -
+     A                                      up.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HGTTT
+     A                                  1  2'Help - Tic-tac-toe'
+     A                                      DSPATR(HI)
+     A                                  3  3'You are X and move first.  Put the-
+     A                                       cursor on an empty square and pres-
+     A                                      s'
+     A                                  4  3'Enter, or type the number of the s-
+     A                                      quare.  The computer answers as O.'
+     A                                  6  3'The computer plays perfectly, so t-
+     A                                      he best you can do is a draw.  It w-
+     A                                      ill'
+     A                                  7  3'win if you make a mistake.'
+     A                                  9  3'F5 starts a new game.  F12 goes ba-
+     A                                      ck.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HTETRIS
+     A                                  1  2'Help - Tetris'
+     A                                      DSPATR(HI)
+     A                                  3  3'Fit the falling pieces together.  -
+     A                                      A full row disappears and scores:'
+     A                                  4  3'100 points for one row, 300 for tw-
+     A                                      o, 500 for three and 800 for four.'
+     A                                  6  3'F4 moves left, F5 moves right.  En-
+     A                                      ter or F6 turns the piece.'
+     A                                  7  3'F7 moves it down one row, F8 drops-
+     A                                       it to the bottom.'
+     A                                  9  3'A piece falls one row each second.-
+     A                                        The game ends when there is no ro-
+     A                                      om'
+     A                                 10  3'for the next piece.  F9 starts a n-
+     A                                      ew game and F3 leaves.'
+     A                                 12  3'Your best score is kept and shown -
+     A                                      on the games menu.'
+     A                                 14  3'If pieces do not fall by themselve-
+     A                                      s on your display, press Enter to l-
+     A                                      et'
+     A                                 15  3'time pass.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

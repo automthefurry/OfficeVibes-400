@@ -1,0 +1,117 @@
+     A* OVCAUT - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R AULIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HAULIST)
+     A            AHDR          78A  O  1  2DSPATR(HI)
+     A            ATTL          60A  O  3  3DSPATR(HI)
+     A            ACOL          74A  O  6  3COLOR(BLU)
+     A            AOP01          2A  I  7  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN01         50A  O  7  7
+     A            AOP02          2A  I  8  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN02         50A  O  8  7
+     A            AOP03          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN03         50A  O  9  7
+     A            AOP04          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN04         50A  O 10  7
+     A            AOP05          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN05         50A  O 11  7
+     A            AOP06          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN06         50A  O 12  7
+     A            AOP07          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN07         50A  O 13  7
+     A            AOP08          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN08         50A  O 14  7
+     A            AOP09          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN09         50A  O 15  7
+     A            AOP10          2A  I 16  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            ALN10         50A  O 16  7
+     A            AMSG          74A  O 21  3DSPATR(HI)
+     A            AFK1          78A  O 22  2COLOR(BLU)
+     A            AFK2          78A  O 23  2COLOR(BLU)
+     A                                  2 25'A U T H O R I Z E D   U S E R S'
+     A                                      DSPATR(HI)
+     A                                  4  3'Type Y or N under View and Change,-
+     A                                       then press Enter to save.'
+     A                                      COLOR(BLU)
+     A            AV01           1A  B  7 62DSPATR(UL)
+     A            AC01           1A  B  7 71DSPATR(UL)
+     A            AV02           1A  B  8 62DSPATR(UL)
+     A            AC02           1A  B  8 71DSPATR(UL)
+     A            AV03           1A  B  9 62DSPATR(UL)
+     A            AC03           1A  B  9 71DSPATR(UL)
+     A            AV04           1A  B 10 62DSPATR(UL)
+     A            AC04           1A  B 10 71DSPATR(UL)
+     A            AV05           1A  B 11 62DSPATR(UL)
+     A            AC05           1A  B 11 71DSPATR(UL)
+     A            AV06           1A  B 12 62DSPATR(UL)
+     A            AC06           1A  B 12 71DSPATR(UL)
+     A            AV07           1A  B 13 62DSPATR(UL)
+     A            AC07           1A  B 13 71DSPATR(UL)
+     A            AV08           1A  B 14 62DSPATR(UL)
+     A            AC08           1A  B 14 71DSPATR(UL)
+     A            AV09           1A  B 15 62DSPATR(UL)
+     A            AC09           1A  B 15 71DSPATR(UL)
+     A            AV10           1A  B 16 62DSPATR(UL)
+     A            AC10           1A  B 16 71DSPATR(UL)
+     A          R AUADD
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HAUADD)
+     A            NHDR          78A  O  1  2DSPATR(HI)
+     A            NMSG          74A  O 21  3DSPATR(HI)
+     A            NFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'User'
+     A            NUSR          10A  B  4 24DSPATR(UL)
+     A                                  4 37'F4 shows a list'
+     A                                      COLOR(BLU)
+     A                                  6  3'May look (Y/N)'
+     A            NVW            1A  B  6 24DSPATR(UL)
+     A                                  8  3'May change (Y/N)'
+     A            NCG            1A  B  8 24DSPATR(UL)
+     A          R HAULIST
+     A                                  1  2'Help - Authorized users'
+     A                                      DSPATR(HI)
+     A                                  3  3'These people may look at your cale-
+     A                                      ndar (View) or change it (Change).'
+     A                                  5  3'The first line covers everyone who-
+     A                                       is not listed.  Normally they may -
+     A                                      look'
+     A                                  6  3'but not change.'
+     A                                  8  3'Type Y or N in the View and Change-
+     A                                       columns and press Enter to save.'
+     A                                  9  3'Type 4 beside a person to take the-
+     A                                      m off the list.  F6 adds a person.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HAUADD
+     A                                  1  2'Help - Authorize a person'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the user ID, or press F4 for -
+     A                                      a list.  Then Y or N for whether th-
+     A                                      ey'
+     A                                  4  3'may look at your calendar and whet-
+     A                                      her they may change it.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

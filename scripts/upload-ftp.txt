@@ -1,0 +1,9 @@
+open your.as400.address
+user YOURUSER YOURPASSWORD
+quote site namefmt 1
+ascii
+cd /home/office
+prompt
+lcd src
+mput *
+quit

@@ -1,0 +1,88 @@
+     A* OVCHAT - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R BLANK
+     A                                  1  2' '
+     A          R CHATSCR                   OVERLAY
+     A  45                                  INVITE
+     A  46                                  PUTOVR
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HCHATSCR)
+     A            CHHDR         78A  O  1  2DSPATR(HI)
+     A            CHTTL         60A  O  2  3DSPATR(HI)
+     A            CH01          76A  O  4  3OVRDTA
+     A            CH02          76A  O  5  3OVRDTA
+     A            CH03          76A  O  6  3OVRDTA
+     A            CH04          76A  O  7  3OVRDTA
+     A            CH05          76A  O  8  3OVRDTA
+     A            CH06          76A  O  9  3OVRDTA
+     A            CH07          76A  O 10  3OVRDTA
+     A            CH08          76A  O 11  3OVRDTA
+     A            CH09          76A  O 12  3OVRDTA
+     A            CH10          76A  O 13  3OVRDTA
+     A            CH11          76A  O 14  3OVRDTA
+     A            CH12          76A  O 15  3OVRDTA
+     A            CH13          76A  O 16  3OVRDTA
+     A            CH14          76A  O 17  3OVRDTA
+     A                                 19  3'Say . . .'
+     A            CHSAY         60A  B 19 14CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CHMSG         74A  O 21  3DSPATR(HI)
+     A            CHFK          78A  O 23  2COLOR(BLU)
+     A          R CHWHO
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HCHWHO)
+     A            WHDR          78A  O  1  2DSPATR(HI)
+     A            WMSG          74A  O 21  3DSPATR(HI)
+     A            WFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Chat with'
+     A            WWHO          10A  B  4 24DSPATR(UL)
+     A                                  4 37'A user ID, or EVERYONE.  F4 shows -
+     A                                      a list'
+     A                                      COLOR(BLU)
+     A          R HCHATSCR
+     A                                  1  2'Help - Live chat'
+     A                                      DSPATR(HI)
+     A                                  3  3'The screen shows the latest fourte-
+     A                                      en lines of the conversation and'
+     A                                  4  3'refreshes by itself every two seco-
+     A                                      nds, so you see replies as they arr-
+     A                                      ive.'
+     A                                  6  3'Type what you want to say and pres-
+     A                                      s Enter to send it.'
+     A                                  7  3'F6 switches to a different person -
+     A                                      or to the EVERYONE room.'
+     A                                  8  3'F5 refreshes at once.  F3 leaves t-
+     A                                      he chat.'
+     A                                 10  3'The first time you write to someon-
+     A                                      e in a session they get a system'
+     A                                 11  3'message telling them you are waiti-
+     A                                      ng, in case they are not in the cha-
+     A                                      t.'
+     A                                 13  3'If the screen does not refresh by -
+     A                                      itself on your display, press Enter'
+     A                                 14  3'or F5 to see new lines.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HCHWHO
+     A                                  1  2'Help - Live chat - who with'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type the user ID of the person to -
+     A                                      chat with and press Enter.'
+     A                                  4  3'F4 opens a list of enrolled users -
+     A                                      to pick from.'
+     A                                  6  3'Type EVERYONE to join the office c-
+     A                                      hat room, which all users share.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)

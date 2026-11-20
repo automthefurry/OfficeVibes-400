@@ -1,0 +1,11 @@
+     A* OVUSERP - OfficeVibes/400 data file
+     A          R USERREC
+     A            USUSER        10A
+     A            USNAME        30A
+     A            USDEPT        20A
+     A            USPHON        20A
+     A            USADM          1A
+     A            USSTAT         1A
+     A            USLAST          Z
+     A            USCRT           Z
+     A          K USUSER

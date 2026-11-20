@@ -1,0 +1,9 @@
+     A* OVDOCLP - OfficeVibes/400 data file
+     A          R DOCLREC
+     A            DLUSER        10A
+     A            DLNAME        10A
+     A            DLSEQ          5S 0
+     A            DLTEXT        76A
+     A          K DLUSER
+     A          K DLNAME
+     A          K DLSEQ

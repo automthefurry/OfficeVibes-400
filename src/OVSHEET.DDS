@@ -1,0 +1,504 @@
+     A* OVSHEET - OfficeVibes/400 screens
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04)
+     A                                      CF05(05)
+     A                                      CF06(06)
+     A                                      CF07(07)
+     A                                      CF08(08)
+     A                                      CF09(09)
+     A                                      CF10(10)
+     A                                      CF11(11)
+     A                                      HELP
+     A                                      ALTHELP
+     A          R SLIST
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSLIST)
+     A            SHDR          78A  O  1  2DSPATR(HI)
+     A            STTL          50A  O  3 20DSPATR(HI)
+     A            SCOL          74A  O  8  3COLOR(BLU)
+     A            SOP01          2A  I  9  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN01         72A  O  9  7COLOR(GRN)
+     A            SOP02          2A  I 10  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN02         72A  O 10  7COLOR(TRQ)
+     A            SOP03          2A  I 11  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN03         72A  O 11  7COLOR(GRN)
+     A            SOP04          2A  I 12  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN04         72A  O 12  7COLOR(TRQ)
+     A            SOP05          2A  I 13  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN05         72A  O 13  7COLOR(GRN)
+     A            SOP06          2A  I 14  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN06         72A  O 14  7COLOR(TRQ)
+     A            SOP07          2A  I 15  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN07         72A  O 15  7COLOR(GRN)
+     A            SOP08          2A  I 16  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN08         72A  O 16  7COLOR(TRQ)
+     A            SOP09          2A  I 17  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN09         72A  O 17  7COLOR(GRN)
+     A            SOP10          2A  I 18  3CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SLN10         72A  O 18  7COLOR(TRQ)
+     A            SMSG          74A  O 21  3DSPATR(HI)
+     A            SFK1          78A  O 22  2COLOR(BLU)
+     A            SFK2          78A  O 23  2COLOR(BLU)
+     A                                  2  3'+---+---+---+'
+     A                                      COLOR(GRN)
+     A                                  3  3'|   | A | B |'
+     A                                      COLOR(GRN)
+     A                                  4  3'+---+---+---+'
+     A                                      COLOR(GRN)
+     A                                  5  3'| 1 | 4 |=A1|'
+     A                                      COLOR(GRN)
+     A                                  6  3'+---+---+---+'
+     A                                      COLOR(GRN)
+     A                                  2 20'S P R E A D S H E E T S'
+     A                                      DSPATR(HI)
+     A                                  4 20'Columns A to H, rows 1 to 99.  For-
+     A                                      mulas start with ='
+     A                                      COLOR(BLU)
+     A                                  5 20'F6 starts a new sheet.'
+     A                                      COLOR(BLU)
+     A          R SNEW
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSNEW)
+     A            NHDR          78A  O  1  2DSPATR(HI)
+     A            NMSG          74A  O 21  3DSPATR(HI)
+     A            NFK           78A  O 23  2COLOR(BLU)
+     A                                  4  3'Sheet name'
+     A            NNAME         10A  B  4 24DSPATR(UL)
+     A                                  4 37'Up to 10 letters or digits'
+     A                                      COLOR(BLU)
+     A                                  6  3'Title'
+     A            NTITL         40A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A          R SGRID                     CSRLOC(CSLIN CSCOL)
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSGRID)
+     A            GHDR          78A  O  1  2DSPATR(HI)
+     A            GTTL          50A  O  2  3DSPATR(HI)
+     A            GDIR          22A  O  2 56COLOR(TRQ)
+     A            HDA            8A  O  3  6
+     A N81                                  COLOR(BLU)
+     A  81                                  DSPATR(RI)
+     A            HDB            8A  O  3 15
+     A N82                                  COLOR(BLU)
+     A  82                                  DSPATR(RI)
+     A            HDC            8A  O  3 24
+     A N83                                  COLOR(BLU)
+     A  83                                  DSPATR(RI)
+     A            HDD            8A  O  3 33
+     A N84                                  COLOR(BLU)
+     A  84                                  DSPATR(RI)
+     A            HDE            8A  O  3 42
+     A N85                                  COLOR(BLU)
+     A  85                                  DSPATR(RI)
+     A            HDF            8A  O  3 51
+     A N86                                  COLOR(BLU)
+     A  86                                  DSPATR(RI)
+     A            HDG            8A  O  3 60
+     A N87                                  COLOR(BLU)
+     A  87                                  DSPATR(RI)
+     A            HDH            8A  O  3 69
+     A N88                                  COLOR(BLU)
+     A  88                                  DSPATR(RI)
+     A            GN01           3A  O  4  2COLOR(BLU)
+     A  61                                  DSPATR(RI)
+     A            CA01           8A  B  4  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB01           8A  B  4 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC01           8A  B  4 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD01           8A  B  4 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE01           8A  B  4 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF01           8A  B  4 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG01           8A  B  4 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH01           8A  B  4 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN02           3A  O  5  2COLOR(BLU)
+     A  62                                  DSPATR(RI)
+     A            CA02           8A  B  5  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB02           8A  B  5 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC02           8A  B  5 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD02           8A  B  5 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE02           8A  B  5 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF02           8A  B  5 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG02           8A  B  5 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH02           8A  B  5 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN03           3A  O  6  2COLOR(BLU)
+     A  63                                  DSPATR(RI)
+     A            CA03           8A  B  6  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB03           8A  B  6 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC03           8A  B  6 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD03           8A  B  6 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE03           8A  B  6 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF03           8A  B  6 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG03           8A  B  6 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH03           8A  B  6 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN04           3A  O  7  2COLOR(BLU)
+     A  64                                  DSPATR(RI)
+     A            CA04           8A  B  7  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB04           8A  B  7 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC04           8A  B  7 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD04           8A  B  7 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE04           8A  B  7 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF04           8A  B  7 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG04           8A  B  7 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH04           8A  B  7 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN05           3A  O  8  2COLOR(BLU)
+     A  65                                  DSPATR(RI)
+     A            CA05           8A  B  8  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB05           8A  B  8 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC05           8A  B  8 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD05           8A  B  8 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE05           8A  B  8 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF05           8A  B  8 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG05           8A  B  8 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH05           8A  B  8 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN06           3A  O  9  2COLOR(BLU)
+     A  66                                  DSPATR(RI)
+     A            CA06           8A  B  9  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB06           8A  B  9 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC06           8A  B  9 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD06           8A  B  9 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE06           8A  B  9 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF06           8A  B  9 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG06           8A  B  9 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH06           8A  B  9 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN07           3A  O 10  2COLOR(BLU)
+     A  67                                  DSPATR(RI)
+     A            CA07           8A  B 10  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB07           8A  B 10 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC07           8A  B 10 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD07           8A  B 10 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE07           8A  B 10 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF07           8A  B 10 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG07           8A  B 10 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH07           8A  B 10 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN08           3A  O 11  2COLOR(BLU)
+     A  68                                  DSPATR(RI)
+     A            CA08           8A  B 11  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB08           8A  B 11 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC08           8A  B 11 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD08           8A  B 11 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE08           8A  B 11 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF08           8A  B 11 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG08           8A  B 11 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH08           8A  B 11 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN09           3A  O 12  2COLOR(BLU)
+     A  69                                  DSPATR(RI)
+     A            CA09           8A  B 12  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB09           8A  B 12 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC09           8A  B 12 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD09           8A  B 12 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE09           8A  B 12 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF09           8A  B 12 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG09           8A  B 12 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH09           8A  B 12 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN10           3A  O 13  2COLOR(BLU)
+     A  70                                  DSPATR(RI)
+     A            CA10           8A  B 13  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB10           8A  B 13 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC10           8A  B 13 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD10           8A  B 13 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE10           8A  B 13 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF10           8A  B 13 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG10           8A  B 13 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH10           8A  B 13 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN11           3A  O 14  2COLOR(BLU)
+     A  71                                  DSPATR(RI)
+     A            CA11           8A  B 14  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB11           8A  B 14 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC11           8A  B 14 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD11           8A  B 14 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE11           8A  B 14 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF11           8A  B 14 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG11           8A  B 14 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH11           8A  B 14 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN12           3A  O 15  2COLOR(BLU)
+     A  72                                  DSPATR(RI)
+     A            CA12           8A  B 15  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB12           8A  B 15 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC12           8A  B 15 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD12           8A  B 15 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE12           8A  B 15 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF12           8A  B 15 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG12           8A  B 15 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH12           8A  B 15 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN13           3A  O 16  2COLOR(BLU)
+     A  73                                  DSPATR(RI)
+     A            CA13           8A  B 16  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB13           8A  B 16 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC13           8A  B 16 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD13           8A  B 16 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE13           8A  B 16 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF13           8A  B 16 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG13           8A  B 16 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH13           8A  B 16 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            GN14           3A  O 17  2COLOR(BLU)
+     A  74                                  DSPATR(RI)
+     A            CA14           8A  B 17  6CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CB14           8A  B 17 15CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CC14           8A  B 17 24CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CD14           8A  B 17 33CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CE14           8A  B 17 42CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CF14           8A  B 17 51CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CG14           8A  B 17 60CHECK(LC)
+     A                                      DSPATR(UL)
+     A            CH14           8A  B 17 69CHECK(LC)
+     A                                      DSPATR(UL)
+     A            SINF          74A  O 18  3COLOR(TRQ)
+     A                                 19  3'Cell'
+     A            SCELL          3A  B 19  9DSPATR(UL)
+     A                                 19 15'Contents'
+     A            SCONT         30A  B 19 25CHECK(LC)
+     A                                      DSPATR(UL)
+     A                                 20  3'Formulas:  =B2*C2+10   =SUM(B2:B9)-
+     A                                         AVG  MIN  MAX  COUNT'
+     A                                      COLOR(BLU)
+     A            GMSG          74A  O 21  3DSPATR(HI)
+     A            GFK1          78A  O 22  2COLOR(BLU)
+     A            GFK2          78A  O 23  2COLOR(BLU)
+     A            CSLIN          3S 0H
+     A            CSCOL          3S 0H
+     A          R SCHART
+     A          H                           HLPARA(*RCD)
+     A                                      HLPRCD(HSCHART)
+     A            KHDR          78A  O  1  2DSPATR(HI)
+     A            KTTL          60A  O  2  3DSPATR(HI)
+     A            KL01          10A  O  4  3COLOR(BLU)
+     A            KV01          10A  O  4 14
+     A            KB01          50A  O  4 26COLOR(YLW)
+     A            KL02          10A  O  5  3COLOR(BLU)
+     A            KV02          10A  O  5 14
+     A            KB02          50A  O  5 26COLOR(TRQ)
+     A            KL03          10A  O  6  3COLOR(BLU)
+     A            KV03          10A  O  6 14
+     A            KB03          50A  O  6 26COLOR(YLW)
+     A            KL04          10A  O  7  3COLOR(BLU)
+     A            KV04          10A  O  7 14
+     A            KB04          50A  O  7 26COLOR(TRQ)
+     A            KL05          10A  O  8  3COLOR(BLU)
+     A            KV05          10A  O  8 14
+     A            KB05          50A  O  8 26COLOR(YLW)
+     A            KL06          10A  O  9  3COLOR(BLU)
+     A            KV06          10A  O  9 14
+     A            KB06          50A  O  9 26COLOR(TRQ)
+     A            KL07          10A  O 10  3COLOR(BLU)
+     A            KV07          10A  O 10 14
+     A            KB07          50A  O 10 26COLOR(YLW)
+     A            KL08          10A  O 11  3COLOR(BLU)
+     A            KV08          10A  O 11 14
+     A            KB08          50A  O 11 26COLOR(TRQ)
+     A            KL09          10A  O 12  3COLOR(BLU)
+     A            KV09          10A  O 12 14
+     A            KB09          50A  O 12 26COLOR(YLW)
+     A            KL10          10A  O 13  3COLOR(BLU)
+     A            KV10          10A  O 13 14
+     A            KB10          50A  O 13 26COLOR(TRQ)
+     A            KL11          10A  O 14  3COLOR(BLU)
+     A            KV11          10A  O 14 14
+     A            KB11          50A  O 14 26COLOR(YLW)
+     A            KL12          10A  O 15  3COLOR(BLU)
+     A            KV12          10A  O 15 14
+     A            KB12          50A  O 15 26COLOR(TRQ)
+     A            KL13          10A  O 16  3COLOR(BLU)
+     A            KV13          10A  O 16 14
+     A            KB13          50A  O 16 26COLOR(YLW)
+     A            KL14          10A  O 17  3COLOR(BLU)
+     A            KV14          10A  O 17 14
+     A            KB14          50A  O 17 26COLOR(TRQ)
+     A            KL15          10A  O 18  3COLOR(BLU)
+     A            KV15          10A  O 18 14
+     A            KB15          50A  O 18 26COLOR(YLW)
+     A            KSCL          74A  O 20  3COLOR(BLU)
+     A            KFK           78A  O 23  2COLOR(BLU)
+     A          R HSLIST
+     A                                  1  2'Help - Spreadsheets'
+     A                                      DSPATR(HI)
+     A                                  3  3'Your spreadsheets.  Each has colum-
+     A                                      ns A to H and rows 1 to 99.'
+     A                                  5  3'Options: 2 opens a sheet, 6 prints-
+     A                                       it, 4 deletes it.'
+     A                                  6  3'You can also put the cursor on a l-
+     A                                      ine and press Enter to pick it.'
+     A                                  8  3'F6 creates a new sheet.'
+     A                                  9  3'F7 and F8 page backward and forwar-
+     A                                      d through a long list.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HSNEW
+     A                                  1  2'Help - New spreadsheet'
+     A                                      DSPATR(HI)
+     A                                  3  3'Give the sheet a short name and a -
+     A                                      title, then press Enter.'
+     A                                  4  3'The sheet opens straight away.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HSGRID
+     A                                  1  2'Help - Spreadsheet'
+     A                                      DSPATR(HI)
+     A                                  3  3'Type straight into the cells.  Eac-
+     A                                      h cell shows eight characters.'
+     A                                  5  3'Moving around:  Tab moves to the n-
+     A                                      ext cell to the right, and on to th-
+     A                                      e'
+     A                                  6  3'next row.  Backtab (Shift+Tab) mov-
+     A                                      es left.  The arrow keys also work.'
+     A                                  7  3'Field Exit clears the rest of a ce-
+     A                                      ll and moves on, which is the quick-
+     A                                       way'
+     A                                  8  3'to type over a number.'
+     A                                 10  3'Enter stores everything you typed -
+     A                                      and moves down one cell, or right o-
+     A                                      ne'
+     A                                 11  3'cell.  F10 switches between down a-
+     A                                      nd right.  Cursor on a cell + Enter'
+     A                                 12  3'makes it the current cell: its row-
+     A                                       number and column letter light up.'
+     A                                 14  3'Yes, it does math.  Start a cell w-
+     A                                      ith = for a formula: =B2*C2+10'
+     A                                 15  3'Use + - * / with numbers and cells-
+     A                                      .  * and / come before + and -.'
+     A                                 16  3'=SUM(B2:B9) =AVG(B2:B9) =MIN(B2:B9-
+     A                                      ) =MAX(B2:B9) =COUNT(B2:B9)'
+     A                                 18  3'A cell shows the result; the line -
+     A                                      below the grid shows the formula.'
+     A                                 19  3'For text or a formula longer than -
+     A                                      eight characters, use Contents.'
+     A                                 20  3'F6 empties the current cell, F9 pr-
+     A                                      ints, F11 charts the current column-
+     A                                      .'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
+     A          R HSCHART
+     A                                  1  2'Help - Column chart'
+     A                                      DSPATR(HI)
+     A                                  3  3'Each bar is one number from the cu-
+     A                                      rrent column, top to bottom, up to -
+     A                                      15.'
+     A                                  4  3'The label is the text in column A -
+     A                                      of that row, when there is some.'
+     A                                  6  3'Bars are drawn to scale against th-
+     A                                      e largest number.  Negative numbers'
+     A                                  7  3'are drawn with - instead of #.'
+     A                                  9  3'Press Enter to go back to the shee-
+     A                                      t.'
+     A                                 23  2'Press Enter to return.'
+     A                                      COLOR(BLU)
