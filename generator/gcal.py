@@ -1,4 +1,4 @@
-SETN = " | MOVE | CURN | W8\nEVAL DTXT = %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2) + '/' + %SUBST(W8:1:4)\n"
+SETN = " | MOVE | CURN | W8\nEVAL DTXT = %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2) + '/' + %SUBST(W8:1:4)\nIF UNITS = 'M'\nEVAL DTXT = %SUBST(W8:7:2) + '.' + %SUBST(W8:5:2) + '.' + %SUBST(W8:1:4)\nENDIF\n"
 # ================= Calendar, OfficeVision style =================
 pf('OVCAUTP', 'AUTHREC', [A('CAOWN', 10), A('CAUSER', 10), A('CAVIEW', 1), A('CACHG', 1)], ['CAOWN', 'CAUSER'])
 pf('OVROOMP', 'ROOMREC', [A('RMID', 9), A('RMNAME', 30), N('RMSEAT', 3)], ['RMID'])
@@ -63,7 +63,9 @@ H('PMENU', 'Process calendars', 'Type the number of what you want to do and pres
   '12        Find an appointment by a word in it.',
   '13        Company holidays, shown on every calendar.', '',
   'F6 adds an appointment.  F5 changes the character beside the calendar.')
-H('DAYV', 'Schedule for the day', 'Every appointment on the chosen day, earliest first.', '',
+H('DAYV', 'Schedule for the day', 'Every appointment on the chosen day, earliest first, in office time.',
+  'The yellow line shows the time now in the office, and in your own time zone',
+  'if Settings gives a different one.', '',
   'Type 2 beside an appointment to change it, or 4 to delete it.',
   'F6 adds an appointment.  F7 and F8 go to the day before and the day after.',
   'F9 prints the day.  F11 shows more when there are over twelve.', '',
@@ -100,25 +102,30 @@ for i, tx in enumerate(OPTS):
     if tx: s.t(7 + i, 7, tx)
 s.t(8, 7, ' 2. View'); s.f('PNDV', 2, 'B', 8, 16, 'DSPATR(UL)'); s.t(8, 19, 'days of the calendar')
 s.t(14, 7, ' 8. Print'); s.f('PNDP', 2, 'B', 14, 17, 'DSPATR(UL)'); s.t(14, 20, 'days of the calendar')
-s.f('PMCT', 22, 'O', 6, 55, 'COLOR(TRQ)'); s.t(7, 55, ' Su Mo Tu We Th Fr Sa', 'COLOR(TRQ)')
+s.f('PMCT', 22, 'O', 6, 55, 'COLOR(TRQ)'); s.f('PWK', 21, 'O', 7, 55, 'COLOR(TRQ)')
 for i in range(1, 7): s.f('PMC%d' % i, 21, 'O', 7 + i, 55, 'COLOR(TRQ)')
 s.f('PDOY', 22, 'O', 14, 55, 'COLOR(TRQ)')
 for i in range(1, 7): s.f('CS%d' % i, 12, 'O', 14 + i, 62, 'OVRDTA', 'COLOR(YLW)')
 s.f('PMSG', 74, 'O', 21, 3, 'DSPATR(HI)'); s.f('PFK1', 78, 'O', 22, 2, 'COLOR(BLU)'); s.f('PFK2', 78, 'O', 23, 2, 'COLOR(BLU)')
 # day schedule
+s.rec('SAVR', 'OVERLAY'); s.reck('INVITE', ' 45'); s.reck('PUTOVR', ' 46')
+for i in range(1, 7): s.f('SV%d' % i, 78, 'O', 7 + i, 2, 'OVRDTA', 'COLOR(YLW)')
+s.f('SVCLK', 24, 'O', 16, 29, 'OVRDTA', 'DSPATR(HI)'); s.f('SVDAT', 30, 'O', 17, 26, 'OVRDTA', 'COLOR(TRQ)')
+s.t(21, 22, 'Press Enter to go back to the calendar.', 'COLOR(BLU)')
 s.rec('DAYV'); s.f('DHDR', 78, 'O', 1, 2, 'DSPATR(HI)'); s.ctr(2, 'W O R K   W I T H   T H E   D A Y', 'DSPATR(HI)')
 s.f('DTTL', 60, 'O', 3, 3, 'COLOR(PNK)'); s.f('DDTE', 40, 'O', 4, 3, 'COLOR(WHT)'); s.f('DHOL', 32, 'O', 4, 46, 'COLOR(RED)')
+s.f('DNOW', 76, 'O', 5, 3, 'COLOR(YLW)')
 s.t(6, 3, 'Opt  Time     What', 'COLOR(BLU)')
 for i in range(1, 13): s.f('DOP%02d' % i, 2, 'I', 6 + i, 3, 'DSPATR(UL)'); s.f('DLN%02d' % i, 70, 'O', 6 + i, 8, 'COLOR(TRQ)')
 s.f('DMSG', 74, 'O', 21, 3, 'DSPATR(HI)'); s.f('DFK1', 78, 'O', 22, 2, 'COLOR(BLU)'); s.f('DFK2', 78, 'O', 23, 2, 'COLOR(BLU)')
 # add or change
 s.edit('CADD', 'A')
-s.inp('Date', 'ADATE', 10, 4, lc=False); s.t(4, 37, 'M/D or M/D/YYYY', 'COLOR(BLU)')
+s.inp('Date', 'ADATE', 10, 4, lc=False); s.t(4, 37, 'M/D/YYYY, or D.M.YYYY with dots', 'COLOR(BLU)')
 ND42 = (' 42', 'DSPATR(ND)')
 s.f('ALB1', 19, 'O', 5, 3); s.f('AEND', 10, 'B', 5, 24, 'DSPATR(UL)', ND42, (' 42', 'DSPATR(PR)'))
 s.f('ALB2', 36, 'O', 5, 37, 'COLOR(BLU)')
-s.inp('Time', 'ATIME', 5, 6, lc=False); s.t(6, 37, 'HH:MM, 24-hour.  Blank = all day', 'COLOR(BLU)')
-s.t(7, 37, '00:00 is midnight', 'COLOR(BLU)')
+s.inp('Time', 'ATIME', 5, 6, lc=False); s.t(6, 37, 'HH:MM 24-hour.  Blank = all day', 'COLOR(BLU)')
+s.inp('Time zone', 'AZONE', 6, 7, lc=False); s.f('AZH', 42, 'O', 7, 37, 'COLOR(BLU)')
 s.t(8, 3, 'What'); s.f('ATEXT', 60, 'B', 9, 3, 'CHECK(LC)', 'DSPATR(UL)')
 # n days
 s.rec('NDVR'); s.f('NHDR', 78, 'O', 1, 2, 'DSPATR(HI)'); s.f('NTTL', 74, 'O', 2, 3, 'COLOR(PNK)')
@@ -126,7 +133,7 @@ for i in range(1, 17): s.f('NL%02d' % i, 76, 'O', 3 + i, 3, ('N%02d' % (60 + i),
 s.f('NMSG', 74, 'O', 21, 3, 'DSPATR(HI)'); s.f('NFK', 78, 'O', 23, 2, 'COLOR(BLU)')
 # month
 s.rec('MONV'); s.f('MHDR', 78, 'O', 1, 2, 'DSPATR(HI)'); s.f('MTTL', 76, 'O', 2, 3, 'COLOR(PNK)')
-s.t(3, 2, ''.join(n.strip().center(11) for n in [DNAMES[i:i + 9] for i in range(0, 63, 9)]).rstrip(), 'COLOR(WHT)')
+s.f('MWKH', 77, 'O', 3, 2, 'COLOR(WHT)')
 BORDER = '+' + ('-' * 10 + '+') * 7
 for w in range(7): s.t(4 + 3 * w, 2, BORDER, 'COLOR(TRQ)')
 for w in range(1, 7):
@@ -145,13 +152,15 @@ s.f('SFK', 78, 'O', 23, 2, 'COLOR(BLU)')
 s.save()
 
 MV = ['MDL%d' % i for i in range(1, 7)]
-prog('OVCAL', [('OVCALP', 'U'), ('OVPREFP', 'U'), ('OVUSERP', 'I'), ('OVCAUTP', 'I'), ('OVROOMP', 'I'), ('OVHOLP', 'I')], 'OVCAL',
+prog('OVCAL', [('OVCALP', 'U'), ('OVPREFP', 'U'), ('OVUSERP', 'I'), ('OVCAUTP', 'I'), ('OVROOMP', 'I'), ('OVHOLP', 'I'), ('OVSETUP', 'I')], 'OVCAL',
+ arrds('SVA', 'SV', 78, ['SV%d' % i for i in range(1, 7)]) + SETVARS +
+ [S('IDLE', 7, 0), S('SAVSEC', 7, 0), S('GOTKEY', 1), S('SVX', 5, 0), S('SVD', 5, 0), S('FULLS', 1)] +
  arrds('CSA', 'CS', 12, ['CS%d' % i for i in range(1, 7)]) + arrds('PMCA', 'PMC', 21, ['PMC%d' % i for i in range(1, 7)]) +
  arrds('DLNA', 'DLN', 70, ['DLN%02d' % i for i in range(1, 13)]) + arrds('DOPA', 'DOP', 2, ['DOP%02d' % i for i in range(1, 13)]) +
  arrds('NLA', 'NL', 76, ['NL%02d' % i for i in range(1, 17)]) + arrds('MDLA', 'MDL', 78, MV) +
  arrds('MVLA', 'MVL', 78, ['MVL%d' % i for i in range(1, 7)]) + arrds('WLA', 'WL', 78, ['WL%02d' % i for i in range(1, 15)]) +
- arrds('SXA', 'SX', 76, ['SX%02d' % i for i in range(1, 17)]) + artdc() + DC('MNAMES', MNAMES) + DC('DNAMES', DNAMES) + DC('BORDER', BORDER) + DC('ROWL', '|' + ('          |') * 7) + [S('WOFF', 5, 0)] +
- TMVARS + [S('ART', 72), S('MIDX', 5, 0), S('ANIM', 1), S('FRAME', 5, 0), S('FULL', 1),
+ arrds('SXA', 'SX', 76, ['SX%02d' % i for i in range(1, 17)]) + artdc() + DC('MNAMES', MNAMES) + DC('DNAMES', DNAMES) + DC('SUNH', '   Sunday     Monday    Tuesday   Wednesday   Thursday    Friday    Saturday') + DC('MONH', '   Monday    Tuesday   Wednesday   Thursday    Friday    Saturday    Sunday') + DC('BORDER', BORDER) + DC('ROWL', '|' + ('          |') * 7) + [S('WOFF', 5, 0)] +
+ TMVARS + ZNVARS + [S('OFFMIN', 5, 0), S('TOT', 7, 0), S('DSH', 5, 0), S('WOFFZ', 6), S('ZNOTE', 40), S('ART', 72), S('MIDX', 5, 0), S('ANIM', 1), S('FRAME', 5, 0), S('FULL', 1),
   S('CURD', 'D'), S('TODD', 'D'), S('BASEDT', 'D', kw="INZ(D'2000-01-02')"), S('F1', 'D'), S('NXT', 'D'), S('D1', 'D'), S('D2', 'D'),
   S('JAN1', 'D'), S('MOND', 'D'), S('SXD', 'D'), S('NDAYS', 7, 0), S('FDOW', 5, 0), S('MDAYS', 5, 0), S('WKD', 5, 0), S('DOYN', 5, 0),
   S('CURN', 8, 0), S('TODN', 8, 0), S('FIRSTN', 8, 0), S('KDATE', 8, 0), S('KTIME', 4, 0), S('KTM', 4, 0, 'DIM(12)'),
@@ -185,9 +194,13 @@ EVAL CURN = TODN
 EVAL WOWN = PGMUSR
 EXSR SWITCH
 @GETPREF@
-EVAL ANIM = '1'
-IF MIDX = 6
+@GETSET@
+* the menu itself never redraws on a timer, because that moved the
+* cursor.  ANIM now means the screen saver may start when idle.
+EVAL SAVSEC = SAVMIN * 60
 EVAL ANIM = '0'
+IF ANIMON = 'Y' AND SAVSEC > 0
+EVAL ANIM = '1'
 ENDIF
 EVAL FRAME = 0
 EVAL FULL = '1'
@@ -201,24 +214,31 @@ EXSR SETART
 EXSR CLOCK
 IF ANIM = '1'
 EVAL *IN45 = *ON
-IF FULL = '1'
 EVAL *IN46 = *OFF
  | WRITE | BLANK
-ELSE
-EVAL *IN46 = *ON
-ENDIF
  | WRITE | PMENU
+EVAL IDLE = 0
+EVAL GOTKEY = '0'
+DOW GOTKEY = '0'
  | READ | OVCAL | | 5152
 IF *IN51 = *ON
 EVAL *IN51 = *OFF
-IF DSPSTS = 1331
-EVAL FRAME = 1 - FRAME
-EVAL FULL = '0'
-ELSE
+IF DSPSTS <> 1331
 EVAL ANIM = '0'
-EVAL FULL = '1'
-EVAL MSG = 'The character cannot move on this display.'
+EVAL MSG = 'The screen saver cannot run on this display.'
+LEAVE
 ENDIF
+EVAL IDLE = IDLE + 1
+IF IDLE >= SAVSEC
+EXSR SAVER
+LEAVE
+ENDIF
+ELSE
+EVAL GOTKEY = '1'
+ENDIF
+ENDDO
+IF GOTKEY = '0'
+EVAL FULL = '1'
 ITER
 ENDIF
 ELSE
@@ -470,8 +490,40 @@ IF H12 = 0
 EVAL H12 = 12
 ENDIF
 EVAL PTIM = 'Time:  ' + %CHAR(H12) + ':' + %SUBST(WSTMP:15:2) + ' ' + AMPM
+IF UNITS = 'M'
+EVAL PTIM = 'Time:  ' + %SUBST(WSTMP:12:2) + ':' + %SUBST(WSTMP:15:2)
+ENDIF
  | ENDSR
 * ---- day of the week of CURD (0 is Sunday), day of the year
+* ---- the time now, office and yours: DNOW ----
+NOWLN | BEGSR
+EXSR CLOCK
+EVAL DNOW = 'Office time now ' + %TRIM(%SUBST(PTIM:7)) + ', UTC' + UOFFZ
+IF UZONE <> *BLANKS AND UZONE <> UOFFZ
+EVAL ZTX = UOFFZ
+EXSR PARSZN
+EVAL OFFMIN = ZMIN
+EVAL ZTX = UZONE
+EXSR PARSZN
+IF NERR = '0'
+EVAL NSTR = %SUBST(WSTMP:12:2)
+EXSR TONUM
+EVAL TOT = NVAL * 60
+EVAL NSTR = %SUBST(WSTMP:15:2)
+EXSR TONUM
+EVAL TOT = TOT + NVAL + ZMIN - OFFMIN
+DOW TOT < 0
+EVAL TOT = TOT + 1440
+ENDDO
+DOW TOT >= 1440
+EVAL TOT = TOT - 1440
+ENDDO
+EVAL ZH = %DIV(TOT:60)
+EVAL ZM = %REM(TOT:60)
+EVAL DNOW = %TRIMR(DNOW) + '.   Your zone UTC' + UZONE + ': ' + %EDITC(ZH:'X') + ':' + %EDITC(ZM:'X')
+ENDIF
+ENDIF
+ | ENDSR
 GETWKD | BEGSR
 CURD | SUBDUR | BASEDT | NDAYS:*D
 EVAL WKD = %REM(%REM(NDAYS:7) + 7:7)
@@ -491,6 +543,13 @@ F1 | ADDDUR | 1:*M | NXT
 NXT | SUBDUR | F1 | MDAYS:*D
 F1 | SUBDUR | BASEDT | NDAYS:*D
 EVAL FDOW = %REM(%REM(NDAYS:7) + 7:7)
+EVAL PWK = ' Su Mo Tu We Th Fr Sa'
+EVAL MWKH = SUNH
+IF UWEEK = 'M'
+EVAL FDOW = %REM(FDOW + 6:7)
+EVAL PWK = ' Mo Tu We Th Fr Sa Su'
+EVAL MWKH = MONH
+ENDIF
 EVAL HAS = *BLANK
 EVAL HOL = *BLANK
 EVAL KDATE = FIRSTN
@@ -528,14 +587,63 @@ EVAL MTT = %SUBST(W8:1:4) + '   ' + %TRIMR(%SUBST(MNAMES:(MM-1)*9+1:9)) + '   ' 
 * ---- the character beside the calendar ----
 SETART | BEGSR
 @ARTSEL@ | ENDSR
+* ---- the screen saver: the character drifts across, with the time ----
+SAVER | BEGSR
+EVAL SVX = 2
+EVAL SVD = 2
+EVAL FULLS = '1'
+DOW 1 = 1
+EVAL FRAME = 1 - FRAME
+EXSR SETART
+EVAL SVA = *BLANKS
+IF MIDX < 6
+1 | DO | 6 | I
+EVAL %SUBST(SV(I):SVX:12) = %SUBST(ART:I*12-11:12)
+ | ENDDO
+ENDIF
+EXSR CLOCK
+EVAL SVCLK = PTIM
+* always today, whichever day the calendar was showing
+TODD | SUBDUR | BASEDT | NDAYS:*D
+EVAL WKD = %REM(%REM(NDAYS:7) + 7:7)
+ | MOVE | TODN | W8
+EVAL SVDAT = %TRIMR(%SUBST(DNAMES:WKD*9+1:9)) + ', '
+ + %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2) + '/' + %SUBST(W8:1:4)
+EVAL *IN45 = *ON
+IF FULLS = '1'
+EVAL *IN46 = *OFF
+ | WRITE | BLANK
+ELSE
+EVAL *IN46 = *ON
+ENDIF
+ | WRITE | SAVR
+EVAL FULLS = '0'
+ | READ | OVCAL | | 5152
+IF *IN51 = *ON
+EVAL *IN51 = *OFF
+IF DSPSTS <> 1331
+LEAVE
+ENDIF
+EVAL SVX = SVX + SVD
+IF SVX >= 66
+EVAL SVD = -2
+ENDIF
+IF SVX <= 2
+EVAL SVD = 2
+ENDIF
+ITER
+ENDIF
+LEAVE
+ENDDO
+EVAL FRAME = 0
+EVAL *IN45 = *OFF
+EVAL *IN46 = *OFF
+""" + INDOFF + """
+ | ENDSR
 NEXTCH | BEGSR
 EVAL MIDX = MIDX + 1
 IF MIDX > 6
 EVAL MIDX = 1
-ENDIF
-EVAL ANIM = '1'
-IF MIDX = 6
-EVAL ANIM = '0'
 ENDIF
 PGMUSR | CHAIN | PREFREC
 EVAL PRUSER = PGMUSR
@@ -561,6 +669,7 @@ EXSR GETWKD
 EXSR GETDOY
 EVAL DDTE = %TRIMR(%SUBST(DNAMES:WKD*9+1:9)) + ', ' + DTXT + '   day ' + %CHAR(DOYN)
 EVAL DHOL = *BLANKS
+EXSR NOWLN
 CURN | CHAIN(N) | HOLREC
 IF %FOUND(OVHOLP)
 EVAL DHOL = 'Holiday: ' + HLNAME
@@ -772,12 +881,15 @@ WHEN CLTIME < 0
 IF %SUBST(DOTS(DY):1:1) = ' '
 EVAL %SUBST(DOTS(DY):1:1) = '*'
 ENDIF
-WHEN CLTIME < 800
+WHEN CLTIME < UDBEG
 EVAL %SUBST(DOTS(DY):1:1) = '<'
-WHEN CLTIME >= 1600
+WHEN CLTIME >= UDEND
 EVAL %SUBST(DOTS(DY):10:1) = '>'
 OTHER
-EVAL SLOT = %DIV(CLTIME:100) - 6
+EVAL SLOT = %DIV(CLTIME:100) - %DIV(UDBEG:100) + 2
+IF SLOT > 9
+EVAL SLOT = 9
+ENDIF
 EVAL %SUBST(DOTS(DY):SLOT:1) = %SUBST(CLTEXT:1:1)
 ENDSL
 KUSER | READE(N) | CALREC
@@ -852,7 +964,7 @@ EVAL WL(WROW) = 'Early'
 WHEN WROW = 13
 EVAL WL(WROW) = 'Later'
 OTHER
-EVAL HOUR = WROW + 5
+EVAL HOUR = WROW - 3 + %DIV(UDBEG:100)
 EVAL DAY2 = HOUR
 EVAL WL(WROW) = %EDITC(DAY2:'Z') + ':00'
 ENDSL
@@ -877,12 +989,12 @@ DOW NOT %EOF(OVCALP)
 SELECT
 WHEN CLTIME < 0
 EVAL WROW = 1
-WHEN CLTIME < 800
+WHEN CLTIME < %DIV(UDBEG:100) * 100
 EVAL WROW = 2
-WHEN CLTIME >= 1800
+WHEN CLTIME >= (%DIV(UDBEG:100) + 10) * 100
 EVAL WROW = 13
 OTHER
-EVAL WROW = %DIV(CLTIME:100) - 5
+EVAL WROW = %DIV(CLTIME:100) - %DIV(UDBEG:100) + 3
 ENDSL
 EVAL WPOS = (WDAY-1)*14+9
 IF %SUBST(WL(WROW):WPOS:13) = *BLANKS
@@ -940,6 +1052,9 @@ EVAL MCOL = %REM(KM - 1:3) * 25 + 1
 EXSR MKMON
 EVAL %SUBST(SX(BAND*8+1):MCOL:21) = %SUBST(MTT:5:18)
 EVAL %SUBST(SX(BAND*8+2):MCOL:21) = ' Su Mo Tu We Th Fr Sa'
+IF UWEEK = 'M'
+EVAL %SUBST(SX(BAND*8+2):MCOL:21) = ' Mo Tu We Th Fr Sa Su'
+ENDIF
 1 | DO | 6 | I
 EVAL %SUBST(SX(BAND*8+2+I):MCOL:21) = ML(I)
  | ENDDO
@@ -971,7 +1086,15 @@ ELSE
 """ + SETN + """
 EVAL ADATE = DTXT
 EVAL AEND = *BLANKS
-EVAL ATIME = *BLANKS
+EVAL ATIME = %SUBST(%EDITC(UDBEG:'X'):1:2) + ':' + %SUBST(%EDITC(UDBEG:'X'):3:2)
+EVAL ZTX = UOFFZ
+EXSR PARSZN
+EVAL OFFMIN = ZMIN
+EVAL AZONE = UZONE
+IF AZONE = *BLANKS
+EVAL AZONE = UOFFZ
+ENDIF
+EVAL AZH = 'Office time is UTC' + UOFFZ
 EVAL ATEXT = *BLANKS
 EVAL AMSG = *BLANKS
 EVAL *IN42 = *OFF
@@ -982,9 +1105,11 @@ IF %FOUND(OVCALP)
 EVAL *IN42 = *ON
 EVAL HDRID = 'CALCHANGE'
 EXSR FMTTM
+EVAL ATIME = *BLANKS
 IF CLTIME >= 0
 EVAL ATIME = TTXT
 ENDIF
+EVAL AZONE = UOFFZ
 EVAL ATEXT = CLTEXT
 ELSE
 EVAL EDMODE = 'A'
@@ -1040,6 +1165,37 @@ IF NERR = '1'
 EVAL AMSG = 'That time is not valid.  Use HH:MM, such as 14:30.'
 ITER
 ENDIF
+* a time typed in another zone is kept in office time
+EVAL ZNOTE = *BLANKS
+IF CLT >= 0 AND AZONE <> *BLANKS
+EVAL ZTX = AZONE
+EXSR PARSZN
+IF NERR = '1'
+EVAL AMSG = 'Time zone is hours from UTC, such as -05:00 or +01:00.'
+ITER
+ENDIF
+IF ZMIN <> OFFMIN
+EVAL TOT = %DIV(CLT:100) * 60 + %REM(CLT:100) + OFFMIN - ZMIN
+EVAL DSH = 0
+DOW TOT < 0
+EVAL TOT = TOT + 1440
+EVAL DSH = DSH - 1
+ENDDO
+DOW TOT >= 1440
+EVAL TOT = TOT - 1440
+EVAL DSH = DSH + 1
+ENDDO
+EVAL CLT = %DIV(TOT:60) * 100 + %REM(TOT:60)
+IF DSH <> 0
+*ISO | MOVE | STARTV | D1
+ | ADDDUR | DSH:*D | D1
+*ISO | MOVE | D1 | STARTV
+ENDIF
+EVAL ZH = %DIV(TOT:60)
+EVAL ZM = %REM(TOT:60)
+EVAL ZNOTE = '  Office time ' + %EDITC(ZH:'X') + ':' + %EDITC(ZM:'X') + '.'
+ENDIF
+ENDIF
 IF EDMODE = 'C'
 KEYF | CHAIN | CALREC
 IF %FOUND(OVCALP)
@@ -1072,6 +1228,7 @@ IF NDAY > 1
 EVAL MSG = 'Appointment added to ' + %CHAR(NDAY) + ' days.'
 ENDIF
 ENDIF
+EVAL MSG = %TRIMR(MSG) + ZNOTE
 EVAL CURN = STARTV
 *ISO | MOVE | CURN | CURD
 EVAL PGNO = 0
@@ -1081,4 +1238,4 @@ EVAL *IN42 = *OFF
 """ + INDOFF + """
 ENDIF
  | ENDSR
-""" + CHKDT + PARSETM).replace('@ARTSEL@', artsel('CS')).replace('@GETPREF@', GETPREF), hx=' DATFMT(*ISO)', dspkw='MAXDEV(*FILE)')
+""" + CHKDT + PARSETM + PARSZN).replace('@ARTSEL@', artsel('CS')).replace('@GETPREF@', GETPREF).replace('@GETSET@', GETSET), hx=' DATFMT(*ISO)', dspkw='MAXDEV(*FILE)')

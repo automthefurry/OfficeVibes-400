@@ -1414,13 +1414,15 @@ ENDDO
 """, dspkw='MAXDEV(*FILE)')
 # ---------------- CL ----------------
 SRC['OVSYSN.CLLE'] = ["/* OVSYSN - return the system name for the banner */", "PGM        PARM(&N)", "  DCL        VAR(&N) TYPE(*CHAR) LEN(8)", "  RTVNETA    SYSNAME(&N)", "ENDPGM"]
+SRC['OVTZC.CLLE'] = ["/* OVTZC - the system's offset from UTC, such as -0500 */", "PGM        PARM(&OFF)", "  DCL        VAR(&OFF) TYPE(*CHAR) LEN(5)",
+  "  RTVSYSVAL  SYSVAL(QUTCOFFSET) RTNVAR(&OFF)", "  MONMSG     MSGID(CPF0000) EXEC(CHGVAR VAR(&OFF) VALUE('+0000'))", "ENDPGM"]
 SRC['OFFMNUC.CLLE'] = ["/* OFFMNUC - program behind the GO OFFICE menu */", "PGM        PARM(&MNU &MNULIB &RTNCDE)",
  "  DCL        VAR(&MNU)    TYPE(*CHAR) LEN(10)", "  DCL        VAR(&MNULIB) TYPE(*CHAR) LEN(10)", "  DCL        VAR(&RTNCDE) TYPE(*CHAR) LEN(2)",
  "  ADDLIBLE   LIB(OFFICE)", "  MONMSG     MSGID(CPF0000)", "  CALL       PGM(OFFICE/OFFMENU)", "  MONMSG     MSGID(CPF0000)",
  "  CHGVAR     VAR(&RTNCDE) VALUE(X'FFFF')", "ENDPGM"]
-PFS = ['OVUSERP', 'OVLOGP', 'OVGRPP', 'OVMSGP', 'OVMAILP', 'OVNOTEP', 'OVTASKP', 'OVPHONP', 'OVCALP', 'OVDOCP', 'OVDOCLP', 'OVCATP', 'OVSCORP', 'OVPREFP', 'OVCHATP', 'OVSHTP', 'OVSHCP', 'OVCAUTP', 'OVROOMP', 'OVHOLP']
+PFS = ['OVUSERP', 'OVLOGP', 'OVGRPP', 'OVMSGP', 'OVMAILP', 'OVNOTEP', 'OVTASKP', 'OVPHONP', 'OVCALP', 'OVDOCP', 'OVDOCLP', 'OVCATP', 'OVSCORP', 'OVPREFP', 'OVCHATP', 'OVSHTP', 'OVSHCP', 'OVCAUTP', 'OVROOMP', 'OVHOLP', 'OVSETUP', 'OVCTOPP']
 DSP = ['OFFMNU', 'OVUSRL', 'OVMSGS', 'OVMAIL', 'OVNOTE', 'OVTASK', 'OVPHON', 'OVCAL', 'OVDOC', 'OVADM', 'OVUSRM', 'OVGRPM', 'OVLOGV', 'OVSTAT', 'OVCAT', 'OVGAME', 'OVFIND', 'OVCHAT', 'OVSHEET', 'OVROOM', 'OVCAUT', 'OVHOLI', 'OVCSRC', 'OVMEET']
-PG = ['OVLOG', 'OVPRT', 'OVREMD', 'OVUSRL', 'OFFMENU', 'OVMSGS', 'OVMAIL', 'OVNOTE', 'OVTASK', 'OVPHON', 'OVCAL', 'OVDOC', 'OVADM', 'OVUSRM', 'OVGRPM', 'OVLOGV', 'OVSTAT', 'OVCAT', 'OVGAME', 'OVFIND', 'OVCHAT', 'OVSHEET', 'OVROOM', 'OVCAUT', 'OVHOLI', 'OVCSRC', 'OVMEET']
+PG = ['OVLOG', 'OVPRT', 'OVGSET', 'OVREMD', 'OVUSRL', 'OFFMENU', 'OVMSGS', 'OVMAIL', 'OVNOTE', 'OVTASK', 'OVPHON', 'OVCAL', 'OVDOC', 'OVADM', 'OVUSRM', 'OVGRPM', 'OVLOGV', 'OVSTAT', 'OVCAT', 'OVGAME', 'OVFIND', 'OVCHAT', 'OVSHEET', 'OVROOM', 'OVCAUT', 'OVHOLI', 'OVCSRC', 'OVMEET']
 B = ["/* BLDOFF - build OfficeVibes/400 (RPG IV).  Re-runnable.           */",
  "/* It carries on past a failed compile and lists every failure.      */", "PGM", "",
  "  DCL        VAR(&FAIL) TYPE(*CHAR) LEN(400)", "  DCL        VAR(&MSG) TYPE(*CHAR) LEN(500)", "  DCL        VAR(&INUSE) TYPE(*CHAR) LEN(1)", "",
@@ -1432,7 +1434,7 @@ def cp(stmf, srcf, mbr):
               "               MBROPT(*REPLACE)", "  MONMSG     MSGID(CPF0000) EXEC(CHGVAR VAR(&FAIL) +", "               VALUE(&FAIL *BCAT '%s'))" % stmf])
 MON = lambda n: ["  MONMSG     MSGID(CPF0000 RNS0000 MCH0000) EXEC(CHGVAR VAR(&FAIL) +", "               VALUE(&FAIL *BCAT '%s'))" % n]
 for n in PFS + DSP + ['OVPRTF']: cp(n + '.DDS', 'QDDSSRC', n)
-for n in ['OVSYSN', 'OFFMNUC']: cp(n + '.CLLE', 'QCLSRC', n)
+for n in ['OVSYSN', 'OVTZC', 'OFFMNUC']: cp(n + '.CLLE', 'QCLSRC', n)
 for n in PG: cp(n + '.RPGLE', 'QRPGLESRC', n)
 B += ["", "  /* The data layout changed in version 3.  The first build of this   */", "  /* version replaces the old (empty) data files; later builds keep   */",
       "  /* every data file, so rebuilding never loses anything.             */",
@@ -1459,7 +1461,7 @@ for n in DSP:
     if n == 'OVCHAT': B += ["               WAITRCD(2) DFRWRT(*NO)"]
     B += MON(n + ' screens') + [" S%s:" % n + ' ' * (11 - len(n)) + "CHGVAR     VAR(&INUSE) VALUE('0')"]
 B += ["  CRTPRTF    FILE(OFFICE/OVPRTF) SRCFILE(OFFICE/QDDSSRC) SRCMBR(OVPRTF)"] + MON('OVPRTF') + [""]
-for n in ['OVSYSN', 'OFFMNUC']: B += ["  CRTBNDCL   PGM(OFFICE/%s) SRCFILE(OFFICE/QCLSRC) SRCMBR(%s)" % (n, n)] + MON(n)
+for n in ['OVSYSN', 'OVTZC', 'OFFMNUC']: B += ["  CRTBNDCL   PGM(OFFICE/%s) SRCFILE(OFFICE/QCLSRC) SRCMBR(%s)" % (n, n)] + MON(n)
 for n in PG: B += ["  CRTBNDRPG  PGM(OFFICE/%s) SRCFILE(OFFICE/QRPGLESRC) SRCMBR(%s)" % (n, n)] + MON(n)
 B += ["", "  GRTOBJAUT  OBJ(OFFICE/*ALL) OBJTYPE(*ALL) USER(*PUBLIC) AUT(*CHANGE)", "  MONMSG     MSGID(CPF0000)",
  "  DLTMNU     MENU(OFFICE/OFFICE)", "  MONMSG     MSGID(CPF0000)", "  CRTMNU     MENU(OFFICE/OFFICE) TYPE(*PGM) PGM(OFFICE/OFFMNUC)",

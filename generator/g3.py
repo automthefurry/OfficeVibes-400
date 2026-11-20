@@ -427,18 +427,17 @@ DOW NOT %EOF(OVDOCLP)
 KEY2D | READE | DOCLREC
 ENDDO
 """
-prog('OVDOC', [('OVDOCP', 'U'), ('OVDOCLP', 'U')], 'OVDOC', listds('D', 30) + arrds('DLBA', 'DLB', 30, ['DLB%02d' % i for i in range(1, 11)]) +
- arrds('DLCA', 'DLC', 30, ['DLC%02d' % i for i in range(1, 11)]) + arrds('DICA', 'DIC', 3, ['DIC%02d' % i for i in range(1, 11)]) + arrds('EDA', 'ED', 76, ['ED%02d' % i for i in range(1, 16)]) +
+prog('OVDOC', [('OVDOCP', 'U'), ('OVDOCLP', 'U')], 'OVDOC', listds('D', 72, 14) + arrds('EDA', 'ED', 76, ['ED%02d' % i for i in range(1, 16)]) +
  [S('TXT', 76, kw='DIM(500)'), S('NLINES', 5, 0), S('TOPL', 5, 0), S('IDX', 5, 0), S('CLN', 5, 0), S('DIRTY', 1), S('WARN', 1),
-  S('KD', 10, kw='DIM(10)'), S('KDOC', 10), S('WTITL', 40)] +
- DC('COLH', 'Each card is a document.  Type an option beside it, or cursor + Enter.') +
- DC('FK1', '2=Edit  4=Delete  6=Print   Cursor anywhere on a card + Enter opens it') + DC('FK2', 'F1=Help  F3=Exit  F6=New document  F7/F8=Page') +
+  S('KD', 10, kw='DIM(14)'), S('W12', 11), S('KDOC', 10), S('WTITL', 40)] +
+ DC('COLH', 'Opt      Name       Title                              Size       Changed') +
+ DC('FK1', '2=Edit  4=Delete  6=Print   Cursor on a line + Enter opens it') + DC('FK2', 'F1=Help  F3=Exit  F6=New document  F7/F8=Page') +
  DC('EK1', 'F6=Insert line at cursor   F9=Delete line at cursor   F7/F8=Page up/down') + DC('EK2', 'F1=Help   F10=Save   F11=Print   F3=Exit'), """
 KEY2D | KLIST
  | KFLD | | KUSER
  | KFLD | | KDOC
 EVAL LAPP = 'DOCUMENTS'
-""" + listmain('D', 'DLIST', 'OFCDOC', deflt='2', sel=DOCSEL, keys="""
+""" + listmain('D', 'DLIST', 'OFCDOC', deflt='2', lcol=2, n=14, keys="""
 IF *IN06 = *ON
 EXSR NEWDOC
 ITER
@@ -469,28 +468,33 @@ ENDIF
 EVAL *INLR = *ON
 LOAD | BEGSR
 EVAL DLNA = *BLANKS
-EVAL DLBA = *BLANKS
-EVAL DLCA = *BLANKS
-EVAL DICA = *BLANKS
 EVAL NMATCH = 0
-EVAL BASE = PGNO * 10
+EVAL BASE = PGNO * 14
 KUSER | SETLL | DOCREC
 KUSER | READE(N) | DOCREC
 DOW NOT %EOF(OVDOCP)
 EVAL NMATCH = NMATCH + 1
-""" + PAGED + """
+IF NMATCH > BASE AND NMATCH <= BASE + 14
+EVAL ROW = NMATCH - BASE
  | MOVE | DCSTMP | WSTMP
 EXSR FMTDT
-EVAL DIC(ROW) = '[=]'
-EVAL DLN(ROW) = DCNAME
-EVAL DLB(ROW) = DCTITL
-EVAL DLC(ROW) = %CHAR(DCLINE) + ' lines, ' + %SUBST(WDT:1:10)
+EVAL W12 = %CHAR(DCLINE) + ' lines'
+EVAL DLN(ROW) = '[=] ' + DCNAME + ' ' + %SUBST(DCTITL:1:34) + ' ' + W12 + %SUBST(WDT:1:10)
 EVAL KD(ROW) = DCNAME
 ENDIF
 KUSER | READE(N) | DOCREC
 ENDDO
-""" + SHOWN + """
-EVAL TTLW = %CHAR(NMATCH) + ' document(s), ten cards to a page'
+EVAL NSHOW = NMATCH - BASE
+IF NSHOW > 14
+EVAL NSHOW = 14
+ENDIF
+IF NSHOW < 0
+EVAL NSHOW = 0
+ENDIF
+EVAL TTLW = %CHAR(NMATCH) + ' document(s)'
+IF NMATCH = 0
+EVAL TTLW = 'No documents yet.  Press F6 to write one.'
+ENDIF
  | ENDSR
 * ---- create a document, then edit it ----
 NEWDOC | BEGSR

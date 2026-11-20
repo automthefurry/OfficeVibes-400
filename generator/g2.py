@@ -70,16 +70,47 @@ ENDIF
 ENDSL
  | RETURN
 """, ['OVPRTF'])
+# ---------------- OVGSET: settings for the shared start-up routine ----------------
+small('OVGSET', [F('OVSETUP', 'I', ' ', True, 'DISK')], MIN + [S('PSET', 40), S('WOFF', 5)], """
+*ENTRY | PLIST
+ | PARM | | PSET
+EVAL PSET = 'IS08001700      +0000'
+PGMUSR | CHAIN | SETREC
+IF %FOUND(OVSETUP)
+IF STUNIT = 'M'
+EVAL %SUBST(PSET:1:1) = 'M'
+ENDIF
+IF STWEEK = 'M'
+EVAL %SUBST(PSET:2:1) = 'M'
+ENDIF
+IF STDBEG > 0 OR STDEND > 0
+EVAL %SUBST(PSET:3:4) = %EDITC(STDBEG:'X')
+EVAL %SUBST(PSET:7:4) = %EDITC(STDEND:'X')
+ENDIF
+EVAL %SUBST(PSET:11:6) = STZONE
+ENDIF
+EVAL WOFF = *BLANKS
+ | CALL | 'OVTZC' | | 50
+ | PARM | | WOFF
+IF *IN50 = *OFF AND WOFF <> *BLANKS
+EVAL %SUBST(PSET:17:5) = WOFF
+ENDIF
+EVAL *IN50 = *OFF
+ | RETURN
+""", ['OVSETUP'])
 # ---------------- OVUSRL: user lookup window ----------------
 s = Scr('OVUSRL')
 s.rec('DUMMY', 'ASSUME'); s.t(1, 3, ' ')
-s.rec('LKWIN', 'WINDOW(3 18 17 44)', 'WDWBORDER((*COLOR BLU))')
-s.t(1, 2, 'Select a user', 'DSPATR(HI)'); s.t(2, 2, 'Find'); s.f('LKFND', 10, 'B', 2, 8, 'CHECK(LC)', 'DSPATR(UL)')
-for i in range(1, 11): s.f('LKO%02d' % i, 1, 'I', 3 + i, 2, 'DSPATR(UL)'); s.f('LKL%02d' % i, 38, 'O', 3 + i, 5)
-s.f('LKMSG', 40, 'O', 15, 2, 'DSPATR(HI)'); s.t(16, 2, 'Enter=Select  F7/F8=Page  F12=Cancel', 'COLOR(BLU)'); s.save()
+s.rec('LKWIN'); s.f('LKHDR', 78, 'O', 1, 2, 'DSPATR(HI)')
+s.ctr(2, 'O F F I C E   D I R E C T O R Y', 'DSPATR(HI)')
+s.t(4, 3, 'Find'); s.f('LKFND', 20, 'B', 4, 9, 'CHECK(LC)', 'DSPATR(UL)')
+s.t(4, 31, 'part of a name, user ID or department', 'COLOR(BLU)')
+s.t(6, 2, 'Opt  User       Name                           Department       Phone', 'COLOR(WHT)')
+for i in range(1, 15): s.f('LKO%02d' % i, 1, 'B', 6 + i, 3, 'DSPATR(UL)'); s.f('LKL%02d' % i, 72, 'O', 6 + i, 7)
+s.f('LKMSG', 76, 'O', 22, 3, 'DSPATR(HI)'); s.f('LKFK', 78, 'O', 23, 2, 'COLOR(BLU)'); s.save()
 prog('OVUSRL', [('OVUSERP', 'I')], 'OVUSRL',
- arrds('LKLA', 'LKL', 38, ['LKL%02d' % i for i in range(1, 11)]) + arrds('LKOA', 'LKO', 1, ['LKO%02d' % i for i in range(1, 11)]) +
- [S('KU', 10, kw='DIM(10)'), S('PSEL', 10), S('ULINE', 60)], """
+ arrds('LKLA', 'LKL', 72, ['LKL%02d' % i for i in range(1, 15)]) + arrds('LKOA', 'LKO', 1, ['LKO%02d' % i for i in range(1, 15)]) +
+ [S('KU', 10, kw='DIM(14)'), S('PSEL', 10), S('ULINE', 60)], """
 *ENTRY | PLIST
  | PARM | | PSEL
 EVAL PSEL = *BLANKS
@@ -90,7 +121,12 @@ EVAL PGNO = 0
 EXSR LOAD
 ENDIF
 EVAL LKMSG = MSG
+IF MSG = *BLANKS
+EVAL LKMSG = %CHAR(NMATCH) + ' user(s).  Type any letter beside one, or cursor + Enter.'
+ENDIF
 EVAL MSG = *BLANKS
+EVAL LKOA = *BLANKS
+""" + hdr('LK', 'OFCDIRECT', 'Enter=Select   F7/F8=Page   F12=Cancel') + """
  | EXFMT | LKWIN
 EXSR CSR
 EVAL UNEED = %TRIML(LKFND)
@@ -105,7 +141,7 @@ ENDIF
 ITER
 ENDIF
 IF *IN08 = *ON
-IF BASE + 10 < NMATCH
+IF BASE + 14 < NMATCH
 EVAL PGNO = PGNO + 1
 ENDIF
 ITER
@@ -130,22 +166,29 @@ EVAL *INLR = *ON
 LOAD | BEGSR
 EVAL LKLA = *BLANKS
 EVAL NMATCH = 0
-EVAL BASE = PGNO * 10
+EVAL BASE = PGNO * 14
 *LOVAL | SETLL | USERREC
  | READ | USERREC
 DOW NOT %EOF(OVUSERP)
-EVAL ULINE = USUSER + ' ' + USNAME
+EVAL ULINE = USUSER + ' ' + USNAME + ' ' + USDEPT
 LCASE:UCASE | XLATE | ULINE | ULINE
 IF USSTAT = 'A' AND (UNEED = *BLANKS OR %SCAN(%TRIMR(UNEED):ULINE) > 0)
 EVAL NMATCH = NMATCH + 1
-""" + PAGED + """
-EVAL LKL(ROW) = USUSER + ' ' + USNAME
+IF NMATCH > BASE AND NMATCH <= BASE + 14
+EVAL ROW = NMATCH - BASE
+EVAL LKL(ROW) = USUSER + ' ' + USNAME + ' ' + %SUBST(USDEPT:1:16) + ' ' + %SUBST(USPHON:1:13)
 EVAL KU(ROW) = USUSER
 ENDIF
 ENDIF
  | READ | USERREC
 ENDDO
-""" + SHOWN + """
+EVAL NSHOW = NMATCH - BASE
+IF NSHOW > 14
+EVAL NSHOW = 14
+ENDIF
+IF NSHOW < 0
+EVAL NSHOW = 0
+ENDIF
  | ENDSR
 """)
 # ---------------- OFFMENU ----------------
@@ -155,18 +198,31 @@ s.f('MHDR', 78, 'O', 1, 2, 'DSPATR(HI)')
 s.t(2, 26, 'O F F I C E V I B E S / 4 0 0', 'DSPATR(HI)'); s.t(3, 29, 'Office Suite for OS/400')
 s.t(4, 3, 'Select one of the following:')
 for i, tx in enumerate([' 1. Calendar', ' 2. Mail, messages and chat', ' 3. Notes, tasks and phone book', ' 4. Documents and spreadsheets',
-    ' 5. Search everything', ' 6. Office directory', ' 7. Games and the office cat', ' 8. Printed output', ' 9. My profile',
+    ' 5. Search everything', ' 6. Office directory', ' 7. Games and the office cat', ' 8. Printed output', ' 9. Settings',
     '10. Administration']): s.t(6 + i, 8, tx)
 for n, ln in (('MI01', 6), ('MI02', 7), ('MI03', 8)): s.f(n, 12, 'O', ln, 41, 'DSPATR(HI)')
 s.t(17, 8, '90. Sign off')
-s.f('MCT', 20, 'O', 5, 56, 'DSPATR(HI)'); s.t(6, 56, 'Su Mo Tu We Th Fr Sa')
+s.f('MCT', 20, 'O', 5, 56, 'DSPATR(HI)'); s.f('MWK', 20, 'O', 6, 56)
 for i in range(1, 7): s.f('MC%d' % i, 21, 'O', 6 + i, 55)
 for i in range(1, 7): s.f('MA%d' % i, 12, 'O', 13 + i, 60)
 s.f('MSGN', 52, 'O', 21, 27); s.t(21, 3, 'Selection . . .'); s.f('MSEL', 3, 'B', 21, 20, 'DSPATR(UL)')
 s.f('MMSG', 74, 'O', 22, 3, 'DSPATR(HI)'); s.f('MFKEY', 78, 'O', 23, 2, 'COLOR(BLU)')
-s.edit('PROF', 'P'); s.t(3, 3, 'This is how other people see you in the office directory.', 'COLOR(BLU)')
-s.inp('Your name', 'PNAME', 30, 5); s.inp('Department', 'PDEPT', 20, 7); s.inp('Phone', 'PPHON', 20, 9)
-s.inp('Pop-up messages', 'PPOP', 1, 11, lc=False); s.t(11, 37, 'Y = show at once, N = wait quietly', 'COLOR(BLU)')
+s.edit('PROF', 'P'); s.ctr(2, 'S E T T I N G S', 'DSPATR(HI)')
+s.t(3, 3, 'About you', 'COLOR(WHT)')
+s.inp('Your name', 'PNAME', 30, 4); s.inp('Department', 'PDEPT', 20, 5); s.inp('Phone', 'PPHON', 20, 6)
+s.inp('Pop-up messages', 'PPOP', 1, 7, lc=False); s.t(7, 37, 'Y = show at once, N = wait quietly', 'COLOR(BLU)')
+s.t(9, 3, 'Calendar and clock', 'COLOR(WHT)')
+s.inp('Time zone', 'PZONE', 6, 10, lc=False); s.f('PZH', 42, 'O', 10, 37, 'COLOR(BLU)')
+s.inp('Week starts on', 'PWEEK', 1, 11, lc=False); s.t(11, 37, 'S = Sunday, M = Monday', 'COLOR(BLU)')
+s.inp('Working day', 'PDBEG', 5, 12, lc=False); s.t(12, 30, 'to'); s.f('PDEND', 5, 'B', 12, 33, 'DSPATR(UL)')
+s.t(12, 40, 'HH:MM, such as 08:00 to 17:00', 'COLOR(BLU)')
+s.inp('Units', 'PUNIT', 1, 13, lc=False); s.t(13, 37, 'I = 12-hour clock, M/D/YYYY', 'COLOR(BLU)')
+s.t(14, 37, 'M = metric: 24-hour clock, D.M.YYYY', 'COLOR(BLU)')
+s.t(15, 3, 'Animations', 'COLOR(WHT)')
+s.inp('Animations', 'PANIM', 1, 16, lc=False); s.t(16, 37, 'Y or N.  N stops everything that moves', 'COLOR(BLU)')
+s.inp('Character', 'PCHAR', 7, 17, lc=False); s.t(17, 37, 'COFFEE CAT DOG ROBOT FISH NONE', 'COLOR(BLU)')
+s.inp('Screen saver after', 'PSAVE', 3, 18, lc=False); s.t(18, 37, 'Minutes on the calendar.  0 = never', 'COLOR(BLU)')
+s.inp('Chat refresh', 'PCHAT', 1, 19, lc=False); s.t(19, 37, 'A = new lines appear, M = press F5', 'COLOR(BLU)')
 s.rec('SUBM'); s.f('SBHDR', 78, 'O', 1, 2, 'DSPATR(HI)'); s.f('SBTTL', 40, 'O', 3, 21, 'DSPATR(HI)')
 s.t(5, 3, 'Select one of the following:')
 for i in range(1, 7): s.f('SO%d' % i, 36, 'O', 6 + i, 8); s.f('SC%d' % i, 16, 'O', 6 + i, 46, 'DSPATR(HI)')
@@ -189,7 +245,8 @@ IF CNT > 0
 EVAL %s = %%CHAR(CNT) + ' %s'
 ENDIF
 """ % (setll, read, pfn, cond, read, fld, fld, word)
-prog('OFFMENU', [('OVUSERP', 'U'), ('OVMSGP', 'I'), ('OVMAILP', 'I'), ('OVTASKP', 'I'), ('OVCALP', 'I'), ('OVPREFP', 'I')], 'OFFMNU',
+prog('OFFMENU', [('OVUSERP', 'U'), ('OVMSGP', 'I'), ('OVMAILP', 'I'), ('OVTASKP', 'I'), ('OVCALP', 'I'), ('OVPREFP', 'U'), ('OVSETUP', 'U')], 'OFFMNU',
+ SETVARS + ZNVARS + HMVARS + [S('WCHR', 7), S('WBEG', 5, 0), S('WSAV', 5, 0)] +
  arrds('MCA', 'MC', 21, ['MC%d' % i for i in range(1, 7)]) + arrds('MAA', 'MA', 12, ['MA%d' % i for i in range(1, 7)]) + DC('MNAMES', MNAMES) + artdc(False) +
  arrds('SOA', 'SO', 36, ['SO%d' % i for i in range(1, 7)]) + arrds('SCA', 'SC', 16, ['SC%d' % i for i in range(1, 7)]) +
  [S('SP', 10, kw='DIM(6)'), S('SUBK', 5, 0), S('NOPT', 5, 0), S('WTITL', 40), S('NMSGN', 5, 0), S('NMAILN', 5, 0), S('NTASKN', 5, 0), S('NTODAY', 5, 0), S('K', 5, 0)] +
@@ -287,6 +344,18 @@ WHEN SELN = 5
 EVAL PGMNAM = 'OVFIND'
 WHEN SELN = 6
 EXSR LOOKUP
+IF SELUSR <> *BLANKS
+SELUSR | CHAIN(N) | USERREC
+IF %FOUND(OVUSERP)
+EVAL MSG = %TRIMR(USUSER) + ': ' + %TRIMR(USNAME)
+IF USDEPT <> *BLANKS
+EVAL MSG = %TRIMR(MSG) + ', ' + %TRIMR(USDEPT)
+ENDIF
+IF USPHON <> *BLANKS
+EVAL MSG = %TRIMR(MSG) + ', phone ' + %TRIMR(USPHON)
+ENDIF
+ENDIF
+ENDIF
 WHEN SELN = 8
 EVAL CMD = 'WRKSPLF'
 EXSR RUNCMD
@@ -483,6 +552,11 @@ F1 | ADDDUR | 1:*M | NXT
 NXT | SUBDUR | F1 | MDAYS:*D
 F1 | SUBDUR | BASEDT | NDAYS:*D
 EVAL FDOW = %REM(%REM(NDAYS:7) + 7:7)
+EVAL MWK = 'Su Mo Tu We Th Fr Sa'
+IF UWEEK = 'M'
+EVAL FDOW = %REM(FDOW + 6:7)
+EVAL MWK = 'Mo Tu We Th Fr Sa Su'
+ENDIF
 EVAL MCA = *BLANKS
 1 | DO | MDAYS | DY
 EVAL CELL = FDOW + DY
@@ -505,10 +579,110 @@ EVAL PNAME = USNAME
 EVAL PDEPT = USDEPT
 EVAL PPHON = USPHON
 EVAL PPOP = *BLANK
-""" + hdr('P', 'OFCPROFILE', 'Enter=Save   F12=Cancel') + """
+""" + GETSET + """
+EVAL PANIM = ANIMON
+EVAL PSAVE = %CHAR(SAVMIN)
+EVAL PCHAT = CHATAU
+EVAL PCHAR = %SUBST(MNAMEL:MIDX*7-6:7)
+EVAL PZONE = UZONE
+EVAL PZH = 'Blank = office time, UTC' + UOFFZ
+EVAL PWEEK = UWEEK
+EVAL PDBEG = %SUBST(%EDITC(UDBEG:'X'):1:2) + ':' + %SUBST(%EDITC(UDBEG:'X'):3:2)
+EVAL PDEND = %SUBST(%EDITC(UDEND:'X'):1:2) + ':' + %SUBST(%EDITC(UDEND:'X'):3:2)
+EVAL PUNIT = UNITS
 EVAL PMSG = *BLANKS
+DOW 1 = 1
+""" + hdr('P', 'OFCSETTING', 'Enter=Save   F12=Cancel') + """
  | EXFMT | PROF
-IF *IN03 = *OFF AND *IN12 = *OFF AND PNAME <> *BLANKS
+EVAL PMSG = *BLANKS
+IF *IN03 = *ON OR *IN12 = *ON
+LEAVE
+ENDIF
+EVAL WCHR = %TRIML(PCHAR)
+LCASE:UCASE | XLATE | WCHR | WCHR
+EVAL K = 0
+1 | DO | 6 | I
+IF %SUBST(MNAMEL:I*7-6:7) = WCHR
+EVAL K = I
+ENDIF
+ | ENDDO
+EVAL NERR = '0'
+EVAL NSTR = %TRIML(PSAVE)
+EXSR TONUM
+SELECT
+WHEN PANIM <> 'Y' AND PANIM <> 'N'
+EVAL PMSG = 'Animations must be Y or N.'
+WHEN K = 0
+EVAL PMSG = 'Character must be COFFEE, CAT, DOG, ROBOT, FISH or NONE.'
+WHEN NERR = '1' OR NVAL > 999
+EVAL PMSG = 'Screen saver must be a number of minutes, 0 for never.'
+WHEN PCHAT <> 'A' AND PCHAT <> 'M'
+EVAL PMSG = 'Chat refresh must be A or M.'
+WHEN PNAME = *BLANKS
+EVAL PMSG = 'Type your name.'
+ENDSL
+IF PMSG <> *BLANKS
+ITER
+ENDIF
+EVAL WSAV = NVAL
+* the calendar and clock part
+EVAL ZOUT = *BLANKS
+IF PZONE <> *BLANKS
+EVAL ZTX = PZONE
+EXSR PARSZN
+IF NERR = '1'
+EVAL PMSG = 'Time zone is hours from UTC, such as -05:00 or +01:00, or blank.'
+ITER
+ENDIF
+ENDIF
+IF PWEEK <> 'S' AND PWEEK <> 'M'
+EVAL PMSG = 'Week starts on must be S or M.'
+ITER
+ENDIF
+EVAL TM = PDBEG
+EXSR PARSTM
+IF NERR = '1' OR CLT < 0
+EVAL PMSG = 'Type the start of your working day as HH:MM, such as 08:00.'
+ITER
+ENDIF
+EVAL WBEG = CLT
+EVAL TM = PDEND
+EXSR PARSTM
+IF NERR = '1' OR CLT <= WBEG
+EVAL PMSG = 'The end of your working day must be HH:MM, after the start.'
+ITER
+ENDIF
+IF PUNIT <> 'I' AND PUNIT <> 'M'
+EVAL PMSG = 'Units must be I or M.'
+ITER
+ENDIF
+PGMUSR | CHAIN | SETREC
+EVAL STUSER = PGMUSR
+EVAL STANIM = PANIM
+EVAL STCHAT = PCHAT
+EVAL STSAVE = WSAV
+EVAL STZONE = ZOUT
+EVAL STWEEK = PWEEK
+EVAL STDBEG = WBEG
+EVAL STDEND = CLT
+EVAL STUNIT = PUNIT
+IF %FOUND(OVSETUP)
+ | UPDATE | SETREC
+ELSE
+ | WRITE | SETREC
+ENDIF
+EVAL MIDX = K
+PGMUSR | CHAIN | PREFREC
+EVAL PRUSER = PGMUSR
+EVAL PRMASC = %SUBST(MNAMEL:K*7-6:7)
+IF %FOUND(OVPREFP)
+ | UPDATE | PREFREC
+ELSE
+ | WRITE | PREFREC
+ENDIF
+LEAVE
+ENDDO
+IF *IN03 = *OFF AND *IN12 = *OFF
 PGMUSR | CHAIN | USERREC
 IF %FOUND(OVUSERP)
 EVAL USNAME = %TRIML(PNAME)
@@ -523,10 +697,11 @@ EXSR RUNCMD
 EVAL *IN50 = *OFF
 ENDIF
  | UPDATE | USERREC
-EVAL MSG = 'Your profile was saved.'
+EVAL MSG = 'Settings saved.'
+EXSR LOADSET
 ENDIF
 ENDIF
-""" + INDOFF + """
+""" + INDOFF + PARSZN + PARSHM + """
  | ENDSR
 """, hx=' DATFMT(*ISO)')
 TABS = """

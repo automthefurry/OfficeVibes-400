@@ -1,6 +1,5 @@
 import re, os
-import os
-OUT = os.environ.get('OV_OUT', '../src/')
+OUT = 'out/'
 NOHELP = {'DUMMY', 'BLANK'}
 HELP = {}
 FIELDS, RECS, SRC = {}, {}, {}
@@ -118,7 +117,7 @@ def arrds(allname, arr, elen, names):
     L = [D('', 'DS'), D(allname, '', elen * len(names), 'A'), D(' ' + arr, '', elen, 'A', kw='DIM(%d) OVERLAY(%s)' % (len(names), allname))]
     for i, n in enumerate(names): L.append(D(' ' + n, '', elen, 'A', kw='OVERLAY(%s:%d)' % (allname, i * elen + 1)))
     return L
-def listds(P, lw=70): return arrds(P + 'LNA', P + 'LN', lw, [P + 'LN%02d' % i for i in range(1, 11)]) + arrds(P + 'OPA', P + 'OP', 2, [P + 'OP%02d' % i for i in range(1, 11)])
+def listds(P, lw=70, n=10): return arrds(P + 'LNA', P + 'LN', lw, [P + 'LN%02d' % i for i in range(1, n + 1)]) + arrds(P + 'OPA', P + 'OP', 2, [P + 'OP%02d' % i for i in range(1, n + 1)])
 def wrap(ext, width=45):
     toks, cur, q = [], '', False
     for ch in ext:
@@ -169,7 +168,8 @@ COMD = [D('PSDS', 'SDS'), D(' PGMUSR', '', 263, frm=254), D('DSPINF', 'DS'), '  
   S('CSRROW', 5, 0), S('CSRCOL', 5, 0), S('CSRSEL', 5, 0), S('ANYOP', 5, 0), S('SEQ', 5, 0), S('LAPP', 10), S('LACT', 10), S('LTXT', 60),
   S('PACT', 1), S('PTXT', 100), S('SELUSR', 10), S('UNEED', 30), S('TTLW', 50), S('W8', 8), S('N8', 8, 0),
   S('DUE', 10), S('DLEN', 5, 0), S('P1', 5, 0), S('P2', 5, 0), S('MM', 5, 0), S('DD', 5, 0), S('YY', 5, 0), S('DUEVAL', 8, 0),
-  S('NSTR', 6), S('NVAL', 9, 0), S('NERR', 1), S('CH', 1), S('POS', 5, 0),
+  S('NSTR', 6), S('NVAL', 9, 0), S('NERR', 1), S('CH', 1), S('POS', 5, 0), S('DOTF', 1),
+  S('USET', 40), S('UNITS', 1), S('UWEEK', 1), S('UDBEG', 4, 0), S('UDEND', 4, 0), S('UZONE', 6), S('UOFFS', 5), S('UOFFZ', 6),
   D('LCASE', 'C', kw="'abcdefghijklmnopqrstuvwxyz'"), D('UCASE', 'C', kw="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'")]
 D80 = S  # alias
 COMSR = """
@@ -182,6 +182,36 @@ EVAL SYSNAM = 'AS400'
 ENDIF
 EVAL *IN50 = *OFF
 EVAL KUSER = PGMUSR
+EXSR LOADSET
+ | ENDSR
+* ---- this person's settings: units, week start, working day, time zone
+LOADSET | BEGSR
+EVAL USET = 'IS08001700      +0000'
+ | CALL | 'OVGSET' | | 50
+ | PARM | | USET
+EVAL *IN50 = *OFF
+EVAL UNITS = %SUBST(USET:1:1)
+EVAL UWEEK = %SUBST(USET:2:1)
+EVAL NERR = '0'
+EVAL NSTR = %SUBST(USET:3:4)
+EXSR TONUM
+EVAL UDBEG = 800
+IF NERR = '0' AND NVAL <= 2359
+EVAL UDBEG = NVAL
+ENDIF
+EVAL NERR = '0'
+EVAL NSTR = %SUBST(USET:7:4)
+EXSR TONUM
+EVAL UDEND = 1700
+IF NERR = '0' AND NVAL <= 2359 AND NVAL > UDBEG
+EVAL UDEND = NVAL
+ENDIF
+EVAL UZONE = %SUBST(USET:11:6)
+EVAL UOFFS = %SUBST(USET:17:5)
+IF %SUBST(UOFFS:1:1) <> '+' AND %SUBST(UOFFS:1:1) <> '-'
+EVAL UOFFS = '+0000'
+ENDIF
+EVAL UOFFZ = %SUBST(UOFFS:1:3) + ':' + %SUBST(UOFFS:4:2)
  | ENDSR
 HDR | BEGSR
  | TIME | | HTS
@@ -189,6 +219,9 @@ HDR | BEGSR
 EVAL HW8 = %SUBST(HSTMP:1:4) + %SUBST(HSTMP:6:2) + %SUBST(HSTMP:9:2)
  | MOVE | HW8 | HN8
 EVAL HDT = %CHAR(%DIV(%REM(HN8:10000):100)) + '/' + %CHAR(%REM(HN8:100)) + '/' + %SUBST(HSTMP:1:4)
+IF UNITS = 'M'
+EVAL HDT = %SUBST(HSTMP:9:2) + '.' + %SUBST(HSTMP:6:2) + '.' + %SUBST(HSTMP:1:4)
+ENDIF
 EVAL HDRLN = *BLANKS
 EVAL %SUBST(HDRLN:2:10) = HDRID
 EVAL %SUBST(HDRLN:33:15) = 'OfficeVibes/400'
@@ -197,6 +230,9 @@ EVAL %SUBST(HDRLN:79-NLEN:NLEN) = %TRIMR(HDT)
  | ENDSR
 FMTDT | BEGSR
 EVAL WDT = %SUBST(WSTMP:6:2) + '/' + %SUBST(WSTMP:9:2) + '/' + %SUBST(WSTMP:1:4) + ' ' + %SUBST(WSTMP:12:2) + ':' + %SUBST(WSTMP:15:2)
+IF UNITS = 'M'
+EVAL WDT = %SUBST(WSTMP:9:2) + '.' + %SUBST(WSTMP:6:2) + '.' + %SUBST(WSTMP:1:4) + ' ' + %SUBST(WSTMP:12:2) + ':' + %SUBST(WSTMP:15:2)
+ENDIF
  | ENDSR
 CSR | BEGSR
 EVAL CSRROW = %DIV(CSRLOC:256)
@@ -267,6 +303,12 @@ PARSED | BEGSR
 EVAL NERR = '0'
 EVAL DUEVAL = 0
 EVAL DUE = %TRIML(DUE)
+* day.month.year with dots is read the European way round
+EVAL DOTF = '0'
+IF %SCAN('.':DUE) > 0
+EVAL DOTF = '1'
+'.':'/' | XLATE | DUE | DUE
+ENDIF
 EVAL DLEN = %LEN(%TRIMR(DUE))
 IF DLEN > 0
 EVAL P1 = %SCAN('/':DUE)
@@ -302,6 +344,11 @@ EXSR TONUM
 EVAL YY = NVAL
 ENDIF
 ENDIF
+IF NERR = '0' AND DOTF = '1'
+EVAL P1 = MM
+EVAL MM = DD
+EVAL DD = P1
+ENDIF
 IF NERR = '0'
 IF YY < 100
 EVAL YY = YY + 2000
@@ -326,7 +373,7 @@ IF NSHOW < 0
 EVAL NSHOW = 0
 ENDIF
 """
-def listmain(P, fmt, hid, pre='', keys='', acts='', find=False, deflt='', r0=6, lcol=8, sel=None):
+def listmain(P, fmt, hid, pre='', keys='', acts='', find=False, deflt='', r0=6, lcol=8, sel=None, n=10):
     t = """
 DOW *IN03 = *OFF AND *IN12 = *OFF
 EXSR LOAD
@@ -381,6 +428,7 @@ EVAL @P@OP(CSRSEL) = '@D@'
 ENDIF
 """.replace('@D@', deflt) if deflt else ''
     sc = sel or ("EVAL CSRSEL = CSRROW - %d\nIF CSRSEL < 1 OR CSRSEL > NSHOW OR CSRCOL < %d\nEVAL CSRSEL = 0\nENDIF\n" % (r0 - 1, lcol))
+    t = t.replace('BASE + 10 <', 'BASE + %d <' % n)
     return t.replace('@SEL@', sc).replace('@FIND@', fd).replace('@DEF@', df).replace('@PRE@', pre).replace('@KEYS@', keys).replace('@ACTS@', acts).replace('@HID@', hid).replace('@FMT@', fmt).replace('@P@', P)
 OPC = set('EVAL IF ELSE ENDIF DOW ENDDO DO SELECT WHEN OTHER ENDSL EXSR LEAVE ITER AND OR NOT BEGSR ENDSR EXFMT WRITE READ READE READP CHAIN SETLL SETGT UPDATE DELETE UNLOCK MOVE TIME CALL PARM PLIST KLIST KFLD XLATE CLEAR RETURN OPEN CLOSE ADDDUR SUBDUR TEST DSPLY N D MS M H'.split())
 def check(name, lines, files):

@@ -11,23 +11,28 @@ H('MNUREC', 'Main menu', 'Type the number of an option and press Enter.', CUR, '
   ' 6  Office directory: who is enrolled.',
   ' 7  Games and the office cat.',
   ' 8  Printed output: everything you printed with a Print key.',
-  ' 9  My profile: your name, phone and pop-up messages.',
+  ' 9  Settings: your name and phone, pop-ups, animations and more.',
   '10  Administration: for office administrators only.', '',
   'The counts beside the options show what is waiting for you.',
   'F3 or 90 leaves the office.  F5 refreshes the counts.')
 H('SUBM', 'Menu', 'Type the number of an option and press Enter, or put the cursor on it', 'and press Enter.', '',
   'The counts show new mail and messages, and open tasks.', 'F12 goes back to the main menu.')
-H('PROF', 'My profile', 'Your name, department and phone are shown to other users in the office',
-  'directory and in the list that F4 opens when they address a message.', '',
-  'Pop-up messages: Y makes reminders, new mail and chat requests appear on',
-  'your screen as soon as they arrive.  N lets them wait quietly in your',
-  'message queue, with the message light on.  Leave it blank to keep the',
-  'present setting.', '',
-  'Change any field and press Enter to save.  F12 leaves without saving.')
-H('LKWIN', 'Select a user', 'This window lists the enrolled users.', '',
-  'Type part of a name or user ID in Find and press Enter to narrow the list.',
-  'Type any character beside a user, or put the cursor on the user, and press',
-  'Enter to choose.  F7 and F8 page.  F12 closes the window without choosing.')
+H('PROF', 'Settings', 'Name, department and phone: how others see you in the office directory.',
+  'Pop-up messages: Y shows reminders, mail and chat requests at once.',
+  'Time zone: your offset from UTC, such as -05:00.  New appointments use it',
+  'and are stored in office time.  Blank means you are in office time.',
+  'Week starts on: S or M, for every month on the screen.',
+  'Working day: new appointments start at the start, and the week and month',
+  'views are drawn around these hours.',
+  'Units: I for 12-hour clock and M/D/YYYY, M for 24-hour and D.M.YYYY.',
+  'Animations: N stops everything that moves by itself.  Character is shown',
+  'on the calendar.  Screen saver: idle minutes, 0 never.  Chat refresh: A',
+  'shows new lines as they arrive, M only when you press F5.')
+H('LKWIN', 'Office directory', 'Everyone enrolled in OfficeVibes, with department and phone.', '',
+  'Type part of a name, user ID or department in Find and press Enter to',
+  'narrow the list.  Type any letter beside a person, or put the cursor on',
+  'the line, and press Enter to choose them.  F7 and F8 page.',
+  'F12 goes back without choosing.')
 H('MLIST', 'Message Center', 'Short messages sent to you, newest first.  Unread ones are bright and',
   'marked with a star.  The tabs show whether you are looking at your inbox',
   'or the messages you have sent.  F10 switches between them.', '',
@@ -73,19 +78,21 @@ H('CMAIN', 'Calendar', 'The top of the screen shows one month.  > marks the day 
   'coffee, cat, dog, robot, fish, then none.  Choose none if it gets in the',
   'way of typing.  If the reminder service is running, you get a message 15',
   'minutes before each appointment that has a time.')
-H('CADD', 'Add or change an appointment', 'Date: month/day, such as 3/15, or month/day/year.', '',
+H('CADD', 'Add or change an appointment', 'Date: 3/15 or 3/15/2027, or with dots day first: 15.3.2027.',
   'Last day: for something that lasts several days, such as a trip, type the',
   'last day too.  The appointment is added to every day in between, each',
   'marked with its day number, such as (2/5).  Up to 31 days.  Each day can',
   'then be changed or deleted on its own.', '',
   'Time: hours and minutes on the 24-hour clock, such as 9:00 or 14:30.',
   'Leave the time blank for something that lasts all day.  00:00 means',
-  'midnight, not all day.', '',
+  'midnight, not all day.',
+  'Time zone: the zone the time is in.  It is changed to office time, which',
+  'is what everyone sees, and the message says the office time.',
   'Type what it is and press Enter to save.  F12 leaves without saving.')
-H('DLIST', 'Documents', 'Each card is one of your documents, ten to a page.  A document holds', 'up to 500 lines of text.', '',
-  'Type an option in the small field at the top left of a card:',
+H('DLIST', 'Documents', 'Each line is one of your documents, fourteen to a page.  A document', 'holds up to 500 lines of text.', '',
+  'Type an option beside a document:',
   '2 opens the editor, 6 prints the document, 4 deletes it.',
-  'Or put the cursor anywhere on a card and press Enter to open it.', '', 'F6 creates a new document.', PG)
+  'Or put the cursor on its line and press Enter to open it.', '', 'F6 creates a new document.', PG)
 H('DNEW', 'New document', 'Give the document a short name and a title, then press Enter.', 'The editor opens straight away.')
 H('DEDIT', 'Document editor', 'Type on any of the fifteen lines.  What you type is kept when you press',
   'Enter or any function key, but it is only stored when you press F10.', '',
@@ -134,7 +141,111 @@ H('FLIST', 'Search everything', 'Type a word or part of one in Find and press En
   'It only finds items that are yours, or were sent to or by you.', '',
   'Type 5 beside a result, or put the cursor on it, and press Enter to see', 'the whole item below the list.', PG)
 
+PARSZN = """
+* ---- ZTX such as -05:00 into ZMIN minutes from UTC and ZOUT, or NERR
+PARSZN | BEGSR
+EVAL NERR = '0'
+EVAL ZMIN = 0
+EVAL ZH = 0
+EVAL ZM = 0
+EVAL ZSG = 1
+EVAL ZT = %TRIM(ZTX)
+EVAL CH = %SUBST(ZT:1:1)
+IF CH = '+' OR CH = '-'
+IF CH = '-'
+EVAL ZSG = -1
+ENDIF
+EVAL ZT = %TRIM(%SUBST(ZT:2))
+ENDIF
+EVAL ZL = %LEN(%TRIMR(ZT))
+EVAL P1 = %SCAN(':':ZT)
+SELECT
+WHEN ZL = 0 OR P1 = 1
+EVAL NERR = '1'
+WHEN P1 > 1
+EVAL NSTR = %SUBST(ZT:1:P1-1)
+EXSR TONUM
+EVAL ZHV = NVAL
+EVAL ZMV = 0
+IF P1 < ZL
+EVAL NSTR = %SUBST(ZT:P1+1:ZL-P1)
+EXSR TONUM
+EVAL ZMV = NVAL
+ENDIF
+WHEN ZL <= 2
+EVAL NSTR = %SUBST(ZT:1:ZL)
+EXSR TONUM
+EVAL ZHV = NVAL
+EVAL ZMV = 0
+WHEN ZL = 4
+EVAL NSTR = %SUBST(ZT:1:2)
+EXSR TONUM
+EVAL ZHV = NVAL
+EVAL NSTR = %SUBST(ZT:3:2)
+EXSR TONUM
+EVAL ZMV = NVAL
+OTHER
+EVAL NERR = '1'
+ENDSL
+IF NERR = '0' AND (ZHV > 14 OR ZMV > 59)
+EVAL NERR = '1'
+ENDIF
+IF NERR = '0'
+EVAL ZH = ZHV
+EVAL ZM = ZMV
+EVAL ZMIN = ZSG * (ZHV * 60 + ZMV)
+EVAL ZOUT = '+' + %EDITC(ZH:'X') + ':' + %EDITC(ZM:'X')
+IF ZMIN < 0
+EVAL ZOUT = '-' + %EDITC(ZH:'X') + ':' + %EDITC(ZM:'X')
+ENDIF
+ENDIF
+ | ENDSR
+"""
+ZNVARS = [S('ZTX', 6), S('ZT', 6), S('ZOUT', 6), S('ZSG', 3, 0), S('ZL', 5, 0), S('ZH', 2, 0), S('ZM', 2, 0), S('ZHV', 9, 0), S('ZMV', 9, 0), S('ZMIN', 5, 0)]
+PARSHM = """
+* ---- TM holds HH:MM or blank: sets CLT (-1 is all day) or NERR ----
+PARSTM | BEGSR
+EVAL NERR = '0'
+EVAL CLT = -1
+EVAL TM = %TRIML(TM)
+IF TM <> *BLANKS
+EVAL P1 = %SCAN(':':TM)
+IF P1 >= 2 AND P1 <= 3
+EVAL NSTR = %SUBST(TM:1:P1-1)
+EXSR TONUM
+EVAL HH = NVAL
+EVAL NSTR = %SUBST(TM:P1+1:2)
+EXSR TONUM
+EVAL MI = NVAL
+ELSE
+EVAL NERR = '1'
+ENDIF
+IF NERR = '0' AND (HH > 23 OR MI > 59)
+EVAL NERR = '1'
+ENDIF
+IF NERR = '0'
+EVAL CLT = HH * 100 + MI
+ENDIF
+ENDIF
+ | ENDSR
+"""
+HMVARS = [S('TM', 5), S('HH', 5, 0), S('MI', 5, 0), S('CLT', 5, 0)]
+pf('OVSETUP', 'SETREC', [A('STUSER', 10), A('STANIM', 1), N('STSAVE', 3), A('STCHAT', 1), A('STZONE', 6), A('STWEEK', 1),
+    N('STDBEG', 4), N('STDEND', 4), A('STUNIT', 1)], ['STUSER'])
+SETVARS = [S('ANIMON', 1), S('SAVMIN', 3, 0), S('CHATAU', 1)]
+GETSET = '''
+EVAL ANIMON = 'Y'
+EVAL SAVMIN = 2
+EVAL CHATAU = 'A'
+PGMUSR | CHAIN(N) | SETREC
+IF %FOUND(OVSETUP)
+EVAL ANIMON = STANIM
+EVAL SAVMIN = STSAVE
+EVAL CHATAU = STCHAT
+ENDIF
+'''
 pf('OVPREFP', 'PREFREC', [A('PRUSER', 10), A('PRMASC', 10)], ['PRUSER'])
+pf('OVCTOPP', 'TOPREC', [A('TPROOM', 20), A('TPTOPC', 50), A('TPBY', 10), Z('TPSTMP'), A('TPOWN', 10)], ['TPROOM'])
 pf('OVCHATP', 'CHATREC', [A('CHROOM', 20), Z('CHSTMP'), A('CHFROM', 10), A('CHTEXT', 60)], ['CHROOM', 'CHSTMP'])
 ART = [('COF', ['  (  )  (', '   )  (  )', ' ________', '|        |__', '|        |_|', '(________)'],
                ['   )  (  )', '  (  )  (', ' ________', '|        |__', '|        |_|', '(________)']),
@@ -170,15 +281,32 @@ ENDIF
  | ENDDO
 ENDIF
 """
+H('SAVR', 'Screen saver', 'The calendar shows this after it has been left alone for a while.',
+  'Press Enter, or any function key, to go back.', '',
+  'Settings, on the main menu, changes how long it waits, or turns it off.')
 H('CHWHO', 'Live chat - who with', 'Type the user ID of the person to chat with and press Enter.', F4U, '',
   'Type EVERYONE to join the office chat room, which all users share.')
-H('CHATSCR', 'Live chat', 'The screen shows the latest fourteen lines of the conversation and',
-  'refreshes by itself every two seconds, so you see replies as they arrive.', '',
-  'Type what you want to say and press Enter to send it.', 'F6 switches to a different person or to the EVERYONE room.',
-  'F5 refreshes at once.  F3 leaves the chat.', '',
+H('CHLST', 'Live chat rooms', 'Group rooms are open to everyone in the office.  The room whose topic',
+  'changed most recently is at the top, so you can see where people are.', '',
+  'Type 1 beside a room, or put the cursor on it, and press Enter to join it.',
+  'Type 4 to delete a room you made.  Administrators can delete any room',
+  'except EVERYONE.  F6 makes a new room and asks for its topic.', '',
+  'For a private chat, type a user ID in Private chat with, or press F4 to',
+  'pick someone.  They get a message saying you are waiting.', PG)
+H('CHNEW', 'New room', 'Give the room a one-word name and a topic.  The room appears at the top',
+  'of the room list for everyone.  You join it straight away.')
+H('CHTOPS', 'Room topic', 'Type the new topic and press Enter.  Everyone in the room sees a line',
+  'saying you changed it, and the room moves to the top of the room list.')
+H('CHATSCR', 'Live chat', 'The screen shows the latest fourteen lines of the conversation.', '',
+  'New lines appear by themselves when they arrive.  Whatever you have typed',
+  'is kept, but the cursor goes back to the start of the line, so press',
+  'End or Field Exit to carry on typing.  Settings can turn this off, so that',
+  'new lines only appear when you press F5.', '',
+  'Type what you want to say and press Enter to send it.',
+  'F6 goes back to the room list.  F9 changes the topic of a group room.',
+  'F3 leaves the chat.', '',
   'The first time you write to someone in a session they get a system',
-  'message telling them you are waiting, in case they are not in the chat.', '',
-  'If the screen does not refresh by itself on your display, press Enter', 'or F5 to see new lines.')
+  'message telling them you are waiting, in case they are not in the chat.')
 
 pf('OVSHTP', 'SHTREC', [A('SHUSER', 10), A('SHNAME', 10), A('SHTITL', 40), Z('SHSTMP')], ['SHUSER', 'SHNAME'])
 pf('OVSHCP', 'SHCREC', [A('SXUSER', 10), A('SXNAME', 10), N('SXROW', 3), N('SXCOL', 2), A('SXTEXT', 30)], ['SXUSER', 'SXNAME', 'SXROW', 'SXCOL'])

@@ -37,26 +37,11 @@ def lay_phone(s):
     s.t(11, 43, 'Note', 'COLOR(BLU)'); s.f('PCNT', 26, 'O', 11, 50)
     s.t(14, 46, 'O', 'COLOR(YLW)'); s.t(14, 72, 'O', 'COLOR(YLW)')
     s.t(16, 41, '5 or the cursor shows a card', 'COLOR(BLU)')
-DOCCARD = [(6 + 3 * (k // 2), 3 if k % 2 == 0 else 42) for k in range(10)]
 def lay_docs(s):
-    s.rec('DLIST'); s.f('DHDR', 78, 'O', 1, 2, 'DSPATR(HI)')
-    s.ctr(2, 'D O C U M E N T S', 'DSPATR(HI)'); s.f('DTTL', 50, 'O', 3, 3, 'DSPATR(HI)'); s.f('DCOL', 74, 'O', 4, 3, 'COLOR(BLU)')
-    for i, (r, c) in enumerate(DOCCARD, 1):
-        s.f('DOP%02d' % i, 2, 'I', r, c, 'CHECK(LC)', 'DSPATR(UL)'); s.f('DIC%02d' % i, 3, 'O', r, c + 3, 'COLOR(YLW)')
-        s.f('DLN%02d' % i, 30, 'O', r, c + 7, 'DSPATR(HI)'); s.f('DLB%02d' % i, 30, 'O', r + 1, c + 7); s.f('DLC%02d' % i, 30, 'O', r + 2, c + 7, 'COLOR(BLU)')
-    s.f('DMSG', 74, 'O', 21, 3, 'DSPATR(HI)'); s.f('DFK1', 78, 'O', 22, 2, 'COLOR(BLU)'); s.f('DFK2', 78, 'O', 23, 2, 'COLOR(BLU)')
-DOCSEL = """
-EVAL CSRSEL = 0
-IF CSRROW >= 6 AND CSRROW <= 20
-EVAL CSRSEL = %DIV(CSRROW - 6:3) * 2 + 1
-IF CSRCOL >= 42
-EVAL CSRSEL = CSRSEL + 1
-ENDIF
-IF CSRSEL > NSHOW
-EVAL CSRSEL = 0
-ENDIF
-ENDIF
-"""
+    rk = lambda i: ['COLOR(TRQ)' if i % 2 else 'COLOR(GRN)']
+    s.lst2('DLIST', 'D', list(range(6, 20)), 7, 72, ttl=(3, 3, 50), col=(5, 2, 77), rowkw=rk)
+    s.ctr(2, 'D O C U M E N T S', 'DSPATR(HI)')
+    s.t(3, 55, '[=] = one document', 'COLOR(YLW)')
 def lay_sheets(s):
     rk = lambda i: ['COLOR(TRQ)' if i % 2 else 'COLOR(GRN)']
     s.lst2('SLIST', 'S', list(range(9, 19)), 7, 72, ttl=(3, 20, 50), col=(8, 3, 74), rowkw=rk)
