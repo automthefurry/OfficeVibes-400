@@ -879,9 +879,8 @@
      C                   EVAL      WKD = %REM(%REM(NDAYS:7) + 7:7)
      C                   MOVE      TODN          W8
      C                   EVAL      SVDAT = %TRIMR(%SUBST(DNAMES:WKD*9+1:9)) +
-     C                             ', '
-     C                   +         %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2) + '/' +
-     C                             %SUBST(W8:1:4)
+     C                             ', ' + %SUBST(W8:5:2) + '/' + %SUBST(W8:7:2)
+     C                             + '/' + %SUBST(W8:1:4)
      C                   EVAL      *IN45 = *ON
      C                   IF        FULLS = '1'
      C                   EVAL      *IN46 = *OFF
