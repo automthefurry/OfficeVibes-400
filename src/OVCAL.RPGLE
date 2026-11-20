@@ -738,7 +738,7 @@
      C     NOWLN         BEGSR
      C                   EXSR      CLOCK
      C                   EVAL      DNOW = 'Office time now ' +
-     C                             %TRIM(%SUBST(PTIM:7)) + ', UTC' + UOFFZ
+     C                             %TRIM(%SUBST(PTIM:7:12)) + ', UTC' + UOFFZ
      C                   IF        UZONE <> *BLANKS AND UZONE <> UOFFZ
      C                   EVAL      ZTX = UOFFZ
      C                   EXSR      PARSZN
@@ -1626,7 +1626,7 @@
      C                   IF        CH = '-'
      C                   EVAL      ZSG = -1
      C                   ENDIF
-     C                   EVAL      ZT = %TRIM(%SUBST(ZT:2))
+     C                   EVAL      ZT = %TRIM(%SUBST(ZT:2:5))
      C                   ENDIF
      C                   EVAL      ZL = %LEN(%TRIMR(ZT))
      C                   EVAL      P1 = %SCAN(':':ZT)

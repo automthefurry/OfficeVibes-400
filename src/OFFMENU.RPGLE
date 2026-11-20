@@ -705,6 +705,7 @@
      C                   ENDIF
      C                   EVAL      *IN03 = *OFF
      C                   EVAL      *IN12 = *OFF
+     C                   ENDSR
       * ---- ZTX such as -05:00 into ZMIN minutes from UTC and ZOUT, or NERR
      C     PARSZN        BEGSR
      C                   EVAL      NERR = '0'
@@ -718,7 +719,7 @@
      C                   IF        CH = '-'
      C                   EVAL      ZSG = -1
      C                   ENDIF
-     C                   EVAL      ZT = %TRIM(%SUBST(ZT:2))
+     C                   EVAL      ZT = %TRIM(%SUBST(ZT:2:5))
      C                   ENDIF
      C                   EVAL      ZL = %LEN(%TRIMR(ZT))
      C                   EVAL      P1 = %SCAN(':':ZT)
@@ -789,7 +790,6 @@
      C                   EVAL      CLT = HH * 100 + MI
      C                   ENDIF
      C                   ENDIF
-     C                   ENDSR
      C                   ENDSR
       * ---- shared routines ----
      C     *INZSR        BEGSR
